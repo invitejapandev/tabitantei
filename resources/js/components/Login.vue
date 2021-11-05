@@ -1,7 +1,7 @@
 <template>
         <div class="login_container" >
-            <input type="text" placeholder="Game Code" size="8" maxlength="5" v-model="item.name"/>
-            <a class="go_button" @click="validateGame" :class="[item.name]">Go!</a>
+            <input id="1" type="text" placeholder="Game Code" size="8" maxlength="5" v-model="item.name" @input="onInput"/>
+            <!-- <a class="go_button" @click="validateGame" :class="[item.name]">Go!</a> -->
         </div>
 </template>
 
@@ -14,6 +14,36 @@
             return {
                 item:{
                     name:""
+                }
+            }
+        },
+        beforeCreate(){
+            let codeResponse = JSON.parse(localStorage.getItem('codeResponse'));
+            if(codeResponse){
+            let eventDate = codeResponse.event_date;
+            eventDate = new Date(eventDate);
+            let nowDate = new Date();
+            const diffTime = Math.abs(nowDate - eventDate);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            if(diffDays>1){
+            alert(diffDays);
+                console.log(codeResponse);
+                axios.post('api/game/validate_key',{
+                        code: codeResponse.game_code
+                        }).then(response => {
+                            console.log(response);
+                            if(response['data'][0].id >= 1){
+                                if(response['data'][0].Status == 1){
+                                    localStorage.setItem('codeResponse', JSON.stringify(response['data'][0]));
+                                    this.$router.push({ name: 'team.index' });
+                                }
+                            }
+                        }).catch(error => {
+                            alert('something went wrong');
+                        });
+                }
+                else{
+                      this.$router.push({ name: 'team.index' });
                 }
             }
         },
@@ -32,6 +62,27 @@
                 }).catch( error => {
                     console.log(error);
                 })
+            },
+            onInput(e){
+                console.log(e.target.value);
+                if(e.target.value.length==5){
+                   axios.post('api/game/validate_key',{
+                    code: this.item.name
+                    }).then(response => {
+                        
+                        console.log(response['data'][0].game_code)
+                        if(response['data'][0].id >= 1){
+                            alert('Success! Valid Code. You will now proceed to the game.');
+                            this.$router.push({ name: 'team.index' })
+                            localStorage.setItem('codeResponse', JSON.stringify(response['data'][0]));
+                        }
+                        else{
+                            alert('invalid code');
+                        }
+                    }).catch( error => {
+                            alert('test');
+                    })
+                }
             }
         }
     }
