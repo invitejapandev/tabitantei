@@ -1,5 +1,5 @@
 <template>
-    <h1>{{playerName}} s- Team {{ teamName }}</h1>
+    <h1>TEAM {{ teamName }} - {{playerName}}</h1>
 </template>
 
 <script>
@@ -12,5 +12,9 @@
     }
 </script>
 
-<style>
+<style scoped>
+    h1{
+        font-size: 3rem;    
+       font-weight: bolder;
+    }
 </style>

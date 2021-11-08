@@ -12,5 +12,7 @@
 <style>
    .miro_board{
         border-style: solid;
+        border-radius: 10px;
+        background-color: white;
     }
 </style>

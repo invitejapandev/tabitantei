@@ -1,5 +1,8 @@
 <template>
-    <Item />
+    
+    <div class="inventoryContainer">
+        <Item />
+    </div>
 </template>
 
 <script>
@@ -15,5 +18,9 @@ export default{
 
 </script>
 
-<style>
+<style scoped>
+    .inventoryContainer{
+        background-color: white;
+        margin: 25px;
+    }
 </style>

@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="stats">
-            <Player class="player" playerName="ron" teamName="Gryffindor" />
+            <Player class="player" playerName="Ron" teamName="Gryffindor" />
             <Timer class="timer" time="01:06:30" />
         </div>
         <Inventory class="inventory" />
@@ -27,15 +27,16 @@
    .container{
        display: flex;
        flex-wrap: wrap;
-       align-content: end;
+       align-content: start;
+       justify-content: start;
    }
    
    .stats{
        display:flex;
-       flex-grow: 1;
        flex-direction: row;
        flex-wrap: wrap;
-       justify-content: end;
+       justify-content: start;
+       align-content: start;
    }
 
    .player{

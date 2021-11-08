@@ -7,7 +7,7 @@
             <ElementHolder class="main_element_holder" />
         </div>
         <a href="#" class="float">
-        <i class="fa fa-plus my-float"></i>
+            <img src="../assets/chloe_version.png" style="width: 120px; height: 120px"/>
         </a>
     </div>
 </template>
@@ -34,6 +34,8 @@
         display: flex;
         flex-direction: column;
         height: 100%;
+        background-color: #004D40;
+        color: white;
     }
 
 
@@ -46,8 +48,8 @@
     }
 
     .header2{
-        padding:10px;
-        min-height: 10vh;
+        padding-left:20px;
+        min-height: 5vh;
     }
 
     .main_element_holder{
@@ -56,22 +58,20 @@
     }
 
     .miro_holder{
-       flex-basis: 700px;
         flex-grow: 1;
+       flex-basis: 400px;
+       min-width: 600px;
     }
 
     
 .float{
 	position:fixed;
-	width:70px;
-	height:70px;
+	width:120px;
+	height:120px;
 	bottom:40px;
 	right:40px;
-	background-color:rgb(204, 0, 0);
-	color:#FFF;
 	border-radius:50px;
 	text-align:center;
-	box-shadow: 2px 2px 3px rgb(112, 95, 95);
 }
 
 .my-float{
