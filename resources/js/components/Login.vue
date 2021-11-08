@@ -1,6 +1,8 @@
 <template>
-        <div class="login_container" >
-            <input id="1" type="text" placeholder="Game Code" size="8" maxlength="5" v-model="item.name" @input="onInput"/>
+        <div class="login_container">
+            <form autocomplete="off">
+                <input autocomplete="off" id="1" type="text" placeholder="Game Code" size="8" maxlength="5" v-model="item.name" @input="onInput"/>
+            </form>
             <!-- <a class="go_button" @click="validateGame" :class="[item.name]">Go!</a> -->
         </div>
 </template>
@@ -16,6 +18,9 @@
                     name:""
                 }
             }
+        },
+        mounted(){
+            console.log(require('../assets/bilingual.png'));
         },
         beforeCreate(){
             let codeResponse = JSON.parse(localStorage.getItem('codeResponse'));
@@ -95,6 +100,7 @@
     justify-content: center;
     padding-top: 500px;
 }
+
 
 input{
     font-size: 5rem;

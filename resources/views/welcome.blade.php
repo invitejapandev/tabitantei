@@ -10,10 +10,17 @@
     </head>
     <body>
 
-        <div  id="app">
+        <div class="main_app" id="app">
             {{-- <router-link :to="{ name: 'main.index' }" class="text-sm font-medium">Login</router-link> --}}
             <router-view />
         </div>
         <script src="{{asset('js/app.js')}}"></script>
     </body>
+
+    <style>
+        body{
+            background: url({{ URL::asset('images/green_bg.png') }}) no-repeat center center fixed;
+            background-size: cover;
+        }
+    </style>
 </html>
