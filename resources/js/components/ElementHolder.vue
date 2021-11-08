@@ -3,7 +3,7 @@
         <div class="elements"><img class="desk" src="../assets/desk_with_manual.png"  style="width: 100%; height: 100%; border-radius:5px "/></div>
         <div class="actions">
             <input class="answer" type="text" placeholder="Type Here" style="z-index: 1" @input="onInput"/>
-            <img src="../assets/circuit_board.png" style="width: 50%; heigth: 50%; position: absolute;"/>
+            <!-- <img src="../assets/circuit_board.png" style="width: 50%; heigth: 50%; position: absolute;"/> -->
         </div>
     </div>
 </template>
@@ -53,32 +53,34 @@ export default{
         width: auto;
         max-height: 70%;
         height: auto;
-        padding-left: 10px;
     }
 
     .actions{
         display: flex;
         width: 100%;
-        height: 20%;
-        width: 95%;
+        height: 30%;
         margin-bottom: 20px;
         margin-top: 10px;
-        align-items: start;
-        justify-content: start;
+        align-items: center;
+        justify-content: center;
     }
 
     .answer{
-        width: 20%;
-        margin-top: 90px;
-        margin-left: 290px;
-        font-size: 2.2rem;
+        width: 100%;
+        height: 100%;
+        font-size: 2vw;
         background: transparent;
+        background-image: url('../assets/circuit_board.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 100%;
         border:none;
         outline: none;
         color: greenyellow;
-        padding: 10px;
         text-transform:uppercase;
         font-weight: bold;
+        padding-left: 30%;
+        padding-top: 2%;
     }
 
 

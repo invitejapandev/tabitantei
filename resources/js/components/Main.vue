@@ -71,6 +71,7 @@
 	right:40px;
 	border-radius:50px;
 	text-align:center;
+    z-index: 999;
 }
 
 .my-float{

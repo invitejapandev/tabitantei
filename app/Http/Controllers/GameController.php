@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\GameEvent;
+use App\Models\GamePlayer;
 
 class GameController extends Controller
 {
@@ -23,5 +24,19 @@ class GameController extends Controller
         }
 
         return "No game found.";
+    }
+
+    public function store_player(Request $request){
+       
+        
+        $player = new GamePlayer([
+            'game_event_id' => $request->game_event_id,
+            'teamNumber' => $request->teamNumber,
+            'nickName' => $request->nickName
+        ]);
+
+        
+        $player->save();
+        return true;
     }
 }

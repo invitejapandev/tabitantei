@@ -20,7 +20,8 @@
             }
         },
         mounted(){
-            console.log(require('../assets/bilingual.png'));
+            
+           
         },
         beforeCreate(){
             let codeResponse = JSON.parse(localStorage.getItem('codeResponse'));
@@ -31,7 +32,6 @@
             const diffTime = Math.abs(nowDate - eventDate);
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
             if(diffDays>1){
-            alert(diffDays);
                 console.log(codeResponse);
                 axios.post('api/game/validate_key',{
                         code: codeResponse.game_code
@@ -77,15 +77,26 @@
                         
                         console.log(response['data'][0].game_code)
                         if(response['data'][0].id >= 1){
-                            alert('Success! Valid Code. You will now proceed to the game.');
-                            this.$router.push({ name: 'team.index' })
-                            localStorage.setItem('codeResponse', JSON.stringify(response['data'][0]));
+                            this.$swal({
+                                title:'Game Code is Valid. You will now be redirected to team selection.',
+                                icon:'success'    
+                                        }).then((result) =>{
+                                            this.$router.push({ name: 'team.index' })
+                                            localStorage.setItem('codeResponse', JSON.stringify(response['data'][0]));
+                                        });
+                           
                         }
                         else{
-                            alert('invalid code');
+                            this.$swal({
+                                title:'Game Code is Valid.  Please try again.',
+                                icon:'warning'    
+                                        });
                         }
                     }).catch( error => {
-                            alert('test');
+                           this.$swal({
+                                title:'Game Code is Invalid. Please try again.',
+                                icon:'warning'    
+                                        });
                     })
                 }
             }
@@ -116,4 +127,14 @@ input{
     font-size: 5rem;
     font-weight: bold;
 }
+
+</style>
+
+<style>
+
+.swal2-title{
+    font-family: monospace !important;
+    color: black;
+}
+
 </style>
