@@ -2,7 +2,7 @@
     <div class="element_holder"  >
         <div class="elements"><img class="desk" src="../assets/desk_with_manual.png"  style="width: 100%; height: 100%; border-radius:5px "/></div>
         <div class="actions">
-            <input class="answer" type="text" placeholder="Type Here" style="z-index: 1" @input="onInput"/>
+            <input :class="[isCorrect ? 'correct' : '' , 'answer']" type="text" placeholder="Type Here" style="z-index: 1" @input="onInput" maxlength="8"/>
             <!-- <img src="../assets/circuit_board.png" style="width: 50%; heigth: 50%; position: absolute;"/> -->
         </div>
     </div>
@@ -22,12 +22,25 @@ export default{
         return{
             message: '',
             typing: false,
-            timer: null
+            timer: null,
+            isCorrect: false,
+            correctAnswer: 'jetpogi'
         }
     },
     methods: {
             onInput(e){
                     keystrokeSound.play();
+                    console.log(e.target.value);
+                    if(e.target.value == this.correctAnswer){
+                        this.isCorrect = true;
+                           this.$swal({
+                                title:'Great! That is the correct answer!',
+                                icon:'success'    
+                                        });
+                    }
+                    else{
+                        this.isCorrect = false;
+                    }
                 }
         }
 }
@@ -49,7 +62,7 @@ export default{
     }
 
     .elements{
-        max-width: 100%;
+        max-width: 98%;
         width: auto;
         max-height: 70%;
         height: auto;
@@ -70,7 +83,6 @@ export default{
         height: 100%;
         font-size: 2vw;
         background: transparent;
-        background-image: url('../assets/circuit_board.png');
         background-repeat: no-repeat;
         background-position: center;
         background-size: 100%;
@@ -79,8 +91,13 @@ export default{
         color: greenyellow;
         text-transform:uppercase;
         font-weight: bold;
-        padding-left: 30%;
-        padding-top: 2%;
+        padding-left: 33%;
+        padding-top: 0.5%;
+        background-image: url('../assets/circuit_board_red.png');
+    }
+
+    .answer.correct{
+        background-image: url('../assets/circuit_board_green.png');
     }
 
 

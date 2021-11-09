@@ -60,6 +60,7 @@
         flex-grow: 1;
        flex-basis: 400px;
        min-width: 600px;
+       height: 105%;
     }
 
     

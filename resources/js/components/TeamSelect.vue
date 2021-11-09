@@ -66,6 +66,9 @@
                     nickName: this.nickName
                 }).then(response => {
                     console.log(response);
+                    
+                      localStorage.setItem('playerName', this.nickName);
+                      localStorage.setItem('playerTeam', this.teamSelected)
                                 this.$router.push({ name: 'main.index' })
                 });
 
@@ -142,6 +145,7 @@ form{
     margin: 10px;
     color:white;
     background-color: rgb(32, 32, 46);
+     cursor: pointer;
 }
 
 </style>
