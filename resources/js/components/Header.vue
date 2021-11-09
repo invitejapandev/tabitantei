@@ -52,6 +52,7 @@
    .inventory{
        flex-grow: 1;
        flex-basis: 500px;
+       border-radius: 5px;
    }
 
 </style>

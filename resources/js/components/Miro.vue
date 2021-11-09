@@ -1,28 +1,38 @@
 <template>
     <div class="miro_board">
         <div class="iframeHolder">
-
+            <iframe class="responsive" style="z-index: -1 !important" :src="iframe.src" frameBorder="0" scrolling="no" allowFullScreen></iframe>
         </div>
         
-        <div class="newcard" style=" " >
-            <transition name="fade">
+        <transition name="fade">
+        <div class="newcard" style=" " v-if="show">
                         <img  class="cover" src="../assets/computer.png" @click="hideImage" v-if="show" />
-            </transition>
+           
         </div>
+         </transition>
     </div>
 </template>
 
 <script>
-
+    const realsrc = 'https://miro.com/app/live-embed/o9J_llppKnc=/?embedAutoplay=true&moveToViewport=-1877,-2465,3763,1996';
+    const src2 = 'https://miro.com/app/live-embed/o9J_ltgInS4=/?embedAutoplay=true&moveToViewport=-2638,-351,2934,3605';
+    // <iframe width="768" height="432" src="https://miro.com/app/live-embed/o9J_ltgInS4=/?moveToViewport=-2638,-351,2934,3605" frameBorder="0" scrolling="no" allowFullScreen></iframe>
+    // <iframe width="768" height="432" src="https://miro.com/app/live-embed/o9J_ltgInS4=/?moveToViewport=-2607,-300,2918,3605" frameBorder="0" scrolling="no" allowFullScreen></iframe>
+    // <iframe width="768" height="432" src="https://miro.com/app/live-embed/o9J_ltgInS4=/?moveToViewport=-3318,-689,4377,4668" frameBorder="0" scrolling="no" allowFullScreen></iframe>
     export default{
         name: 'Miro',
         data(){
             return{
-                show: true
+                show: true,
+                iframe:{
+                    src: src2,
+                    style: null,
+                    wrapperStyle: null
+                }
             }
         },
         methods:{
-            hideImage(e){
+            hideImage(){
                 this.show = false;
             }
         }
@@ -30,28 +40,35 @@
 </script>
 
 <style>
+    .responsive{
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+    }
    .miro_board{
         border-radius: 10px;
         background-color: white;
         width: 600px;
-        z-index:100;
         padding:0; 
         margin: 0;
     }
 
     .iframeHolder{
         position: absolute;
-        z-index:100;
         padding:0; 
         margin: 0;
+        width: 40%;
+        height: 89%;
+        z-index: 98;
     }
 
     .newcard{
+        position: relative;
         padding:0 !important;
-        z-index:200;
         height: 100%;
         padding:0;
         margin:0;
+        z-index: 99;
     }
 
     .fade-enter-active, .fade-leave-active {
@@ -67,6 +84,7 @@
         object-fit: cover;
         padding:0;
         margin:0;
+        z-index:100;
     }
 
 </style>
