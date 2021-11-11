@@ -1,5 +1,6 @@
 <template>
-    <a style="color:white; text-decoration: none" @click="onSelect(teamName)" href="#">TEAM {{ teamName }}</a>
+    <a style="
+    color:black !important; text-decoration: none" @click="onSelect(teamName)" href="#">TEAM {{ teamName }}</a>
 </template>
 
 <script>

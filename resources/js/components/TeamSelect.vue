@@ -1,15 +1,20 @@
 <template>
     <div class="teamSelect">
+        
+         <span class="choose_header">CHOOSE&nbsp;&nbsp;YOUR&nbsp;&nbsp;TEAM</span>
         <div class="teamHolder">
             <div :class="[ teamSelected==n ? 'selected' : '', 'teamButton']" :key="n" v-for="n in teamCount" @click="selectTeam(n)">
                 <Team :teamName="n" :selectedId=1 />
             </div>
         </div>
         
-        <form>
-             <input v-model="nickName" autocomplete="off" id="1" type="text" placeholder="Nick Name" size="13" required/>
-             <a class="goButton" @click="submitTeam">GO! </a>
+        <form hidden>
+             <input v-model="nickName" autocomplete="off" id="1" type="text" placeholder="Nick Name" size="13" required hidden/>
+             <a class="goButton" @click="submitTeam" hidden>GO! </a>
         </form>
+        
+         <img class="login-logo" src="../assets/green_logo.png" />
+
     </div>
     
 </template>
@@ -89,35 +94,45 @@
 
 <style>
 
+
+
+
     .teamSelect{
+        position: relative;
         display:flex;
         flex-wrap: wrap;
         flex-direction: column;
         width: 100vw;
         height: 100vh;
         align-content: center;
-        justify-content: center;
     }
 
     .teamHolder{
+        z-index: 2;
         display:flex;
         flex-wrap: wrap;
         align-content: center;
         justify-content: center;
+        row-gap: 5rem;
+        margin-top: 27%;
+        column-gap: 4rem;
     }
     
 .teamButton{
     margin-left: 20px;
-    padding: 1rem;
+    padding: 1.5rem;
+    padding-right: 3rem;
+    padding-left: 3rem;
     font-size: 2rem;
     margin: 10px;
-    background-color: blue;
-     font-family: "Lucida Console", "Courier New", monospace;
+    letter-spacing: 9px;
+    background-color: rgba(255,255,255,0.65);
+    font-family: CA-Geheimagent;
      cursor: pointer;
 }
 
 .teamButton.selected{
-    background-color: green;
+    background-color: rgba(180, 10, 10, 0.65);
 }
 
 </style>
@@ -147,5 +162,27 @@ form{
     background-color: rgb(32, 32, 46);
      cursor: pointer;
 }
+
+    .login-logo{
+    position: absolute;
+    top: 20%;
+    width: 100%;
+    left: 30%;
+    max-width: 708px;
+    z-index: 1;
+}
+
+.choose_header{
+    left: 24%;
+    position: absolute;
+    font-size: 7vw;
+    top:  7%;
+    color: white;
+    font-weight: regular;
+    font-family: CA-Geheimagent;
+    letter-spacing: 7px;
+}
+
+
 
 </style>

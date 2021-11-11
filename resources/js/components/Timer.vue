@@ -1,15 +1,76 @@
 <template>
-    <div class="container">
-            <span class="timeContent">{{ time }}</span>
+    <div @click="start" class="container">
+            <span  class="timeContent">{{ displayedTime }}</span>
     </div>
 </template>
 
 <script>
-
+    
     export default{
         name: 'Timer',
+        data(){
+            return {
+                isRunning: true,
+                currentTime: 1,
+                currentTimer:null,
+                minutes:0,
+		        secondes:0,
+                displayedTime: '0:00:00'
+            }
+        },
+        mounted(){
+            this.start();
+        },
         props:{
-            time: String
+            time: String,
+            timeIsPaused: Boolean,
+        },
+        watch: {
+            timeIsPaused: function(val){
+                console.log('test'+val)
+                if(val === true){
+                    this.isRunning = false;
+                }
+            }
+        },
+        methods:{
+            start () {
+                console.log('test');
+			 if (!this.currentTimer) {
+				  this.currentTimer = setInterval( () => {
+						if (this.isRunning == true) {
+							 this.currentTime++
+                            let newTime = this.currentTime / 60
+                            let newMinute = parseInt(newTime);
+                            if(newMinute<10){
+                                newMinute = "0"+newMinute;
+                            }
+                            let newSecond = Math.round((newTime - newMinute) * 60)
+                            if(newSecond<10){
+                                newSecond = "0"+newSecond;
+                            }
+                            this.displayedTime = String("0:"+newMinute+":"+newSecond)
+						} else {
+							 clearInterval(this.currentTimer)
+							 this.reset()
+						}
+				  }, 1000 )
+			 }
+		 },
+		 stop () {
+			 this.isRunning = false
+			 clearInterval(this.currentTimer)
+			 this.currentTimer = null
+		 },
+		 reset () {
+			  this.stop()
+			//   this.currentTime = 0
+			//   this.secondes = 0
+			//   this.minutes = 0
+		 },
+		 setTime (payload) {
+			 this.currentTime = (payload.minutes * 60 + payload.secondes)
+		 }
         }
     }
 

@@ -1,21 +1,24 @@
 <template>
     <div class="element_holder"  >
-        <div class="elements" @click="showMultiple()"><img class="desk" src="../assets/desk_with_manual.png"  style="width: 100%; height: 100%; border-radius:5px "/></div>
+        <div class="elements" @click="showMultiple()"><img class="desk" src="../assets/desk.png"  style="width: 100%; height: 100%; border-radius:5px "/></div>
         <div class="actions">
-            <input :class="[isCorrect ? 'correct' : '' , 'answer']" type="text" placeholder="Type Here" style="z-index: 1" @input="onInput" maxlength="8"/>
+            <input :class="[isCorrect ? 'correct' : '' , 'answer']" type="text" placeholder="TYPE HERE" style="z-index: 1" @input="onInput" maxlength="8"/>
             <!-- <img src="../assets/circuit_board.png" style="width: 50%; heigth: 50%; position: absolute;"/> -->
         </div>
-        <a href="#" :class="[showLanguageButton ? 'appear' : '', 'float2']" @click="showMultiple()">
+        <div class="language_buttons">
+             <a href="#" :class="[showLanguageButton ? 'appear' : '', 'float2']" @click="showMultiple()">
             <img src="../assets/japan.png" style="width: 60px; height: 60px; 
-	border-radius:70px;
-        object-fit: cover;"/>
-        </a>
+            border-radius:70px;
+                object-fit: cover;"/>
+                </a>
 
-        <a href="#" :class="[showLanguageButton ? 'appear' : '', 'float3']" @click="showMultiple2()">
-            <img src="../assets/english.png" style="width: 100%; height: 100%; 
-	border-radius:70px;
-        object-fit: cover;"/>
-        </a>
+                <a href="#" :class="[showLanguageButton ? 'appear' : '', 'float3']" @click="showMultiple2()">
+                    <img src="../assets/english.png" style="width: 100%; height: 100%; 
+            border-radius:70px;
+                object-fit: cover;"/>
+                </a>
+        </div>
+       
      <vue-easy-lightbox
       scrollDisabled
       escDisabled
@@ -33,6 +36,7 @@
 import VueEasyLightbox from 'vue-easy-lightbox'
 
 var keystrokeSound = new Audio('https://dl.dropboxusercontent.com/s/hjx4xlxyx39uzv7/18660_1464810669.mp3');
+var correctSound = new Audio('https://www.freesoundslibrary.com/wp-content/uploads/2018/03/right-answer-ding-ding-sound-effect.mp3');
             var interval,  newInterval;
 const compImage = '/images/computer.png';
 const cover_jp = '/images/cover_jp.png';
@@ -40,14 +44,14 @@ const page_1_jp = '/images/page_1_jp.png';
 const page_2_jp = '/images/page_2_jp.png';
 const page_8_jp = '/images/page_8_jp.png';
 
-const jp_manual = [page_8_jp, page_2_jp, page_1_jp, cover_jp];
+const jp_manual = [cover_jp, page_1_jp, page_2_jp, page_8_jp];
 
 const cover_en = '/images/cover_en.png';
 const page_1_en = '/images/page_1_en.png';
 const page_2_en = '/images/page_2_en.png';
 const page_8_en = '/images/page_8_en.png';
 
-const en_manual = [page_8_en, page_2_en, page_1_en, cover_en];
+const en_manual = [cover_en, page_1_en, page_2_en, page_8_en];
 
 var typingTimer;
 var doneTypingInterval = 1000;
@@ -64,7 +68,7 @@ export default{
             typing: false,
             timer: null,
             isCorrect: false,
-            correctAnswer: 'jetpogi',
+            correctAnswer: 'premier',
             imgs: '', // Img Url , string or Array of string
             visible: false,
             index: 0, // default: 0,
@@ -77,6 +81,8 @@ export default{
                     console.log(e.target.value);
                     if(e.target.value == this.correctAnswer){
                         this.isCorrect = true;
+                        correctSound.play();
+                        this.$emit('pause-time');
                            this.$swal({
                                 title:'Great! That is the correct answer!',
                                 icon:'success'    
@@ -99,13 +105,14 @@ export default{
         this.showLanguageButton= true;
         this.imgs =jp_manual
 
-        this.index = 3 // index of imgList
+        this.index = 0 // index of imgList
         this.show()
       },
       showMultiple2() {
+        this.showLanguageButton= true;
         this.imgs = en_manual
 
-        this.index = 3 // index of imgList
+        this.index = 0 // index of imgList
         this.show()
       },
       show() {
@@ -127,30 +134,39 @@ export default{
 
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+    .language_buttons{
+        display: flex;
+        position: absolute;
+        overflow: hidden;
+        left:46%;
+        bottom:50px;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+        z-index: 99999999;
+        padding: 0;
+        gap: 10px;
+    }
+
 
     .float2{
-        position:fixed;
         width:60px;
         height:60px;
         border-radius:50px;
         text-align:center;
-        z-index: 99999999;
-        left:40px;
-        bottom:40px;
         visibility: hidden;
+        margin-right: 2px;
     }
 
 
     
       .float3{
-        position:fixed;
         width:60px;
         height:60px;
         border-radius:50px;
         text-align:center;
-        z-index: 99999999;
-        left:110px;
-        bottom:40px;
         visibility: hidden;
     }
 
@@ -170,10 +186,10 @@ export default{
     }
 
     .elements{
-        max-width: 98%;
-        width: auto;
-        max-height: 70%;
+        width: 97%;
+        height: 840px;
         height: auto;
+     cursor: pointer;
     }
 
     .actions{
@@ -189,7 +205,7 @@ export default{
     .answer{
         width: 100%;
         height: 100%;
-        font-size: 4vw;
+        font-size: 5vw;
         background: transparent;
         background-repeat: no-repeat;
         background-position: center;
@@ -200,8 +216,9 @@ export default{
         text-transform:uppercase;
         font-weight: bold;
         padding-left: 27%;
-        padding-top: 0.5%;
+        padding-top: 0.4%;
         background-image: url('../assets/circuit_board_red.png');
+        font-family: 'VT323', monospace;
     }
 
     .answer.correct{

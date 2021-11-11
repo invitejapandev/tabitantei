@@ -60,6 +60,7 @@
         width: 40%;
         height: 89%;
         z-index: 98;
+     cursor: pointer;
     }
 
     .newcard{
@@ -69,6 +70,7 @@
         padding:0;
         margin:0;
         z-index: 99;
+     cursor: pointer;
     }
 
     .fade-enter-active, .fade-leave-active {

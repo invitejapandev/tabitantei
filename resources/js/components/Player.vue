@@ -1,10 +1,20 @@
 <template>
-    <h1>TEAM {{ teamName }} - {{playerName}}</h1>
+    <h1>TEAM {{ playerTeam }} - {{playerNameStored}}</h1>
 </template>
 
 <script>
     export default {
         name: 'Player',
+        mounted(){
+            this.playerNameStored = localStorage.getItem('playerName');
+            this.playerTeam = localStorage.getItem('playerTeam');
+        },
+        data(){
+            return{
+                playerTeam: 0,
+                playerNameStored: 'Jet'
+            }
+        },
         props: {
             playerName: String,
             teamName: String

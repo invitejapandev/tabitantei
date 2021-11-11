@@ -18,9 +18,35 @@
     </body>
 
     <style>
+        @font-face {
+            font-family: "CA-Geheimagent";
+            src: url("fonts/CA-Geheimagent.woff") format('woff');
+        }
+
+        @font-face {
+            font-family: "CA-Geheimagent";
+            src: url("fonts/CA-Geheimagent-Bold.woff") format('woff');
+            font-weight: bold;
+        }
+
+        @font-face {
+            font-family: "CA-Geheimagent";
+            src: url("fonts/CA-Geheimagent-Bold-Italic.woff") format('woff');
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        @font-face {
+            font-family: "CA-Geheimagent";
+            src: url("fonts/CA-Geheimagent-Italic.woff") format('woff');
+            font-style: italic;
+        }
+
+
         body{
             background: url({{ URL::asset('images/green_bg.png') }}) no-repeat center center fixed;
             background-size: cover;
+            font-family: CA-Geheimagent
         }
     </style>
 </html>

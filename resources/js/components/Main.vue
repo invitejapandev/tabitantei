@@ -1,15 +1,16 @@
 <template>
 
     <div class="main">
-        <Header class="header2"/>
+        <Header class="header2" :timePaused="timeisPaused"/>
         <div class="main_body">
             <Miro class="miro_holder"/>
-            <ElementHolder class="main_element_holder" />
+            <ElementHolder @pause-time="pauseTime" class="main_element_holder" />
 
         </div>
         <a href="#" class="float">
             <img src="../assets/chloe_version.png" style="width: 120px; height: 120px;"/>
         </a>
+
     </div>
 </template>
 
@@ -20,10 +21,20 @@
 
     export default{
         name: 'Main',
+        data(){
+            return{
+                timeisPaused:false
+            }
+        },
         components: {
             Header,
             ElementHolder,
             Miro
+        },
+        methods:{
+            pauseTime(){
+                this.timeisPaused = true;
+            }
         }
     }
 </script>
@@ -32,6 +43,7 @@
 
     .main{
         display: flex;
+        position: relative;
         flex-direction: column;
         height: 100%;
         color: white;
@@ -45,6 +57,7 @@
         padding:10px;
         height: 85vh;
     }
+
 
     .header2{
         padding-left:20px;
@@ -71,8 +84,8 @@
 	border-radius:50px;
 	text-align:center;
     z-index: 99999999;
-	bottom:40px;
-	right:40px;
+	bottom:15px;
+	right:15px;
 }
 
 .my-float{

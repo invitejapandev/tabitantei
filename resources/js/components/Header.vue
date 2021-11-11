@@ -2,7 +2,7 @@
     <div class="container">
         <div class="stats">
             <Player class="player" playerName="Knight07" teamName="7" />
-            <Timer class="timer" time="01:06:30" />
+            <Timer :timeIsPaused="timePaused" class="timer" time="01:06:30" />
         </div>
         <Inventory class="inventory" />
     </div>
@@ -19,7 +19,8 @@
             Player,
             Timer,
             Inventory
-        }
+        },
+        props:['timePaused']
     }
 </script>
 
