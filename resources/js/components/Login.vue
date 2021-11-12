@@ -23,9 +23,6 @@
                 }
             }
         },
-        mounted(){
-            
-        },
         beforeCreate(){
             let codeResponse = JSON.parse(localStorage.getItem('codeResponse'));
             if(codeResponse){
@@ -121,7 +118,6 @@
     flex-wrap: wrap;
     align-content: center;
     justify-content: center;
-    /* background-color: white; */ 
     background-size: cover;
     width: 100%;
     height: 100%;
@@ -160,7 +156,6 @@
 }
 
 input{
-    top: 45%;
     font-size: 3rem;
     text-align: center;
     padding: 2rem;
@@ -197,6 +192,14 @@ input::placeholder{
     input::placeholder{
         
     font-size: 20px;
+    }
+
+}
+
+@media only screen and (max-width: 650px) {
+
+    .login_form{
+        top: 33% !important;
     }
 }
 

@@ -29,14 +29,17 @@ class GameController extends Controller
     public function store_player(Request $request){
        
         
+        $playerList = GamePlayer::where('game_event_id', $request->game_event_id)->get();
+        $playerCount = $playerList->count();
+
         $player = new GamePlayer([
             'game_event_id' => $request->game_event_id,
             'teamNumber' => $request->teamNumber,
-            'nickName' => $request->nickName
+            'nickName' => 'Player '.$playerCount
         ]);
-
         
         $player->save();
-        return true;
+
+        return $playerCount;
     }
 }

@@ -30804,7 +30804,6 @@ __webpack_require__.r(__webpack_exports__);
       }
     };
   },
-  mounted: function mounted() {},
   beforeCreate: function beforeCreate() {
     var _this = this;
 
@@ -31060,10 +31059,45 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     selectTeam: function selectTeam(n) {
+      var _this = this;
+
       this.teamSelected = n;
+      this.$swal({
+        title: 'Are you sure want to select Team ' + n + '?',
+        text: "You won't be able to change team after this.",
+        // icon:'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: "Yes, let's Go!"
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          var codeResponse = JSON.parse(localStorage.getItem('codeResponse'));
+
+          if (codeResponse) {
+            axios__WEBPACK_IMPORTED_MODULE_1___default().post('api/game/store_player', {
+              game_event_id: codeResponse.id,
+              teamNumber: _this.teamSelected
+            }).then(function (response) {
+              console.log(response);
+
+              if (response) {
+                localStorage.setItem('playerName', 'Player ' + response['data']);
+                localStorage.setItem('playerTeam', _this.teamSelected);
+
+                _this.$router.push({
+                  name: 'main.index'
+                });
+              } else {
+                alert('something went wrong');
+              }
+            });
+          }
+        }
+      });
     },
     submitTeam: function submitTeam() {
-      var _this = this;
+      var _this2 = this;
 
       if (this.teamSelected == 0) {
         this.$swal({
@@ -31081,19 +31115,23 @@ __webpack_require__.r(__webpack_exports__);
         return;
       }
 
-      axios__WEBPACK_IMPORTED_MODULE_1___default().post('api/game/store_player', {
-        game_event_id: 1,
-        teamNumber: this.teamSelected,
-        nickName: this.nickName
-      }).then(function (response) {
-        console.log(response);
-        localStorage.setItem('playerName', _this.nickName);
-        localStorage.setItem('playerTeam', _this.teamSelected);
+      var codeResponse = JSON.parse(localStorage.getItem('codeResponse'));
 
-        _this.$router.push({
-          name: 'main.index'
+      if (codeResponse) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default().post('api/game/store_player', {
+          game_event_id: codeResponse.id,
+          teamNumber: this.teamSelected,
+          nickName: this.nickName
+        }).then(function (response) {
+          console.log(response);
+          localStorage.setItem('playerName', _this2.nickName);
+          localStorage.setItem('playerTeam', _this2.teamSelected);
+
+          _this2.$router.push({
+            name: 'main.index'
+          });
         });
-      }); // axios.post('api/game/validate_key',{
+      } // axios.post('api/game/validate_key',{
       //     code: this.item.name
       // }).then(response => {
       //     if(response.status == 200 || response.status == 200){
@@ -31102,6 +31140,7 @@ __webpack_require__.r(__webpack_exports__);
       // }).catch( error => {
       //     console.log(error);
       // })
+
 
       console.log(this.nickName);
     }
@@ -31483,7 +31522,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.login_container[data-v-6bdc8b8e]{\r\n    position: relative;\r\n    display: flex;\r\n    flex-wrap: wrap;\r\n    align-content: center;\r\n    justify-content: center;\r\n    /* background-color: white; */ \r\n    background-size: cover;\r\n    width: 100%;\r\n    height: 100%;\n}\n.login-logo[data-v-6bdc8b8e]{\r\n    position: absolute;\r\n    top: 20%;\r\n    width: 100%;\r\n    max-width: 708px;\r\n    z-index: 1;\n}\n.welcome_header[data-v-6bdc8b8e]{\r\n    position: absolute;\r\n    font-size: 7vw;\r\n    top:  7%;\r\n    color: white;\r\n    font-weight: regular;\r\n    font-family: CA-Geheimagent;\r\n    letter-spacing: 10px;\n}\n.login_form[data-v-6bdc8b8e]{\r\n    position: absolute;\r\n    display: flex;\r\n    justify-content: center;\r\n    flex: 1 1 auto;\r\n    flex-grow: 1;\r\n    top: 43%;\r\n    flex-shrink: 1;\r\n    width: 100%;\r\n    z-index: 2;\n}\ninput[data-v-6bdc8b8e]{\r\n    top: 45%;\r\n    font-size: 3rem;\r\n    text-align: center;\r\n    padding: 2rem;\r\n    text-transform: uppercase;\r\n    font-family: CA-Geheimagent;\r\n    background-color: rgba(255,255,255,0.75);\r\n    border: none;\r\n    color:black;\r\n    letter-spacing: 9px;\r\n    width: 40%;\r\n    max-width: 100%;\n}\ninput[data-v-6bdc8b8e]::-moz-placeholder{\r\n    color:black;\n}\ninput[data-v-6bdc8b8e]:-ms-input-placeholder{\r\n    color:black;\n}\ninput[data-v-6bdc8b8e]::placeholder{\r\n    color:black;\n}\n.go_button[data-v-6bdc8b8e]{\r\n    margin-left: 20px;\r\n    padding: 1rem;\r\n    font-size: 5rem;\r\n    font-weight: bold;\n}\r\n\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.login_container[data-v-6bdc8b8e]{\r\n    position: relative;\r\n    display: flex;\r\n    flex-wrap: wrap;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-size: cover;\r\n    width: 100%;\r\n    height: 100%;\n}\n.login-logo[data-v-6bdc8b8e]{\r\n    position: absolute;\r\n    top: 20%;\r\n    width: 100%;\r\n    max-width: 708px;\r\n    z-index: 1;\n}\n.welcome_header[data-v-6bdc8b8e]{\r\n    position: absolute;\r\n    font-size: 7vw;\r\n    top:  7%;\r\n    color: white;\r\n    font-weight: regular;\r\n    font-family: CA-Geheimagent;\r\n    letter-spacing: 10px;\n}\n.login_form[data-v-6bdc8b8e]{\r\n    position: absolute;\r\n    display: flex;\r\n    justify-content: center;\r\n    flex: 1 1 auto;\r\n    flex-grow: 1;\r\n    top: 43%;\r\n    flex-shrink: 1;\r\n    width: 100%;\r\n    z-index: 2;\n}\ninput[data-v-6bdc8b8e]{\r\n    font-size: 3rem;\r\n    text-align: center;\r\n    padding: 2rem;\r\n    text-transform: uppercase;\r\n    font-family: CA-Geheimagent;\r\n    background-color: rgba(255,255,255,0.75);\r\n    border: none;\r\n    color:black;\r\n    letter-spacing: 9px;\r\n    width: 40%;\r\n    max-width: 100%;\n}\ninput[data-v-6bdc8b8e]::-moz-placeholder{\r\n    color:black;\n}\ninput[data-v-6bdc8b8e]:-ms-input-placeholder{\r\n    color:black;\n}\ninput[data-v-6bdc8b8e]::placeholder{\r\n    color:black;\n}\n.go_button[data-v-6bdc8b8e]{\r\n    margin-left: 20px;\r\n    padding: 1rem;\r\n    font-size: 5rem;\r\n    font-weight: bold;\n}\r\n\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -31511,7 +31550,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.swal2-title{\r\n    color: black;\n}\n@media only screen and (max-width: 890px) {\ninput::-moz-placeholder{\r\n        \r\n    font-size: 20px;\n}\ninput:-ms-input-placeholder{\r\n        \r\n    font-size: 20px;\n}\ninput::placeholder{\r\n        \r\n    font-size: 20px;\n}\n}\r\n\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.swal2-title{\r\n    color: black;\n}\n@media only screen and (max-width: 890px) {\ninput::-moz-placeholder{\r\n        \r\n    font-size: 20px;\n}\ninput:-ms-input-placeholder{\r\n        \r\n    font-size: 20px;\n}\ninput::placeholder{\r\n        \r\n    font-size: 20px;\n}\n}\n@media only screen and (max-width: 650px) {\n.login_form{\r\n        top: 33% !important;\n}\n}\r\n\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -31539,7 +31578,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.main{\r\n        display: flex;\r\n        position: relative;\r\n        flex-direction: column;\r\n        height: 100%;\r\n        color: white;\n}\n.main_body{\r\n        display: flex;\r\n        flex-direction: row;\r\n        flex-wrap: wrap;\r\n        padding:10px;\r\n        height: 85vh;\n}\n.header2{\r\n        padding-left:20px;\r\n        min-height: 5vh;\n}\n.main_element_holder{\r\n        flex-grow: 1;\r\n       flex-basis: 700px;\n}\n.miro_holder{\r\n        flex-grow: 1;\r\n       flex-basis: 400px;\r\n       min-width: 600px;\r\n       height: 105%;\n}\n.float{\r\n\tposition:fixed;\r\n\twidth:120px;\r\n\theight:120px;\r\n\tborder-radius:50px;\r\n\ttext-align:center;\r\n    z-index: 99999999;\r\n\tbottom:15px;\r\n\tright:15px;\n}\n.my-float{\r\n\tmargin-top:22px;\n}\r\n\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.main{\r\n        display: flex;\r\n        position: relative;\r\n        flex-direction: column;\r\n        height: 100%;\r\n        color: white;\n}\n.header2{\r\n        padding-left:20px;\r\n        min-height: 5vh;\n}\n.main_body{\r\n        display: flex;\r\n        flex-direction: row;\r\n        flex-wrap: wrap;\r\n        padding:10px;\r\n        height: 85vh;\n}\n.main_element_holder{\r\n       flex-grow: 1;\r\n       flex-basis: 700px;\n}\n.miro_holder{\r\n       flex-grow: 1;\r\n       flex-basis: 400px;\n}\n.float{\r\n\tposition:fixed;\r\n\twidth:120px;\r\n\theight:120px;\r\n\tborder-radius:50px;\r\n\ttext-align:center;\r\n    z-index: 99999999;\r\n\tbottom:15px;\r\n\tright:15px;\n}\n.my-float{\r\n\tmargin-top:22px;\n}\n@media only screen and (max-width: 600px) {\n.main_body{\r\n        padding-top: 100px;\n}\n}\r\n\r\n\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -31567,7 +31606,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.responsive{\r\n        width: 100%;\r\n        height: 100%;\r\n        border-radius: 10px;\n}\n.miro_board{\r\n        border-radius: 10px;\r\n        background-color: white;\r\n        width: 600px;\r\n        padding:0; \r\n        margin: 0;\n}\n.iframeHolder{\r\n        position: absolute;\r\n        padding:0; \r\n        margin: 0;\r\n        width: 40%;\r\n        height: 89%;\r\n        z-index: 98;\r\n     cursor: pointer;\n}\n.newcard{\r\n        position: relative;\r\n        padding:0 !important;\r\n        height: 100%;\r\n        padding:0;\r\n        margin:0;\r\n        z-index: 99;\r\n     cursor: pointer;\n}\n.fade-enter-active, .fade-leave-active {\r\n  transition: opacity 5s;\n}\n.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {\r\n  opacity: 0;\n}\n.cover{\r\n        border-radius: 10px;\r\n        height: 100%; width: 100%; \r\n        -o-object-fit: cover; \r\n           object-fit: cover;\r\n        padding:0;\r\n        margin:0;\r\n        z-index:100;\n}\r\n\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.miro_board{\r\n        display: flex;\r\n        position: relative;\r\n        border-radius: 10px;\r\n        background-color: black;\r\n        width: 600px;\r\n        padding:0; \r\n        margin: 0;\n}\n.iframeHolder{\r\n        position: absolute;\r\n        padding:0; \r\n        width: 100%;\r\n        height: 100%;\r\n        margin: 0;\r\n        z-index: 98;\r\n     cursor: pointer;\n}\n.responsive{\r\n        border-radius: 10px;\r\n        width: 100%;\r\n        height: 100%;\n}\n.newcard{\r\n        position: relative;\r\n        padding:0 !important;\r\n        padding:0;\r\n        margin:0;\r\n        z-index: 99;\r\n     cursor: pointer;\n}\n.fade-enter-active, .fade-leave-active {\r\n  transition: opacity 5s;\n}\n.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {\r\n  opacity: 0;\n}\n.cover{\r\n        border-radius: 10px;\r\n        width: 100%; \r\n        -o-object-fit: cover; \r\n           object-fit: cover;\r\n        padding:0;\r\n        margin:0;\r\n        z-index:100;\n}\r\n\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -31602,10 +31641,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "\nh1[data-v-11281ee8]{\r\n        font
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/TeamSelect.vue?vue&type=style&index=0&lang=css":
-/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/TeamSelect.vue?vue&type=style&index=0&lang=css ***!
-  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/TeamSelect.vue?vue&type=style&index=0&id=61a091e4&scoped=true&lang=css":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/TeamSelect.vue?vue&type=style&index=0&id=61a091e4&scoped=true&lang=css ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! namespace exports */
 /*! export default [provided] [no usage info] [missing usage info prevents renaming] */
 /*! other exports [not provided] [no usage info] */
@@ -31623,7 +31662,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.teamSelect{\r\n        position: relative;\r\n        display:flex;\r\n        flex-wrap: wrap;\r\n        flex-direction: column;\r\n        width: 100vw;\r\n        height: 100vh;\r\n        align-content: center;\n}\n.teamHolder{\r\n        z-index: 2;\r\n        display:flex;\r\n        flex-wrap: wrap;\r\n        align-content: center;\r\n        justify-content: center;\r\n        row-gap: 5rem;\r\n        margin-top: 27%;\r\n        -moz-column-gap: 4rem;\r\n             column-gap: 4rem;\n}\n.teamButton{\r\n    margin-left: 20px;\r\n    padding: 1.5rem;\r\n    padding-right: 3rem;\r\n    padding-left: 3rem;\r\n    font-size: 2rem;\r\n    margin: 10px;\r\n    letter-spacing: 9px;\r\n    background-color: rgba(255,255,255,0.65);\r\n    font-family: CA-Geheimagent;\r\n     cursor: pointer;\n}\n.teamButton.selected{\r\n    background-color: rgba(180, 10, 10, 0.65);\n}\r\n\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.teamSelect[data-v-61a091e4]{\r\n        position: relative;\r\n        display:flex;\r\n        flex-wrap: wrap;\r\n        flex-direction: row;\r\n        align-content: center;\r\n        justify-content: center;\r\n        width: 100%;\r\n        height: 100%;\n}\n.login-logo[data-v-61a091e4]{\r\n        position: absolute;\r\n        top: 20%;\r\n        width: 100%;\r\n        max-width: 708px;\r\n        z-index: 1;\n}\n.choose_header[data-v-61a091e4]{\r\n        position: absolute;\r\n        font-size: 7vw;\r\n        top:  7%;\r\n        color: white;\r\n        font-weight: regular;\r\n        font-family: CA-Geheimagent;\r\n        letter-spacing: 7px;\n}\n.teamHolder[data-v-61a091e4]{\r\n        z-index: 2;\r\n        display:flex;\r\n        flex-wrap: wrap;\r\n        align-content: center;\r\n        justify-content: center;\r\n        row-gap: 5rem;\r\n        -moz-column-gap: 4rem;\r\n             column-gap: 4rem;\n}\n.teamButton[data-v-61a091e4]{\r\n    margin-left: 20px;\r\n    padding: 1.5rem;\r\n    padding-right: 3rem;\r\n    padding-left: 3rem;\r\n    font-size: 2rem;\r\n    margin: 10px;\r\n    letter-spacing: 9px;\r\n    background-color: rgba(255,255,255,0.65);\r\n    font-family: CA-Geheimagent;\r\n     cursor: pointer;\n}\n.teamButton.selected[data-v-61a091e4]{\r\n    background-color: rgba(180, 10, 10, 0.65);\n}\r\n\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -31651,7 +31690,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\ninput[data-v-61a091e4]{\r\n    font-size: 3rem;\r\n    text-align: center;\r\n    padding: 1rem;\r\n    text-transform: uppercase;\r\n    font-weight: bold;\n}\nform[data-v-61a091e4]{   \r\n        margin-top: 20px;\r\n        display:flex;\r\n        align-content: center;\r\n        justify-content: center;\n}\n.goButton[data-v-61a091e4]{\r\n    margin-left: 20px;\r\n    padding: 1rem;\r\n    font-size: 3rem;\r\n    margin: 10px;\r\n    color:white;\r\n    background-color: rgb(32, 32, 46);\r\n     cursor: pointer;\n}\n.login-logo[data-v-61a091e4]{\r\n    position: absolute;\r\n    top: 20%;\r\n    width: 100%;\r\n    left: 30%;\r\n    max-width: 708px;\r\n    z-index: 1;\n}\n.choose_header[data-v-61a091e4]{\r\n    left: 24%;\r\n    position: absolute;\r\n    font-size: 7vw;\r\n    top:  7%;\r\n    color: white;\r\n    font-weight: regular;\r\n    font-family: CA-Geheimagent;\r\n    letter-spacing: 7px;\n}\r\n\r\n\r\n\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\ninput[data-v-61a091e4]{\r\n    font-size: 3rem;\r\n    text-align: center;\r\n    padding: 1rem;\r\n    text-transform: uppercase;\r\n    font-weight: bold;\n}\nform[data-v-61a091e4]{   \r\n        margin-top: 20px;\r\n        display:flex;\r\n        align-content: center;\r\n        justify-content: center;\n}\n.goButton[data-v-61a091e4]{\r\n    margin-left: 20px;\r\n    padding: 1rem;\r\n    font-size: 3rem;\r\n    margin: 10px;\r\n    color:white;\r\n    background-color: rgb(32, 32, 46);\r\n     cursor: pointer;\n}\n@media only screen and (max-width: 1200px) {\n.teamButton[data-v-61a091e4]{\r\n        font-size: 1rem;\n}\n.teamHolder[data-v-61a091e4]{\r\n        z-index: 2;\r\n        display:flex;\r\n        flex-wrap: wrap;\r\n        align-content: center;\r\n        justify-content: center;\r\n        row-gap: 1rem;\r\n        -moz-column-gap: 4rem;\r\n             column-gap: 4rem;\r\n        margin-top: 0%\n}\n}\n@media only screen and (max-width: 600px) {\n.teamButton[data-v-61a091e4]{\r\n        font-size: 1rem;\n}\n.teamHolder[data-v-61a091e4]{\r\n        z-index: 2;\r\n        display:flex;\r\n        flex-wrap: wrap;\r\n        align-content: center;\r\n        justify-content: center;\r\n        row-gap: 1rem;\r\n        -moz-column-gap: 4rem;\r\n             column-gap: 4rem;\r\n        margin-top: -40%\n}\n}\n@media only screen and (max-width: 500px) {\n.teamButton[data-v-61a091e4]{\r\n        margin-left: 10px;\r\n        padding: 1rem;\r\n        padding-right: 1rem;\r\n        padding-left: 1rem;\r\n        font-size: 1rem;\r\n        margin: 5px;\r\n        letter-spacing: 4px;\n}\n.teamHolder[data-v-61a091e4]{\r\n        z-index: 2;\r\n        display:flex;\r\n        flex-wrap: wrap;\r\n        align-content: center;\r\n        justify-content: center;\r\n        row-gap: 1rem;\r\n        -moz-column-gap: 4rem;\r\n             column-gap: 4rem;\r\n        margin-top: -70%\n}\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -32615,10 +32654,10 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
-/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/TeamSelect.vue?vue&type=style&index=0&lang=css":
-/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/TeamSelect.vue?vue&type=style&index=0&lang=css ***!
-  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/TeamSelect.vue?vue&type=style&index=0&id=61a091e4&scoped=true&lang=css":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/TeamSelect.vue?vue&type=style&index=0&id=61a091e4&scoped=true&lang=css ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! namespace exports */
 /*! export default [provided] [no usage info] [missing usage info prevents renaming] */
 /*! other exports [not provided] [no usage info] */
@@ -32632,7 +32671,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_dist_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_TeamSelect_vue_vue_type_style_index_0_lang_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!../../../node_modules/vue-loader/dist/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./TeamSelect.vue?vue&type=style&index=0&lang=css */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/TeamSelect.vue?vue&type=style&index=0&lang=css");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_dist_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_TeamSelect_vue_vue_type_style_index_0_id_61a091e4_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!../../../node_modules/vue-loader/dist/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./TeamSelect.vue?vue&type=style&index=0&id=61a091e4&scoped=true&lang=css */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/TeamSelect.vue?vue&type=style&index=0&id=61a091e4&scoped=true&lang=css");
 
             
 
@@ -32641,11 +32680,11 @@ var options = {};
 options.insert = "head";
 options.singleton = false;
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_dist_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_TeamSelect_vue_vue_type_style_index_0_lang_css__WEBPACK_IMPORTED_MODULE_1__.default, options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_dist_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_TeamSelect_vue_vue_type_style_index_0_id_61a091e4_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_1__.default, options);
 
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_dist_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_TeamSelect_vue_vue_type_style_index_0_lang_css__WEBPACK_IMPORTED_MODULE_1__.default.locals || {});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_dist_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_TeamSelect_vue_vue_type_style_index_0_id_61a091e4_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_1__.default.locals || {});
 
 /***/ }),
 
@@ -33368,7 +33407,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _TeamSelect_vue_vue_type_template_id_61a091e4_scoped_true_bindings_teamCount_data_teamSelected_data_nickName_data_selectTeam_options_submitTeam_options___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TeamSelect.vue?vue&type=template&id=61a091e4&scoped=true&bindings={"teamCount":"data","teamSelected":"data","nickName":"data","selectTeam":"options","submitTeam":"options"} */ "./resources/js/components/TeamSelect.vue?vue&type=template&id=61a091e4&scoped=true&bindings={\"teamCount\":\"data\",\"teamSelected\":\"data\",\"nickName\":\"data\",\"selectTeam\":\"options\",\"submitTeam\":\"options\"}");
 /* harmony import */ var _TeamSelect_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TeamSelect.vue?vue&type=script&lang=js */ "./resources/js/components/TeamSelect.vue?vue&type=script&lang=js");
-/* harmony import */ var _TeamSelect_vue_vue_type_style_index_0_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./TeamSelect.vue?vue&type=style&index=0&lang=css */ "./resources/js/components/TeamSelect.vue?vue&type=style&index=0&lang=css");
+/* harmony import */ var _TeamSelect_vue_vue_type_style_index_0_id_61a091e4_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./TeamSelect.vue?vue&type=style&index=0&id=61a091e4&scoped=true&lang=css */ "./resources/js/components/TeamSelect.vue?vue&type=style&index=0&id=61a091e4&scoped=true&lang=css");
 /* harmony import */ var _TeamSelect_vue_vue_type_style_index_1_id_61a091e4_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./TeamSelect.vue?vue&type=style&index=1&id=61a091e4&scoped=true&lang=css */ "./resources/js/components/TeamSelect.vue?vue&type=style&index=1&id=61a091e4&scoped=true&lang=css");
 
 
@@ -33821,10 +33860,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/TeamSelect.vue?vue&type=style&index=0&lang=css":
-/*!********************************************************************************!*\
-  !*** ./resources/js/components/TeamSelect.vue?vue&type=style&index=0&lang=css ***!
-  \********************************************************************************/
+/***/ "./resources/js/components/TeamSelect.vue?vue&type=style&index=0&id=61a091e4&scoped=true&lang=css":
+/*!********************************************************************************************************!*\
+  !*** ./resources/js/components/TeamSelect.vue?vue&type=style&index=0&id=61a091e4&scoped=true&lang=css ***!
+  \********************************************************************************************************/
 /*! namespace exports */
 /*! exports [not provided] [no usage info] */
 /*! runtime requirements: __webpack_require__, __webpack_require__.r, __webpack_exports__, __webpack_require__.* */
@@ -33832,7 +33871,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_dist_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_TeamSelect_vue_vue_type_style_index_0_lang_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader/dist/cjs.js!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!../../../node_modules/vue-loader/dist/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./TeamSelect.vue?vue&type=style&index=0&lang=css */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/TeamSelect.vue?vue&type=style&index=0&lang=css");
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_dist_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_TeamSelect_vue_vue_type_style_index_0_id_61a091e4_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader/dist/cjs.js!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!../../../node_modules/vue-loader/dist/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./TeamSelect.vue?vue&type=style&index=0&id=61a091e4&scoped=true&lang=css */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/TeamSelect.vue?vue&type=style&index=0&id=61a091e4&scoped=true&lang=css");
 
 
 /***/ }),

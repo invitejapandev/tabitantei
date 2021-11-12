@@ -42,6 +42,39 @@
         methods:{
             selectTeam(n){
                 this.teamSelected = n;
+                
+                this.$swal({
+                        title:'Are you sure want to select Team '+n+'?',
+                        text: "You won't be able to change team after this.",
+                        // icon:'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: "Yes, let's Go!"
+                    }).then((result) =>{
+                       if (result.isConfirmed) {
+                           let codeResponse = JSON.parse(localStorage.getItem('codeResponse'));
+                           
+                           if(codeResponse){
+                                axios.post('api/game/store_player',{
+                                    game_event_id: codeResponse.id,
+                                    teamNumber: this.teamSelected
+                                }).then(response => {
+                                    console.log(response);
+                                    
+                                    if(response){
+                                        localStorage.setItem('playerName', 'Player '+ response['data']);
+                                        localStorage.setItem('playerTeam', this.teamSelected)
+                                        this.$router.push({ name: 'main.index' })
+                                    }
+                                    else{
+                                        alert('something went wrong');
+                                    }
+                                });
+                            }
+                       }
+                    });
+
             },
             submitTeam(){
 
@@ -64,18 +97,21 @@
                     return;
                 }
 
+                let codeResponse = JSON.parse(localStorage.getItem('codeResponse'));
 
-                axios.post('api/game/store_player',{
-                    game_event_id: 1,
-                    teamNumber: this.teamSelected,
-                    nickName: this.nickName
-                }).then(response => {
-                    console.log(response);
-                    
-                      localStorage.setItem('playerName', this.nickName);
-                      localStorage.setItem('playerTeam', this.teamSelected)
-                                this.$router.push({ name: 'main.index' })
-                });
+                if(codeResponse){
+                    axios.post('api/game/store_player',{
+                        game_event_id: codeResponse.id,
+                        teamNumber: this.teamSelected,
+                        nickName: this.nickName
+                    }).then(response => {
+                        console.log(response);
+                        
+                        localStorage.setItem('playerName', this.nickName);
+                        localStorage.setItem('playerTeam', this.teamSelected)
+                                    this.$router.push({ name: 'main.index' })
+                    });
+                }
 
                 // axios.post('api/game/validate_key',{
                 //     code: this.item.name
@@ -92,7 +128,7 @@
     }
 </script>
 
-<style>
+<style scoped>
 
 
 
@@ -101,11 +137,32 @@
         position: relative;
         display:flex;
         flex-wrap: wrap;
-        flex-direction: column;
-        width: 100vw;
-        height: 100vh;
+        flex-direction: row;
         align-content: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
     }
+
+    .login-logo{
+        position: absolute;
+        top: 20%;
+        width: 100%;
+        max-width: 708px;
+        z-index: 1;
+    }
+
+    .choose_header{
+        position: absolute;
+        font-size: 7vw;
+        top:  7%;
+        color: white;
+        font-weight: regular;
+        font-family: CA-Geheimagent;
+        letter-spacing: 7px;
+    }
+
+
 
     .teamHolder{
         z-index: 2;
@@ -114,7 +171,6 @@
         align-content: center;
         justify-content: center;
         row-gap: 5rem;
-        margin-top: 27%;
         column-gap: 4rem;
     }
     
@@ -163,26 +219,67 @@ form{
      cursor: pointer;
 }
 
-    .login-logo{
-    position: absolute;
-    top: 20%;
-    width: 100%;
-    left: 30%;
-    max-width: 708px;
-    z-index: 1;
+
+
+@media only screen and (max-width: 1200px) {
+    .teamButton{
+        font-size: 1rem;
+    }
+
+    
+    .teamHolder{
+        z-index: 2;
+        display:flex;
+        flex-wrap: wrap;
+        align-content: center;
+        justify-content: center;
+        row-gap: 1rem;
+        column-gap: 4rem;
+        margin-top: 0%
+    }
 }
 
-.choose_header{
-    left: 24%;
-    position: absolute;
-    font-size: 7vw;
-    top:  7%;
-    color: white;
-    font-weight: regular;
-    font-family: CA-Geheimagent;
-    letter-spacing: 7px;
+
+@media only screen and (max-width: 600px) {
+    .teamButton{
+        font-size: 1rem;
+    }
+
+    
+    .teamHolder{
+        z-index: 2;
+        display:flex;
+        flex-wrap: wrap;
+        align-content: center;
+        justify-content: center;
+        row-gap: 1rem;
+        column-gap: 4rem;
+        margin-top: -40%
+    }
 }
 
 
 
+@media only screen and (max-width: 500px) {
+    .teamButton{
+        margin-left: 10px;
+        padding: 1rem;
+        padding-right: 1rem;
+        padding-left: 1rem;
+        font-size: 1rem;
+        margin: 5px;
+        letter-spacing: 4px;
+    }
+
+    .teamHolder{
+        z-index: 2;
+        display:flex;
+        flex-wrap: wrap;
+        align-content: center;
+        justify-content: center;
+        row-gap: 1rem;
+        column-gap: 4rem;
+        margin-top: -70%
+    }
+}
 </style>

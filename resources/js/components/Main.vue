@@ -5,7 +5,6 @@
         <div class="main_body">
             <Miro class="miro_holder"/>
             <ElementHolder @pause-time="pauseTime" class="main_element_holder" />
-
         </div>
         <a href="#" class="float">
             <img src="../assets/chloe_version.png" style="width: 120px; height: 120px;"/>
@@ -50,6 +49,12 @@
     }
 
 
+    .header2{
+        padding-left:20px;
+        min-height: 5vh;
+    }
+
+
     .main_body{
         display: flex;
         flex-direction: row;
@@ -59,21 +64,14 @@
     }
 
 
-    .header2{
-        padding-left:20px;
-        min-height: 5vh;
-    }
-
     .main_element_holder{
-        flex-grow: 1;
+       flex-grow: 1;
        flex-basis: 700px;
     }
 
     .miro_holder{
-        flex-grow: 1;
+       flex-grow: 1;
        flex-basis: 400px;
-       min-width: 600px;
-       height: 105%;
     }
 
     
@@ -91,5 +89,13 @@
 .my-float{
 	margin-top:22px;
 }
+
+@media only screen and (max-width: 600px) {
+
+    .main_body{
+        padding-top: 100px;
+    }
+}
+
 
 </style>

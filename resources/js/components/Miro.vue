@@ -40,14 +40,11 @@
 </script>
 
 <style>
-    .responsive{
-        width: 100%;
-        height: 100%;
-        border-radius: 10px;
-    }
    .miro_board{
+        display: flex;
+        position: relative;
         border-radius: 10px;
-        background-color: white;
+        background-color: black;
         width: 600px;
         padding:0; 
         margin: 0;
@@ -56,17 +53,22 @@
     .iframeHolder{
         position: absolute;
         padding:0; 
+        width: 100%;
+        height: 100%;
         margin: 0;
-        width: 40%;
-        height: 89%;
         z-index: 98;
      cursor: pointer;
     }
 
+    .responsive{
+        border-radius: 10px;
+        width: 100%;
+        height: 100%;
+    }
+    
     .newcard{
         position: relative;
         padding:0 !important;
-        height: 100%;
         padding:0;
         margin:0;
         z-index: 99;
@@ -82,7 +84,7 @@
 
     .cover{
         border-radius: 10px;
-        height: 100%; width: 100%; 
+        width: 100%; 
         object-fit: cover;
         padding:0;
         margin:0;
