@@ -1,13 +1,33 @@
 <template>
-    <div class="element_holder"  >
-        <div class="elements" @click="showMultiple()"><img class="desk" src="../assets/desk.png"  style="width: 100%; height: 100%; border-radius:5px "/></div>
-        <div class="actions">
-            <input :class="[isCorrect ? 'correct' : '' , 'answer']" type="text" placeholder="TYPE HERE" style="z-index: 1" @input="onInput" maxlength="8"/>
-            <!-- <img src="../assets/circuit_board.png" style="width: 50%; heigth: 50%; position: absolute;"/> -->
+<!-- <div></div> -->
+    <div class="right_panel"  >
+        <div class="element_holder">
+            <div class="manual_div" @click="showMultiple()">
+                <img class="desk" src="../assets/desk.png"  />
+            </div>
+            <div class="actions2">
+                <input :class="[isCorrect ? 'correct' : '' , 'answer']" type="text" placeholder="TYPE HERE" style="z-index: 1" @input="onInput" maxlength="8"/>
+        
+            </div>
         </div>
-        <div class="language_buttons">
-             <a href="#" :class="[showLanguageButton ? 'appear' : '', 'float2']" @click="showMultiple()">
-            <img src="../assets/japan.png" style="width: 60px; height: 60px; 
+       
+       
+       <div class="btnCard"></div>
+     <vue-easy-lightbox
+      scrollDisabled
+      moveDisabled
+      :visible="visible"
+      :imgs="imgs"
+      :index="index"
+      @hide="handleHide"
+    ></vue-easy-lightbox>
+
+
+    </div>
+
+     <div class="language_buttons">
+             <a href="#" :class="[showLanguageButton ? 'appear' : '', 'float3']" @click="showMultiple()">
+            <img src="../assets/japan.png" style="width: 100%; height: 100%; 
             border-radius:70px;
                 object-fit: cover;"/>
                 </a>
@@ -18,17 +38,6 @@
                 object-fit: cover;"/>
                 </a>
         </div>
-       
-     <vue-easy-lightbox
-      scrollDisabled
-      escDisabled
-      moveDisabled
-      :visible="visible"
-      :imgs="imgs"
-      :index="index"
-      @hide="handleHide"
-    ></vue-easy-lightbox>
-    </div>
 </template>
 
 <script>
@@ -134,40 +143,101 @@ export default{
 
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+    .right_panel{
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 50vw;
+    }
+
+    .element_holder{
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        height: 100%;
+        width: 100%;
+    }
+
+    
+    .manual_div{
+        display: flex;
+        position: relative;
+        cursor: pointer;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 40vh;
+        flex-grow: 1;
+        /* border-style: solid; */
+    }
+    
+    .desk{
+        border-radius: 10px;
+        width: 95%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+
+    .actions2{
+        position: relative;
+        display: flex;
+        width: 95%;
+        flex-grow: 1;
+    }
+
+    .answer{
+        font-size: 3vw;
+        width: 100%;
+        background: transparent;
+        background-size: 100%;
+        background-repeat: no-repeat;
+        background-position: center;
+        border:none;
+        outline: none;
+        color: greenyellow;
+        text-transform:uppercase;
+        font-weight: bold;
+        padding-left: 26.5%;
+        background-image: url('../assets/circuit_board_red.png');
+        font-family: 'VT323', monospace;
+    }
+
+    .answer.correct{
+        background-image: url('../assets/circuit_board_green.png');
+    }
+
+
 
     .language_buttons{
         display: flex;
-        position: absolute;
+        position: fixed;
         overflow: hidden;
-        left:46%;
-        bottom:50px;
-    flex-wrap: wrap;
-    align-content: center;
-    justify-content: center;
+        left: 50%;
+        transform: translate(-50%);
+        bottom: 46px;
+        flex-wrap: wrap;
         z-index: 99999999;
         padding: 0;
         gap: 10px;
     }
 
 
-    .float2{
-        width:60px;
-        height:60px;
+
+    
+      .float3{
+        max-height: 40px;
+        max-width: 40px;
+        width:auto;
+        height:auto;
+        object-fit: cover;
         border-radius:50px;
         text-align:center;
         visibility: hidden;
         margin-right: 2px;
-    }
-
-
-    
-      .float3{
-        width:60px;
-        height:60px;
-        border-radius:50px;
-        text-align:center;
-        visibility: hidden;
     }
 
 
@@ -178,52 +248,36 @@ export default{
 
 
 
-    .element_holder{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+  
+     @media only screen and (max-width: 1024px) {
+         .actions2{
+                width: 50vw;
+         }
     }
 
-    .elements{
-        width: 97%;
-        height: 840px;
-        height: auto;
-     cursor: pointer;
+
+
+/* 
+     @media only screen and (max-width: 1921px) {
+         .manual_div{
+             height: 70%;
+         }
     }
 
-    .actions{
-        display: flex;
-        width: 100%;
-        height: 30%;
-        margin-bottom: 20px;
-        margin-top: 10px;
-        align-items: center;
-        justify-content: center;
+
+
+
+
+    @media only screen and (max-width: 1600px) {
+         .manual_div{
+             height: 80%;
+         }
     }
 
-    .answer{
-        width: 100%;
-        height: 100%;
-        font-size: 5vw;
-        background: transparent;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: 100%;
-        border:none;
-        outline: none;
-        color: greenyellow;
-        text-transform:uppercase;
-        font-weight: bold;
-        padding-left: 27%;
-        padding-top: 0.4%;
-        background-image: url('../assets/circuit_board_red.png');
-        font-family: 'VT323', monospace;
-    }
-
-    .answer.correct{
-        background-image: url('../assets/circuit_board_green.png');
-    }
-
+     @media only screen and (max-width: 1400px) {
+         .manual_div{
+             height: 70%;
+         }
+    } */
 
 </style>

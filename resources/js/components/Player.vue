@@ -1,5 +1,7 @@
 <template>
-    <h1>TEAM {{ playerTeam }} - {{playerNameStored}}</h1>
+    <div class="playerTeamName">
+        <h1>TEAM {{ playerTeam }} - {{playerNameStored}}</h1>
+    </div>
 </template>
 
 <script>
@@ -23,6 +25,12 @@
 </script>
 
 <style scoped>
+    .playerTeamName{
+        display: flex;
+        justify-content: center;
+        align-content: center;
+    }
+
     h1{
         font-size: 3rem;    
        font-weight: bolder;

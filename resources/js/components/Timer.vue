@@ -80,7 +80,7 @@
 
     .container{
         align-content: center;
-        justify-content: start;
+        /* justify-content: center; */
     }
 
     .timeContent{

@@ -4,7 +4,7 @@
             <Player class="player" playerName="Knight07" teamName="7" />
             <Timer :timeIsPaused="timePaused" class="timer" time="01:06:30" />
         </div>
-        <Inventory class="inventory" />
+        <Inventory class="inventory_holder" />
     </div>
 </template>
 
@@ -27,33 +27,34 @@
 <style>
    .container{
        display: flex;
+       flex-direction: row;
+       align-content: baseline;
        flex-wrap: wrap;
-       align-content: start;
-       justify-content: start;
    }
    
    .stats{
        display:flex;
-       flex-direction: row;
        flex-wrap: wrap;
-       justify-content: start;
-       align-content: start;
+       justify-content: space-around;
+       /* align-content: center; */
+       /* padding-right: 30px; */
+       flex-grow: 1;
    }
 
+    
+   .inventory_holder{
+       border-radius: 5px;
+       flex-grow: 10;
+       width: 700px;
+       height: 69.31px;
+   }
+
+/* 
    .player{
        padding-right: 30px;
-   }
-
-   .timer{
-       flex-basis: 100px;
-       flex-grow: 4;
-   }
+   } */
 
 
-   .inventory{
-       flex-grow: 1;
-       flex-basis: 500px;
-       border-radius: 5px;
-   }
+
 
 </style>

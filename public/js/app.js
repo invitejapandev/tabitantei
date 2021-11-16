@@ -31406,11 +31406,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
-___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=VT323&display=swap);"]);
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()(_assets_circuit_board_red_png__WEBPACK_IMPORTED_MODULE_2__.default);
 var ___CSS_LOADER_URL_REPLACEMENT_1___ = _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()(_assets_circuit_board_green_png__WEBPACK_IMPORTED_MODULE_3__.default);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.language_buttons{\r\n        display: flex;\r\n        position: absolute;\r\n        overflow: hidden;\r\n        left:46%;\r\n        bottom:50px;\r\n    flex-wrap: wrap;\r\n    align-content: center;\r\n    justify-content: center;\r\n        z-index: 99999999;\r\n        padding: 0;\r\n        gap: 10px;\n}\n.float2{\r\n        width:60px;\r\n        height:60px;\r\n        border-radius:50px;\r\n        text-align:center;\r\n        visibility: hidden;\r\n        margin-right: 2px;\n}\n.float3{\r\n        width:60px;\r\n        height:60px;\r\n        border-radius:50px;\r\n        text-align:center;\r\n        visibility: hidden;\n}\n.appear{\r\n        visibility: visible;\n}\n.element_holder{\r\n        display: flex;\r\n        flex-direction: column;\r\n        align-items: center;\r\n        justify-content: center;\n}\n.elements{\r\n        width: 97%;\r\n        height: 840px;\r\n        height: auto;\r\n     cursor: pointer;\n}\n.actions{\r\n        display: flex;\r\n        width: 100%;\r\n        height: 30%;\r\n        margin-bottom: 20px;\r\n        margin-top: 10px;\r\n        align-items: center;\r\n        justify-content: center;\n}\n.answer{\r\n        width: 100%;\r\n        height: 100%;\r\n        font-size: 5vw;\r\n        background: transparent;\r\n        background-repeat: no-repeat;\r\n        background-position: center;\r\n        background-size: 100%;\r\n        border:none;\r\n        outline: none;\r\n        color: greenyellow;\r\n        text-transform:uppercase;\r\n        font-weight: bold;\r\n        padding-left: 27%;\r\n        padding-top: 0.4%;\r\n        background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\r\n        font-family: 'VT323', monospace;\n}\n.answer.correct{\r\n        background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_1___ + ");\n}\r\n\r\n\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.right_panel{\r\n        position: relative;\r\n        display: flex;\r\n        flex-wrap: wrap;\r\n        justify-content: center;\r\n        width: 50vw;\n}\n.element_holder{\r\n        position: relative;\r\n        display: flex;\r\n        flex-direction: column;\r\n        flex-wrap: wrap;\r\n        height: 100%;\r\n        width: 100%;\n}\n.manual_div{\r\n        display: flex;\r\n        position: relative;\r\n        cursor: pointer;\r\n        justify-content: center;\r\n        align-items: center;\r\n        width: 100%;\r\n        height: 40vh;\r\n        flex-grow: 1;\r\n        /* border-style: solid; */\n}\n.desk{\r\n        border-radius: 10px;\r\n        width: 95%;\r\n        height: 100%;\r\n        -o-object-fit: cover;\r\n           object-fit: cover;\n}\n.actions2{\r\n        position: relative;\r\n        display: flex;\r\n        width: 95%;\r\n        flex-grow: 1;\n}\n.answer{\r\n        font-size: 3vw;\r\n        width: 100%;\r\n        background: transparent;\r\n        background-size: 100%;\r\n        background-repeat: no-repeat;\r\n        background-position: center;\r\n        border:none;\r\n        outline: none;\r\n        color: greenyellow;\r\n        text-transform:uppercase;\r\n        font-weight: bold;\r\n        padding-left: 26.5%;\r\n        background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\r\n        font-family: 'VT323', monospace;\n}\n.answer.correct{\r\n        background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_1___ + ");\n}\n.language_buttons{\r\n        display: flex;\r\n        position: fixed;\r\n        overflow: hidden;\r\n        left: 50%;\r\n        transform: translate(-50%);\r\n        bottom: 46px;\r\n        flex-wrap: wrap;\r\n        z-index: 99999999;\r\n        padding: 0;\r\n        gap: 10px;\n}\n.float3{\r\n        max-height: 40px;\r\n        max-width: 40px;\r\n        width:auto;\r\n        height:auto;\r\n        -o-object-fit: cover;\r\n           object-fit: cover;\r\n        border-radius:50px;\r\n        text-align:center;\r\n        visibility: hidden;\r\n        margin-right: 2px;\n}\n.appear{\r\n        visibility: visible;\n}\n@media only screen and (max-width: 1024px) {\n.actions2{\r\n                width: 50vw;\n}\n}\r\n\r\n\r\n\r\n/* \r\n     @media only screen and (max-width: 1921px) {\r\n         .manual_div{\r\n             height: 70%;\r\n         }\r\n    }\r\n\r\n\r\n\r\n\r\n\r\n    @media only screen and (max-width: 1600px) {\r\n         .manual_div{\r\n             height: 80%;\r\n         }\r\n    }\r\n\r\n     @media only screen and (max-width: 1400px) {\r\n         .manual_div{\r\n             height: 70%;\r\n         }\r\n    } */\r\n\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -31466,7 +31465,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.container{\r\n       display: flex;\r\n       flex-wrap: wrap;\r\n       align-content: start;\r\n       justify-content: start;\n}\n.stats{\r\n       display:flex;\r\n       flex-direction: row;\r\n       flex-wrap: wrap;\r\n       justify-content: start;\r\n       align-content: start;\n}\n.player{\r\n       padding-right: 30px;\n}\n.timer{\r\n       flex-basis: 100px;\r\n       flex-grow: 4;\n}\n.inventory{\r\n       flex-grow: 1;\r\n       flex-basis: 500px;\r\n       border-radius: 5px;\n}\r\n\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.container{\r\n       display: flex;\r\n       flex-direction: row;\r\n       align-content: baseline;\r\n       flex-wrap: wrap;\n}\n.stats{\r\n       display:flex;\r\n       flex-wrap: wrap;\r\n       justify-content: space-around;\r\n       /* align-content: center; */\r\n       /* padding-right: 30px; */\r\n       flex-grow: 1;\n}\n.inventory_holder{\r\n       border-radius: 5px;\r\n       flex-grow: 10;\r\n       width: 700px;\r\n       height: 69.31px;\n}\r\n\r\n/* \r\n   .player{\r\n       padding-right: 30px;\r\n   } */\r\n\r\n\r\n\r\n\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -31578,7 +31577,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.main{\r\n        display: flex;\r\n        position: relative;\r\n        flex-direction: column;\r\n        height: 100%;\r\n        color: white;\n}\n.header2{\r\n        padding-left:20px;\r\n        min-height: 5vh;\n}\n.main_body{\r\n        display: flex;\r\n        flex-direction: row;\r\n        flex-wrap: wrap;\r\n        padding:10px;\r\n        height: 85vh;\n}\n.main_element_holder{\r\n       flex-grow: 1;\r\n       flex-basis: 700px;\n}\n.miro_holder{\r\n       flex-grow: 1;\r\n       flex-basis: 400px;\n}\n.float{\r\n\tposition:fixed;\r\n\twidth:120px;\r\n\theight:120px;\r\n\tborder-radius:50px;\r\n\ttext-align:center;\r\n    z-index: 99999999;\r\n\tbottom:15px;\r\n\tright:15px;\n}\n.my-float{\r\n\tmargin-top:22px;\n}\n@media only screen and (max-width: 600px) {\n.main_body{\r\n        padding-top: 100px;\n}\n}\r\n\r\n\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.main{\r\n        display: flex;\r\n        position: relative;\r\n        flex-direction: column;\r\n        height: 100%;\r\n        color: white;\n}\n.header2{\r\n        display: flex;\r\n        justify-content: center;\r\n        width: 100vw;\n}\n.main_body{\r\n        display: flex;\r\n        position: relative;\r\n        flex-direction: row;\r\n        justify-content: center;\r\n        flex-wrap: wrap;\r\n        height: 85%;\r\n        width: 100%;\n}\n.miro_holder{\r\n        position: relative;\r\n        flex-grow: 1;\r\n        /* background-color: white; */\n}\n.main_element_holder{\r\n        position: relative;\r\n        flex-grow: 1;\n}\n.float{\r\n\tposition:fixed;\r\n\twidth:120px;\r\n\theight:120px;\r\n\tborder-radius:50px;\r\n\ttext-align:center;\r\n    z-index: 99999999;\r\n\tbottom:15px;\r\n\tright:15px;\n}\n.my-float{\r\n\tmargin-top:22px;\n}\n@media only screen and (max-width: 1500px) {\n.miro_holder{\r\n        height: 95%;\n}\n}\r\n\r\n\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -31606,7 +31605,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.miro_board{\r\n        display: flex;\r\n        position: relative;\r\n        border-radius: 10px;\r\n        background-color: black;\r\n        width: 600px;\r\n        padding:0; \r\n        margin: 0;\n}\n.iframeHolder{\r\n        position: absolute;\r\n        padding:0; \r\n        width: 100%;\r\n        height: 100%;\r\n        margin: 0;\r\n        z-index: 98;\r\n     cursor: pointer;\n}\n.responsive{\r\n        border-radius: 10px;\r\n        width: 100%;\r\n        height: 100%;\n}\n.newcard{\r\n        position: relative;\r\n        padding:0 !important;\r\n        padding:0;\r\n        margin:0;\r\n        z-index: 99;\r\n     cursor: pointer;\n}\n.fade-enter-active, .fade-leave-active {\r\n  transition: opacity 5s;\n}\n.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {\r\n  opacity: 0;\n}\n.cover{\r\n        border-radius: 10px;\r\n        width: 100%; \r\n        -o-object-fit: cover; \r\n           object-fit: cover;\r\n        padding:0;\r\n        margin:0;\r\n        z-index:100;\n}\r\n\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.miro_board{\r\n        display: flex;\r\n        flex-wrap: wrap;\r\n        position: relative;\r\n        border-radius: 11px;\r\n        justify-content: end;\n}\n.iframeHolder{\r\n        position: absolute;\r\n        padding:0; \r\n        margin: 0;\r\n        z-index: 98;\r\n        cursor: pointer;\r\n        /* background-color: pink; */\r\n        width: 98%;\r\n        height: 100%;\n}\n.responsive{\r\n        border-radius: 10px;\r\n        width: 100%;\r\n        height: 100%;\n}\n.cover_image{\r\n        position: absolute;\r\n        width: 100%;\r\n        height: 100%;\r\n        z-index:100;\r\n        padding:0; \r\n        margin: 0;\r\n        border-radius: 10px;\r\n        -o-object-fit: cover;\r\n           object-fit: cover;\n}\n.newcard{\r\n        /* position: relative; */\r\n        /* background-color: pink; */\r\n        display: flex;\r\n        position: relative;\r\n        width: 98%;\r\n        height: 100%;\r\n        z-index: 99;\r\n        justify-content: center;\r\n        cursor: pointer;\n}\n.fade-enter-active, .fade-leave-active {\r\n        transition: opacity 5s;\n}\n.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {\r\n        opacity: 0;\n}\r\n\r\n\r\n\r\n/* \r\n   @media only screen and (max-width: 1024px) {\r\n\r\n        .cover_image{\r\n            height: 80vh;\r\n        }\r\n        \r\n        .iframeHolder{\r\n            height: 80vh;\r\n        }\r\n    }\r\n\r\n     @media only screen and (max-width: 800px) {\r\n\r\n        .miro_board{\r\n            justify-content: center;\r\n        }\r\n\r\n        .cover_image{\r\n            height: 40vh;\r\n            width: 50vh;\r\n        }\r\n        \r\n        .iframeHolder{\r\n            height: 40vh;\r\n            width: 50vh;\r\n        }\r\n\r\n    } */\r\n\r\n\r\n\r\n \r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -31634,7 +31633,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\nh1[data-v-11281ee8]{\r\n        font-size: 3rem;    \r\n       font-weight: bolder;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.playerTeamName[data-v-11281ee8]{\r\n        display: flex;\r\n        justify-content: center;\r\n        align-content: center;\n}\nh1[data-v-11281ee8]{\r\n        font-size: 3rem;    \r\n       font-weight: bolder;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -31718,7 +31717,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.container[data-v-54f9552c]{\r\n        align-content: center;\r\n        justify-content: start;\n}\n.timeContent[data-v-54f9552c]{\r\n        background-color: white;\r\n        color: black;\r\n        font-weight: bold !important;\r\n        font-size: 60px;\r\n        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);\r\n        background-color: white;\r\n        color: black;\r\n        margin:0;\r\n        padding-left: 30px;\r\n        padding-right: 30px;\r\n        padding-top: -5px;\r\n       border-radius: 5px;\n}\r\n\r\n\r\n    /* .container:hover {\r\n        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);\r\n    } */\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.container[data-v-54f9552c]{\r\n        align-content: center;\r\n        /* justify-content: center; */\n}\n.timeContent[data-v-54f9552c]{\r\n        background-color: white;\r\n        color: black;\r\n        font-weight: bold !important;\r\n        font-size: 60px;\r\n        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);\r\n        background-color: white;\r\n        color: black;\r\n        margin:0;\r\n        padding-left: 30px;\r\n        padding-right: 30px;\r\n        padding-top: -5px;\r\n       border-radius: 5px;\n}\r\n\r\n\r\n    /* .container:hover {\r\n        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);\r\n    } */\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -34199,19 +34198,20 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const _hoisted_1 = { class: "element_holder" }
-const _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
+const _hoisted_1 = { class: "right_panel" }
+const _hoisted_2 = { class: "element_holder" }
+const _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
   class: "desk",
-  src: _assets_desk_png__WEBPACK_IMPORTED_MODULE_1__.default,
-  style: {"width":"100%","height":"100%","border-radius":"5px"}
+  src: _assets_desk_png__WEBPACK_IMPORTED_MODULE_1__.default
 }, null, -1 /* HOISTED */)
-const _hoisted_3 = { class: "actions" }
-const _hoisted_4 = { class: "language_buttons" }
-const _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
+const _hoisted_4 = { class: "actions2" }
+const _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", { class: "btnCard" }, null, -1 /* HOISTED */)
+const _hoisted_6 = { class: "language_buttons" }
+const _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
   src: _assets_japan_png__WEBPACK_IMPORTED_MODULE_2__.default,
-  style: {"width":"60px","height":"60px","border-radius":"70px","object-fit":"cover"}
+  style: {"width":"100%","height":"100%","border-radius":"70px","object-fit":"cover"}
 }, null, -1 /* HOISTED */)
-const _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
+const _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
   src: _assets_english_png__WEBPACK_IMPORTED_MODULE_3__.default,
   style: {"width":"100%","height":"100%","border-radius":"70px","object-fit":"cover"}
 }, null, -1 /* HOISTED */)
@@ -34219,50 +34219,54 @@ const _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_vue_easy_lightbox = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("vue-easy-lightbox")
 
-  return ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [
-    (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-      class: "elements",
-      onClick: _cache[1] || (_cache[1] = $event => ($options.showMultiple()))
-    }, [
-      _hoisted_2
+  return ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [
+    (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div></div> "),
+    (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_1, [
+      (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [
+        (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+          class: "manual_div",
+          onClick: _cache[1] || (_cache[1] = $event => ($options.showMultiple()))
+        }, [
+          _hoisted_3
+        ]),
+        (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_4, [
+          (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+            class: [$data.isCorrect ? 'correct' : '' , 'answer'],
+            type: "text",
+            placeholder: "TYPE HERE",
+            style: {"z-index":"1"},
+            onInput: _cache[2] || (_cache[2] = (...args) => ($options.onInput(...args))),
+            maxlength: "8"
+          }, null, 34 /* CLASS, HYDRATE_EVENTS */)
+        ])
+      ]),
+      _hoisted_5,
+      (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vue_easy_lightbox, {
+        scrollDisabled: "",
+        moveDisabled: "",
+        visible: $data.visible,
+        imgs: $data.imgs,
+        index: $data.index,
+        onHide: $options.handleHide
+      }, null, 8 /* PROPS */, ["visible", "imgs", "index", "onHide"])
     ]),
-    (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [
-      (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-        class: [$data.isCorrect ? 'correct' : '' , 'answer'],
-        type: "text",
-        placeholder: "TYPE HERE",
-        style: {"z-index":"1"},
-        onInput: _cache[2] || (_cache[2] = (...args) => ($options.onInput(...args))),
-        maxlength: "8"
-      }, null, 34 /* CLASS, HYDRATE_EVENTS */),
-      (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <img src=\"../assets/circuit_board.png\" style=\"width: 50%; heigth: 50%; position: absolute;\"/> ")
-    ]),
-    (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_4, [
+    (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_6, [
       (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("a", {
         href: "#",
-        class: [$data.showLanguageButton ? 'appear' : '', 'float2'],
+        class: [$data.showLanguageButton ? 'appear' : '', 'float3'],
         onClick: _cache[3] || (_cache[3] = $event => ($options.showMultiple()))
       }, [
-        _hoisted_5
+        _hoisted_7
       ], 2 /* CLASS */),
       (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("a", {
         href: "#",
         class: [$data.showLanguageButton ? 'appear' : '', 'float3'],
         onClick: _cache[4] || (_cache[4] = $event => ($options.showMultiple2()))
       }, [
-        _hoisted_6
+        _hoisted_8
       ], 2 /* CLASS */)
-    ]),
-    (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vue_easy_lightbox, {
-      scrollDisabled: "",
-      escDisabled: "",
-      moveDisabled: "",
-      visible: $data.visible,
-      imgs: $data.imgs,
-      index: $data.index,
-      onHide: $options.handleHide
-    }, null, 8 /* PROPS */, ["visible", "imgs", "index", "onHide"])
-  ]))
+    ])
+  ], 64 /* STABLE_FRAGMENT */))
 }
 
 /***/ }),
@@ -34334,7 +34338,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         time: "01:06:30"
       }, null, 8 /* PROPS */, ["timeIsPaused"])
     ]),
-    (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Inventory, { class: "inventory" })
+    (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Inventory, { class: "inventory_holder" })
   ]))
 }
 
@@ -34364,10 +34368,8 @@ const _hoisted_1 = { class: "inventoryContainer" }
 ;(0,vue__WEBPACK_IMPORTED_MODULE_0__.popScopeId)()
 
 const render = /*#__PURE__*/_withId(function render(_ctx, _cache, $props, $setup, $data, $options) {
-  const _component_Item = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Item")
-
   return ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [
-    (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Item)
+    (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <Item /> ")
   ]))
 })
 
@@ -34540,8 +34542,7 @@ const _hoisted_1 = { class: "miro_board" }
 const _hoisted_2 = { class: "iframeHolder" }
 const _hoisted_3 = {
   key: 0,
-  class: "newcard",
-  style: {}
+  class: "newcard"
 }
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -34563,7 +34564,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
               ($data.show)
                 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("img", {
                     key: 0,
-                    class: "cover",
+                    class: "cover_image",
                     src: _assets_computer_png__WEBPACK_IMPORTED_MODULE_1__.default,
                     onClick: _cache[1] || (_cache[1] = (...args) => ($options.hideImage(...args)))
                   }))
@@ -34597,8 +34598,14 @@ __webpack_require__.r(__webpack_exports__);
 
 const _withId = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.withScopeId)("data-v-11281ee8")
 
+;(0,vue__WEBPACK_IMPORTED_MODULE_0__.pushScopeId)("data-v-11281ee8")
+const _hoisted_1 = { class: "playerTeamName" }
+;(0,vue__WEBPACK_IMPORTED_MODULE_0__.popScopeId)()
+
 const render = /*#__PURE__*/_withId(function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("h1", null, "TEAM " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.playerTeam) + " - " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.playerNameStored), 1 /* TEXT */))
+  return ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [
+    (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h1", null, "TEAM " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.playerTeam) + " - " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.playerNameStored), 1 /* TEXT */)
+  ]))
 })
 
 /***/ }),

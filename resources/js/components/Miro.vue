@@ -5,10 +5,10 @@
         </div>
         
         <transition name="fade">
-        <div class="newcard" style=" " v-if="show">
-                        <img  class="cover" src="../assets/computer.png" @click="hideImage" v-if="show" />
-           
-        </div>
+            <div class="newcard"  v-if="show">
+                            <img class="cover_image"  src="../assets/computer.png" @click="hideImage" v-if="show" />
+            
+            </div>
          </transition>
     </div>
 </template>
@@ -42,22 +42,22 @@
 <style>
    .miro_board{
         display: flex;
+        flex-wrap: wrap;
         position: relative;
-        border-radius: 10px;
-        background-color: black;
-        width: 600px;
-        padding:0; 
-        margin: 0;
+        border-radius: 11px;
+        justify-content: end;
     }
 
     .iframeHolder{
         position: absolute;
         padding:0; 
-        width: 100%;
-        height: 100%;
         margin: 0;
         z-index: 98;
-     cursor: pointer;
+        cursor: pointer;
+        /* background-color: pink; */
+        width: 98%;
+        height: 100%;
+
     }
 
     .responsive{
@@ -66,29 +66,73 @@
         height: 100%;
     }
     
-    .newcard{
-        position: relative;
-        padding:0 !important;
-        padding:0;
-        margin:0;
-        z-index: 99;
-     cursor: pointer;
-    }
-
-    .fade-enter-active, .fade-leave-active {
-  transition: opacity 5s;
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
-}
-
-    .cover{
-        border-radius: 10px;
-        width: 100%; 
-        object-fit: cover;
-        padding:0;
-        margin:0;
+     .cover_image{
+        position: absolute;
+        width: 100%;
+        height: 100%;
         z-index:100;
+        padding:0; 
+        margin: 0;
+        border-radius: 10px;
+        object-fit: cover;
     }
 
+
+
+    .newcard{
+        /* position: relative; */
+        /* background-color: pink; */
+        display: flex;
+        position: relative;
+        width: 98%;
+        height: 100%;
+        z-index: 99;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+   
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity 5s;
+    }
+
+    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+        opacity: 0;
+    }
+
+
+
+/* 
+   @media only screen and (max-width: 1024px) {
+
+        .cover_image{
+            height: 80vh;
+        }
+        
+        .iframeHolder{
+            height: 80vh;
+        }
+    }
+
+     @media only screen and (max-width: 800px) {
+
+        .miro_board{
+            justify-content: center;
+        }
+
+        .cover_image{
+            height: 40vh;
+            width: 50vh;
+        }
+        
+        .iframeHolder{
+            height: 40vh;
+            width: 50vh;
+        }
+
+    } */
+
+
+
+ 
 </style>

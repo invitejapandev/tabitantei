@@ -1,7 +1,7 @@
 <template>
     
     <div class="inventoryContainer">
-        <Item />
+        <!-- <Item /> -->
     </div>
 </template>
 

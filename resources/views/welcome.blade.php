@@ -44,9 +44,15 @@
 
 
         body{
+            margin:0;
+            height: 100%;
             background: url({{ URL::asset('images/green_bg.png') }}) no-repeat center center fixed;
             background-size: cover;
-            font-family: CA-Geheimagent
+            font-family: CA-Geheimagent;
         }
+        
+       
+
+
     </style>
 </html>

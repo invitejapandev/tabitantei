@@ -48,31 +48,37 @@
         color: white;
     }
 
-
     .header2{
-        padding-left:20px;
-        min-height: 5vh;
+        display: flex;
+        justify-content: center;
+        width: 100vw;
     }
+
+
 
 
     .main_body{
         display: flex;
+        position: relative;
         flex-direction: row;
+        justify-content: center;
         flex-wrap: wrap;
-        padding:10px;
-        height: 85vh;
+        height: 85%;
+        width: 100%;
+    }
+
+    .miro_holder{
+        position: relative;
+        flex-grow: 1;
+        /* background-color: white; */
     }
 
 
     .main_element_holder{
-       flex-grow: 1;
-       flex-basis: 700px;
+        position: relative;
+        flex-grow: 1;
     }
 
-    .miro_holder{
-       flex-grow: 1;
-       flex-basis: 400px;
-    }
 
     
 .float{
@@ -90,11 +96,12 @@
 	margin-top:22px;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 1500px) {
 
-    .main_body{
-        padding-top: 100px;
+    .miro_holder{
+        height: 95%;
     }
+
 }
 
 
