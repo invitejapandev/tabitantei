@@ -65,7 +65,7 @@
                                     if(response){
                                         localStorage.setItem('playerName', 'Player '+ response['data']);
                                         localStorage.setItem('playerTeam', this.teamSelected)
-                                        this.$router.push({ name: 'main.index' })
+                                        this.$router.push({ name: 'introduction.index' })
                                     }
                                     else{
                                         alert('something went wrong');

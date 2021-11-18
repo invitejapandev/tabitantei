@@ -6,7 +6,7 @@
         
         <transition name="fade">
             <div class="newcard"  v-if="show">
-                            <img class="cover_image"  src="../assets/computer.png" @click="hideImage" v-if="show" />
+                            <img class="cover_image"  v-bind:src="this.imgCover" @click="hideImage" v-if="show" />
             
             </div>
          </transition>
@@ -14,18 +14,25 @@
 </template>
 
 <script>
+// <iframe width="768" height="432" src="https://miro.com/app/live-embed/o9J_ltgIkjg=/?moveToViewport=2560,-648,1472,1160" frameBorder="0" scrolling="no" allowFullScreen></iframe>
     const realsrc = 'https://miro.com/app/live-embed/o9J_llppKnc=/?embedAutoplay=true&moveToViewport=-1877,-2465,3763,1996';
     const src2 = 'https://miro.com/app/live-embed/o9J_ltgInS4=/?embedAutoplay=true&moveToViewport=-2638,-351,2934,3605';
+    const src3 = 'https://miro.com/app/live-embed/o9J_ltgIkjg=/?embedAutoplay=true&moveToViewport=2560,-648,1472,1160';
     // <iframe width="768" height="432" src="https://miro.com/app/live-embed/o9J_ltgInS4=/?moveToViewport=-2638,-351,2934,3605" frameBorder="0" scrolling="no" allowFullScreen></iframe>
     // <iframe width="768" height="432" src="https://miro.com/app/live-embed/o9J_ltgInS4=/?moveToViewport=-2607,-300,2918,3605" frameBorder="0" scrolling="no" allowFullScreen></iframe>
     // <iframe width="768" height="432" src="https://miro.com/app/live-embed/o9J_ltgInS4=/?moveToViewport=-3318,-689,4377,4668" frameBorder="0" scrolling="no" allowFullScreen></iframe>
     export default{
         name: 'Miro',
+        props:{
+            miroURL: String,
+            isShowned: Boolean,
+            imgCover: String
+        },
         data(){
             return{
-                show: true,
+                show: this.isShowned,
                 iframe:{
-                    src: src2,
+                    src: this.miroURL,
                     style: null,
                     wrapperStyle: null
                 }

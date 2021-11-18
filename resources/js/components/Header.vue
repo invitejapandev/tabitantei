@@ -28,17 +28,18 @@
    .container{
        display: flex;
        flex-direction: row;
-       align-content: baseline;
+       align-content: center;
        flex-wrap: wrap;
    }
    
    .stats{
        display:flex;
        flex-wrap: wrap;
-       justify-content: space-around;
+       justify-content: center;
        /* align-content: center; */
        /* padding-right: 30px; */
        flex-grow: 1;
+       gap: 30px;
    }
 
     

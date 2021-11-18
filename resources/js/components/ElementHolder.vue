@@ -3,7 +3,8 @@
     <div class="right_panel"  >
         <div class="element_holder">
             <div class="manual_div" @click="showMultiple()">
-                <img class="desk" src="../assets/desk.png"  />
+                <!-- <img class="desk" src="../assets/bulletin_board.png"  /> -->
+                <img class="desk" v-bind:src="img"  />
             </div>
             <div class="actions2">
                 <input :class="[isCorrect ? 'correct' : '' , 'answer']" type="text" placeholder="TYPE HERE" style="z-index: 1" @input="onInput" maxlength="8"/>
@@ -77,25 +78,39 @@ export default{
             typing: false,
             timer: null,
             isCorrect: false,
-            correctAnswer: 'premier',
+            correctAnswer: this.answer,
             imgs: '', // Img Url , string or Array of string
             visible: false,
             index: 0, // default: 0,
-            showLanguageButton: false
+            showLanguageButton: false,
+            img: this.elementImage
         }
+    },
+    props:{
+        elementImage: String,
+        answer: String,
+        puzzleNumber: Number
     },
     methods: {
             onInput(e){
                     keystrokeSound.play();
                     console.log(e.target.value);
-                    if(e.target.value == this.correctAnswer){
+                    if(e.target.value.includes(this.correctAnswer)){
                         this.isCorrect = true;
                         correctSound.play();
                         this.$emit('pause-time');
                            this.$swal({
                                 title:'Great! That is the correct answer!',
                                 icon:'success'    
-                                        });
+                                        }).then(response => {
+                        // console.log(response);
+                                if(this.puzzleNumber == 2){
+                                    this.$router.push({ name: 'demo.index' })
+                                }
+                                else{
+                                     this.$router.push({ name: 'archive.index' })
+                                }
+                    });
                     }
                     else{
                         this.isCorrect = false;

@@ -79,6 +79,8 @@
 <style scoped>
 
     .container{
+        display: flex;
+        justify-content: end;
         align-content: center;
         /* justify-content: center; */
     }

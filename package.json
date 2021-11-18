@@ -27,8 +27,10 @@
     "dependencies": {
         "moment": "^2.29.1",
         "moment-duration-format": "^2.3.2",
+        "typewriter-vue": "^0.5.17",
         "vue-easy-lightbox": "^1.2.4",
         "vue-router": "^4.0.12",
-        "vue-sweetalert2": "^5.0.2"
+        "vue-sweetalert2": "^5.0.2",
+        "vue-typer": "^1.2.0"
     }
 }

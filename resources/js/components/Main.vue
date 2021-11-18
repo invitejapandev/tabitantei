@@ -3,8 +3,8 @@
     <div class="main">
         <Header class="header2" :timePaused="timeisPaused"/>
         <div class="main_body">
-            <Miro class="miro_holder"/>
-            <ElementHolder @pause-time="pauseTime" class="main_element_holder" />
+            <Miro class="miro_holder" :miroURL="miroURLData" :isShowned="isShowned" :imgCover="imgCover"/>
+            <ElementHolder @pause-time="pauseTime" :elementImage="elementImage" class="main_element_holder" :answer="answer" :puzzleNumber="puzzleNumber" />
         </div>
         <a href="#" class="float">
             <img src="../assets/chloe_version.png" style="width: 120px; height: 120px;"/>
@@ -22,7 +22,10 @@
         name: 'Main',
         data(){
             return{
-                timeisPaused:false
+                timeisPaused: false,
+                miroURLData: "https://miro.com/app/live-embed/o9J_ltgIkjg=/?embedAutoplay=true&moveToViewport=2560,-648,1472,1160",
+                imgCover: '/images/computer.png',
+                isShowned: this.miroCovered
             }
         },
         components: {
@@ -34,6 +37,12 @@
             pauseTime(){
                 this.timeisPaused = true;
             }
+        },
+        props:{
+            miroCovered: Boolean,
+            elementImage: String,
+            answer: String,
+            puzzleNumber: Number
         }
     }
 </script>
