@@ -30,7 +30,7 @@ const routes = [
         component: MainIndex,
         props: {
             miroCovered: true,
-            elementImage: '/images/desk.png',
+            elementImage: '/images/desk_new.png',
             answer: 'premier',
             puzzleNumber: 2
         }

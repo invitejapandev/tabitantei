@@ -30593,6 +30593,11 @@ var page_1_en = '/images/page_1_en.png';
 var page_2_en = '/images/page_2_en.png';
 var page_8_en = '/images/page_8_en.png';
 var en_manual = [cover_en, page_1_en, page_2_en, page_8_en];
+var floor1_image = '/images/floor1.png';
+var floor2_image = '/images/floor2.png';
+var floor3_image = '/images/floor3.png';
+var floor4_image = '/images/floor4.png';
+var en_floor_image = [floor1_image, floor2_image, floor3_image, floor4_image];
 var typingTimer;
 var doneTypingInterval = 1000;
 var presscount = 0;
@@ -30652,6 +30657,39 @@ var presscount = 0;
         this.isCorrect = false;
       }
     },
+    onEnter: function onEnter(e) {
+      var _this2 = this;
+
+      keystrokeSound.play();
+      console.log(e.target.value);
+
+      if (e.target.value.includes(this.correctAnswer)) {
+        this.isCorrect = true;
+        correctSound.play();
+        this.$emit('pause-time');
+        this.$swal({
+          title: 'Great! That is the correct answer!',
+          icon: 'success'
+        }).then(function (response) {
+          // console.log(response);
+          if (_this2.puzzleNumber == 2) {
+            _this2.$router.push({
+              name: 'demo.index'
+            });
+          } else {
+            _this2.$router.push({
+              name: 'archive.index'
+            });
+          }
+        });
+      } else {
+        this.$swal({
+          title: "That is not the correct answer. Please try again.",
+          icon: 'error'
+        });
+        this.isCorrect = false;
+      }
+    },
     showSingle: function showSingle() {
       this.imgs = 'http://via.placeholder.com/350x150'; // or
 
@@ -30663,14 +30701,26 @@ var presscount = 0;
     },
     showMultiple: function showMultiple() {
       this.showLanguageButton = true;
-      this.imgs = jp_manual;
+
+      if (this.puzzleNumber == 1) {
+        this.imgs = en_floor_image;
+      } else {
+        this.imgs = jp_manual;
+      }
+
       this.index = 0; // index of imgList
 
       this.show();
     },
     showMultiple2: function showMultiple2() {
       this.showLanguageButton = true;
-      this.imgs = en_manual;
+
+      if (this.puzzleNumber == 1) {
+        this.imgs = en_floor_image;
+      } else {
+        this.imgs = en_manual;
+      }
+
       this.index = 0; // index of imgList
 
       this.show();
@@ -30944,12 +30994,22 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+var computerMIRO = "https://miro.com/app/live-embed/o9J_ltgInS4=/?embedAutoplay=true&moveToViewport=-2638,-351,2934,3605";
+var floorMIRO = "https://miro.com/app/live-embed/o9J_ltgIkjg=/?embedAutoplay=true&moveToViewport=2560,-648,1472,1160";
+var selectedMIRO = "";
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'Main',
+  beforeCreate: function beforeCreate() {
+    if (this.puzzleNumber == 1) {
+      selectedMIRO = floorMIRO;
+    } else {
+      selectedMIRO = computerMIRO;
+    }
+  },
   data: function data() {
     return {
       timeisPaused: false,
-      miroURLData: "https://miro.com/app/live-embed/o9J_ltgIkjg=/?embedAutoplay=true&moveToViewport=2560,-648,1472,1160",
+      miroURLData: selectedMIRO,
       imgCover: '/images/computer.png',
       isShowned: this.miroCovered
     };
@@ -31466,7 +31526,7 @@ var routes = [{
   component: _components_Main__WEBPACK_IMPORTED_MODULE_0__.default,
   props: {
     miroCovered: true,
-    elementImage: '/images/desk.png',
+    elementImage: '/images/desk_new.png',
     answer: 'premier',
     puzzleNumber: 2
   }
@@ -31604,7 +31664,7 @@ var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBP
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()(_assets_circuit_board_red_png__WEBPACK_IMPORTED_MODULE_2__.default);
 var ___CSS_LOADER_URL_REPLACEMENT_1___ = _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()(_assets_circuit_board_green_png__WEBPACK_IMPORTED_MODULE_3__.default);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.right_panel{\r\n        position: relative;\r\n        display: flex;\r\n        flex-wrap: wrap;\r\n        justify-content: center;\r\n        width: 50vw;\n}\n.element_holder{\r\n        position: relative;\r\n        display: flex;\r\n        flex-direction: column;\r\n        flex-wrap: wrap;\r\n        height: 100%;\r\n        width: 100%;\n}\n.manual_div{\r\n        display: flex;\r\n        position: relative;\r\n        cursor: pointer;\r\n        justify-content: center;\r\n        align-items: center;\r\n        width: 100%;\r\n        height: 40vh;\r\n        flex-grow: 1;\r\n        /* border-style: solid; */\n}\n.desk{\r\n        border-radius: 10px;\r\n        width: 95%;\r\n        height: 100%;\r\n        -o-object-fit: cover;\r\n           object-fit: cover;\n}\n.actions2{\r\n        position: relative;\r\n        display: flex;\r\n        width: 95%;\r\n        flex-grow: 1;\n}\n.answer{\r\n        font-size: 3vw;\r\n        width: 100%;\r\n        background: transparent;\r\n        background-size: 100%;\r\n        background-repeat: no-repeat;\r\n        background-position: center;\r\n        border:none;\r\n        outline: none;\r\n        color: greenyellow;\r\n        text-transform:uppercase;\r\n        font-weight: bold;\r\n        padding-left: 26.5%;\r\n        background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\r\n        font-family: 'VT323', monospace;\n}\n.answer.correct{\r\n        background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_1___ + ");\n}\n.language_buttons{\r\n        display: flex;\r\n        position: fixed;\r\n        overflow: hidden;\r\n        left: 50%;\r\n        transform: translate(-50%);\r\n        bottom: 46px;\r\n        flex-wrap: wrap;\r\n        z-index: 99999999;\r\n        padding: 0;\r\n        gap: 10px;\n}\n.float3{\r\n        max-height: 40px;\r\n        max-width: 40px;\r\n        width:auto;\r\n        height:auto;\r\n        -o-object-fit: cover;\r\n           object-fit: cover;\r\n        border-radius:50px;\r\n        text-align:center;\r\n        visibility: hidden;\r\n        margin-right: 2px;\n}\n.appear{\r\n        visibility: visible;\n}\n@media only screen and (max-width: 1024px) {\n.actions2{\r\n                width: 50vw;\n}\n}\r\n\r\n\r\n\r\n/* \r\n     @media only screen and (max-width: 1921px) {\r\n         .manual_div{\r\n             height: 70%;\r\n         }\r\n    }\r\n\r\n\r\n\r\n\r\n\r\n    @media only screen and (max-width: 1600px) {\r\n         .manual_div{\r\n             height: 80%;\r\n         }\r\n    }\r\n\r\n     @media only screen and (max-width: 1400px) {\r\n         .manual_div{\r\n             height: 70%;\r\n         }\r\n    } */\r\n\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.right_panel{\r\n        position: relative;\r\n        display: flex;\r\n        flex-wrap: wrap;\r\n        justify-content: center;\r\n        width: 60vw;\n}\n.element_holder{\r\n        position: relative;\r\n        display: flex;\r\n        flex-direction: column;\r\n        flex-wrap: wrap;\r\n        height: 100%;\r\n        width: 100%;\n}\n.manual_div{\r\n        display: flex;\r\n        position: relative;\r\n        cursor: pointer;\r\n        justify-content: center;\r\n        align-items: center;\r\n        width: 100%;\r\n        height: 40vh;\r\n        flex-grow: 1;\r\n        /* border-style: solid; */\n}\n.desk{\r\n        border-radius: 10px;\r\n        width: 95%;\r\n        height: 100%;\r\n        -o-object-fit: cover;\r\n           object-fit: cover;\n}\n.actions2{\r\n        position: relative;\r\n        display: flex;\r\n        width: 87%;\r\n        flex-grow: 1;\n}\n.answer{\r\n        font-size: 3vw;\r\n        width: 100%;\r\n        background: transparent;\r\n        background-size: 100%;\r\n        background-repeat: no-repeat;\r\n        background-position: center;\r\n        border:none;\r\n        outline: none;\r\n        color: greenyellow;\r\n        text-transform:uppercase;\r\n        font-weight: bold;\r\n        padding-left: 26.5%;\r\n        background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\r\n        font-family: 'VT323', monospace;\n}\n.answer.correct{\r\n        background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_1___ + ");\n}\n.language_buttons{\r\n        display: flex;\r\n        position: fixed;\r\n        overflow: hidden;\r\n        left: 50%;\r\n        transform: translate(-50%);\r\n        bottom: 46px;\r\n        flex-wrap: wrap;\r\n        z-index: 99999999;\r\n        padding: 0;\r\n        gap: 10px;\n}\n.float3{\r\n        max-height: 40px;\r\n        max-width: 40px;\r\n        width:auto;\r\n        height:auto;\r\n        -o-object-fit: cover;\r\n           object-fit: cover;\r\n        border-radius:50px;\r\n        text-align:center;\r\n        visibility: hidden;\r\n        margin-right: 2px;\n}\n.appear{\r\n        visibility: visible;\n}\n@media only screen and (max-width: 1024px) {\n.actions2{\r\n                width: 50vw;\n}\n.right_panel{\r\n             width: 50vw;\n}\n}\r\n\r\n\r\n\r\n/* \r\n     @media only screen and (max-width: 1921px) {\r\n         .manual_div{\r\n             height: 70%;\r\n         }\r\n    }\r\n\r\n\r\n\r\n\r\n\r\n    @media only screen and (max-width: 1600px) {\r\n         .manual_div{\r\n             height: 80%;\r\n         }\r\n    }\r\n\r\n     @media only screen and (max-width: 1400px) {\r\n         .manual_div{\r\n             height: 70%;\r\n         }\r\n    } */\r\n\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -31828,7 +31888,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.textHolder[data-v-29f004f1]{\r\n        display: flex;\r\n        flex-wrap: wrap;\r\n        justify-content: center;\n}\n.text_handler[data-v-29f004f1]{\r\n        font-size: 3vw;\r\n        padding: 4%;\r\n        color: white;\r\n        font-weight: regular;\r\n        font-family: CA-Geheimagent;\r\n        letter-spacing: 7px;\n}\n.btnReady[data-v-29f004f1]{\r\n        position: fixed;\r\n        top: 60%;\r\n        color:white;\r\n        font-size: 3vw;\r\n        border-style: solid;\r\n        border-radius: 10px;\r\n        padding: 10px;\r\n        cursor: pointer;\r\n        font-weight: regular;\r\n        font-family: CA-Geheimagent;\n}\r\n\r\n\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.textHolder[data-v-29f004f1]{\r\n        display: flex;\r\n        flex-wrap: wrap;\r\n        justify-content: center;\n}\n.text_handler[data-v-29f004f1]{\r\n        font-size: 3vw;\r\n        padding: 4%;\r\n        color: white;\r\n        font-weight: regular;\r\n        font-family: CA-Geheimagent;\r\n        letter-spacing: 7px;\n}\n.btnReady[data-v-29f004f1]{\r\n        position: fixed;\r\n        top: 80%;\r\n        color:white;\r\n        font-size: 3vw;\r\n        border-style: solid;\r\n        border-radius: 10px;\r\n        padding: 10px;\r\n        cursor: pointer;\r\n        font-weight: regular;\r\n        font-family: CA-Geheimagent;\n}\r\n\r\n\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -31940,7 +32000,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.textHolder[data-v-3ec31164]{\r\n        display: flex;\r\n        flex-wrap: wrap;\r\n        justify-content: center;\n}\n.text_handler[data-v-3ec31164]{\r\n        font-size: 3vw;\r\n        padding: 7%;\r\n        color: white;\r\n        font-weight: regular;\r\n        font-family: CA-Geheimagent;\r\n        letter-spacing: 7px;\n}\n.btnReady[data-v-3ec31164]{\r\n        position: fixed;\r\n        top: 50%;\r\n        color:white;\r\n        font-size: 3vw;\r\n        border-style: solid;\r\n        border-radius: 10px;\r\n        padding: 10px;\r\n        cursor: pointer;\r\n        font-weight: regular;\r\n        font-family: CA-Geheimagent;\n}\r\n\r\n\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.textHolder[data-v-3ec31164]{\r\n        display: flex;\r\n        flex-wrap: wrap;\r\n        justify-content: center;\n}\n.text_handler[data-v-3ec31164]{\r\n        font-size: 3vw;\r\n        padding: 7%;\r\n        color: white;\r\n        font-weight: regular;\r\n        font-family: CA-Geheimagent;\r\n        letter-spacing: 7px;\n}\n.btnReady[data-v-3ec31164]{\r\n        position: fixed;\r\n        top: 80%;\r\n        color:white;\r\n        font-size: 3vw;\r\n        border-style: solid;\r\n        border-radius: 10px;\r\n        padding: 10px;\r\n        cursor: pointer;\r\n        font-weight: regular;\r\n        font-family: CA-Geheimagent;\n}\r\n\r\n\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -33386,7 +33446,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ });
-/* harmony import */ var _ElementHolder_vue_vue_type_template_id_cc2cb926_bindings_message_data_typing_data_timer_data_isCorrect_data_correctAnswer_data_imgs_data_visible_data_index_data_showLanguageButton_data_img_data_elementImage_props_answer_props_puzzleNumber_props_onInput_options_showSingle_options_showMultiple_options_showMultiple2_options_show_options_handleHide_options___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ElementHolder.vue?vue&type=template&id=cc2cb926&bindings={"message":"data","typing":"data","timer":"data","isCorrect":"data","correctAnswer":"data","imgs":"data","visible":"data","index":"data","showLanguageButton":"data","img":"data","elementImage":"props","answer":"props","puzzleNumber":"props","onInput":"options","showSingle":"options","showMultiple":"options","showMultiple2":"options","show":"options","handleHide":"options"} */ "./resources/js/components/ElementHolder.vue?vue&type=template&id=cc2cb926&bindings={\"message\":\"data\",\"typing\":\"data\",\"timer\":\"data\",\"isCorrect\":\"data\",\"correctAnswer\":\"data\",\"imgs\":\"data\",\"visible\":\"data\",\"index\":\"data\",\"showLanguageButton\":\"data\",\"img\":\"data\",\"elementImage\":\"props\",\"answer\":\"props\",\"puzzleNumber\":\"props\",\"onInput\":\"options\",\"showSingle\":\"options\",\"showMultiple\":\"options\",\"showMultiple2\":\"options\",\"show\":\"options\",\"handleHide\":\"options\"}");
+/* harmony import */ var _ElementHolder_vue_vue_type_template_id_cc2cb926_bindings_message_data_typing_data_timer_data_isCorrect_data_correctAnswer_data_imgs_data_visible_data_index_data_showLanguageButton_data_img_data_elementImage_props_answer_props_puzzleNumber_props_onInput_options_onEnter_options_showSingle_options_showMultiple_options_showMultiple2_options_show_options_handleHide_options___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ElementHolder.vue?vue&type=template&id=cc2cb926&bindings={"message":"data","typing":"data","timer":"data","isCorrect":"data","correctAnswer":"data","imgs":"data","visible":"data","index":"data","showLanguageButton":"data","img":"data","elementImage":"props","answer":"props","puzzleNumber":"props","onInput":"options","onEnter":"options","showSingle":"options","showMultiple":"options","showMultiple2":"options","show":"options","handleHide":"options"} */ "./resources/js/components/ElementHolder.vue?vue&type=template&id=cc2cb926&bindings={\"message\":\"data\",\"typing\":\"data\",\"timer\":\"data\",\"isCorrect\":\"data\",\"correctAnswer\":\"data\",\"imgs\":\"data\",\"visible\":\"data\",\"index\":\"data\",\"showLanguageButton\":\"data\",\"img\":\"data\",\"elementImage\":\"props\",\"answer\":\"props\",\"puzzleNumber\":\"props\",\"onInput\":\"options\",\"onEnter\":\"options\",\"showSingle\":\"options\",\"showMultiple\":\"options\",\"showMultiple2\":\"options\",\"show\":\"options\",\"handleHide\":\"options\"}");
 /* harmony import */ var _ElementHolder_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ElementHolder.vue?vue&type=script&lang=js */ "./resources/js/components/ElementHolder.vue?vue&type=script&lang=js");
 /* harmony import */ var _ElementHolder_vue_vue_type_style_index_0_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ElementHolder.vue?vue&type=style&index=0&lang=css */ "./resources/js/components/ElementHolder.vue?vue&type=style&index=0&lang=css");
 
@@ -33394,7 +33454,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-_ElementHolder_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.render = _ElementHolder_vue_vue_type_template_id_cc2cb926_bindings_message_data_typing_data_timer_data_isCorrect_data_correctAnswer_data_imgs_data_visible_data_index_data_showLanguageButton_data_img_data_elementImage_props_answer_props_puzzleNumber_props_onInput_options_showSingle_options_showMultiple_options_showMultiple2_options_show_options_handleHide_options___WEBPACK_IMPORTED_MODULE_0__.render
+_ElementHolder_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.render = _ElementHolder_vue_vue_type_template_id_cc2cb926_bindings_message_data_typing_data_timer_data_isCorrect_data_correctAnswer_data_imgs_data_visible_data_index_data_showLanguageButton_data_img_data_elementImage_props_answer_props_puzzleNumber_props_onInput_options_onEnter_options_showSingle_options_showMultiple_options_showMultiple2_options_show_options_handleHide_options___WEBPACK_IMPORTED_MODULE_0__.render
 /* hot reload */
 if (false) {}
 
@@ -34348,12 +34408,12 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/ElementHolder.vue?vue&type=template&id=cc2cb926&bindings={\"message\":\"data\",\"typing\":\"data\",\"timer\":\"data\",\"isCorrect\":\"data\",\"correctAnswer\":\"data\",\"imgs\":\"data\",\"visible\":\"data\",\"index\":\"data\",\"showLanguageButton\":\"data\",\"img\":\"data\",\"elementImage\":\"props\",\"answer\":\"props\",\"puzzleNumber\":\"props\",\"onInput\":\"options\",\"showSingle\":\"options\",\"showMultiple\":\"options\",\"showMultiple2\":\"options\",\"show\":\"options\",\"handleHide\":\"options\"}":
-/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./resources/js/components/ElementHolder.vue?vue&type=template&id=cc2cb926&bindings={"message":"data","typing":"data","timer":"data","isCorrect":"data","correctAnswer":"data","imgs":"data","visible":"data","index":"data","showLanguageButton":"data","img":"data","elementImage":"props","answer":"props","puzzleNumber":"props","onInput":"options","showSingle":"options","showMultiple":"options","showMultiple2":"options","show":"options","handleHide":"options"} ***!
-  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./resources/js/components/ElementHolder.vue?vue&type=template&id=cc2cb926&bindings={\"message\":\"data\",\"typing\":\"data\",\"timer\":\"data\",\"isCorrect\":\"data\",\"correctAnswer\":\"data\",\"imgs\":\"data\",\"visible\":\"data\",\"index\":\"data\",\"showLanguageButton\":\"data\",\"img\":\"data\",\"elementImage\":\"props\",\"answer\":\"props\",\"puzzleNumber\":\"props\",\"onInput\":\"options\",\"onEnter\":\"options\",\"showSingle\":\"options\",\"showMultiple\":\"options\",\"showMultiple2\":\"options\",\"show\":\"options\",\"handleHide\":\"options\"}":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./resources/js/components/ElementHolder.vue?vue&type=template&id=cc2cb926&bindings={"message":"data","typing":"data","timer":"data","isCorrect":"data","correctAnswer":"data","imgs":"data","visible":"data","index":"data","showLanguageButton":"data","img":"data","elementImage":"props","answer":"props","puzzleNumber":"props","onInput":"options","onEnter":"options","showSingle":"options","showMultiple":"options","showMultiple2":"options","show":"options","handleHide":"options"} ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! namespace exports */
-/*! export render [provided] [no usage info] [missing usage info prevents renaming] -> ./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/ElementHolder.vue?vue&type=template&id=cc2cb926&bindings={"message":"data","typing":"data","timer":"data","isCorrect":"data","correctAnswer":"data","imgs":"data","visible":"data","index":"data","showLanguageButton":"data","img":"data","elementImage":"props","answer":"props","puzzleNumber":"props","onInput":"options","showSingle":"options","showMultiple":"options","showMultiple2":"options","show":"options","handleHide":"options"} .render */
+/*! export render [provided] [no usage info] [missing usage info prevents renaming] -> ./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/ElementHolder.vue?vue&type=template&id=cc2cb926&bindings={"message":"data","typing":"data","timer":"data","isCorrect":"data","correctAnswer":"data","imgs":"data","visible":"data","index":"data","showLanguageButton":"data","img":"data","elementImage":"props","answer":"props","puzzleNumber":"props","onInput":"options","onEnter":"options","showSingle":"options","showMultiple":"options","showMultiple2":"options","show":"options","handleHide":"options"} .render */
 /*! other exports [not provided] [no usage info] */
 /*! runtime requirements: __webpack_require__, __webpack_exports__, __webpack_require__.d, __webpack_require__.r, __webpack_require__.* */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -34361,9 +34421,9 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => /* reexport safe */ _node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_ElementHolder_vue_vue_type_template_id_cc2cb926_bindings_message_data_typing_data_timer_data_isCorrect_data_correctAnswer_data_imgs_data_visible_data_index_data_showLanguageButton_data_img_data_elementImage_props_answer_props_puzzleNumber_props_onInput_options_showSingle_options_showMultiple_options_showMultiple2_options_show_options_handleHide_options___WEBPACK_IMPORTED_MODULE_0__.render
+/* harmony export */   "render": () => /* reexport safe */ _node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_ElementHolder_vue_vue_type_template_id_cc2cb926_bindings_message_data_typing_data_timer_data_isCorrect_data_correctAnswer_data_imgs_data_visible_data_index_data_showLanguageButton_data_img_data_elementImage_props_answer_props_puzzleNumber_props_onInput_options_onEnter_options_showSingle_options_showMultiple_options_showMultiple2_options_show_options_handleHide_options___WEBPACK_IMPORTED_MODULE_0__.render
 /* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_ElementHolder_vue_vue_type_template_id_cc2cb926_bindings_message_data_typing_data_timer_data_isCorrect_data_correctAnswer_data_imgs_data_visible_data_index_data_showLanguageButton_data_img_data_elementImage_props_answer_props_puzzleNumber_props_onInput_options_showSingle_options_showMultiple_options_showMultiple2_options_show_options_handleHide_options___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./ElementHolder.vue?vue&type=template&id=cc2cb926&bindings={"message":"data","typing":"data","timer":"data","isCorrect":"data","correctAnswer":"data","imgs":"data","visible":"data","index":"data","showLanguageButton":"data","img":"data","elementImage":"props","answer":"props","puzzleNumber":"props","onInput":"options","showSingle":"options","showMultiple":"options","showMultiple2":"options","show":"options","handleHide":"options"} */ "./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/ElementHolder.vue?vue&type=template&id=cc2cb926&bindings={\"message\":\"data\",\"typing\":\"data\",\"timer\":\"data\",\"isCorrect\":\"data\",\"correctAnswer\":\"data\",\"imgs\":\"data\",\"visible\":\"data\",\"index\":\"data\",\"showLanguageButton\":\"data\",\"img\":\"data\",\"elementImage\":\"props\",\"answer\":\"props\",\"puzzleNumber\":\"props\",\"onInput\":\"options\",\"showSingle\":\"options\",\"showMultiple\":\"options\",\"showMultiple2\":\"options\",\"show\":\"options\",\"handleHide\":\"options\"}");
+/* harmony import */ var _node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_ElementHolder_vue_vue_type_template_id_cc2cb926_bindings_message_data_typing_data_timer_data_isCorrect_data_correctAnswer_data_imgs_data_visible_data_index_data_showLanguageButton_data_img_data_elementImage_props_answer_props_puzzleNumber_props_onInput_options_onEnter_options_showSingle_options_showMultiple_options_showMultiple2_options_show_options_handleHide_options___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./ElementHolder.vue?vue&type=template&id=cc2cb926&bindings={"message":"data","typing":"data","timer":"data","isCorrect":"data","correctAnswer":"data","imgs":"data","visible":"data","index":"data","showLanguageButton":"data","img":"data","elementImage":"props","answer":"props","puzzleNumber":"props","onInput":"options","onEnter":"options","showSingle":"options","showMultiple":"options","showMultiple2":"options","show":"options","handleHide":"options"} */ "./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/ElementHolder.vue?vue&type=template&id=cc2cb926&bindings={\"message\":\"data\",\"typing\":\"data\",\"timer\":\"data\",\"isCorrect\":\"data\",\"correctAnswer\":\"data\",\"imgs\":\"data\",\"visible\":\"data\",\"index\":\"data\",\"showLanguageButton\":\"data\",\"img\":\"data\",\"elementImage\":\"props\",\"answer\":\"props\",\"puzzleNumber\":\"props\",\"onInput\":\"options\",\"onEnter\":\"options\",\"showSingle\":\"options\",\"showMultiple\":\"options\",\"showMultiple2\":\"options\",\"show\":\"options\",\"handleHide\":\"options\"}");
 
 
 /***/ }),
@@ -34634,10 +34694,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/ElementHolder.vue?vue&type=template&id=cc2cb926&bindings={\"message\":\"data\",\"typing\":\"data\",\"timer\":\"data\",\"isCorrect\":\"data\",\"correctAnswer\":\"data\",\"imgs\":\"data\",\"visible\":\"data\",\"index\":\"data\",\"showLanguageButton\":\"data\",\"img\":\"data\",\"elementImage\":\"props\",\"answer\":\"props\",\"puzzleNumber\":\"props\",\"onInput\":\"options\",\"showSingle\":\"options\",\"showMultiple\":\"options\",\"showMultiple2\":\"options\",\"show\":\"options\",\"handleHide\":\"options\"}":
-/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/ElementHolder.vue?vue&type=template&id=cc2cb926&bindings={"message":"data","typing":"data","timer":"data","isCorrect":"data","correctAnswer":"data","imgs":"data","visible":"data","index":"data","showLanguageButton":"data","img":"data","elementImage":"props","answer":"props","puzzleNumber":"props","onInput":"options","showSingle":"options","showMultiple":"options","showMultiple2":"options","show":"options","handleHide":"options"} ***!
-  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/ElementHolder.vue?vue&type=template&id=cc2cb926&bindings={\"message\":\"data\",\"typing\":\"data\",\"timer\":\"data\",\"isCorrect\":\"data\",\"correctAnswer\":\"data\",\"imgs\":\"data\",\"visible\":\"data\",\"index\":\"data\",\"showLanguageButton\":\"data\",\"img\":\"data\",\"elementImage\":\"props\",\"answer\":\"props\",\"puzzleNumber\":\"props\",\"onInput\":\"options\",\"onEnter\":\"options\",\"showSingle\":\"options\",\"showMultiple\":\"options\",\"showMultiple2\":\"options\",\"show\":\"options\",\"handleHide\":\"options\"}":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/ElementHolder.vue?vue&type=template&id=cc2cb926&bindings={"message":"data","typing":"data","timer":"data","isCorrect":"data","correctAnswer":"data","imgs":"data","visible":"data","index":"data","showLanguageButton":"data","img":"data","elementImage":"props","answer":"props","puzzleNumber":"props","onInput":"options","onEnter":"options","showSingle":"options","showMultiple":"options","showMultiple2":"options","show":"options","handleHide":"options"} ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! namespace exports */
 /*! export render [provided] [no usage info] [missing usage info prevents renaming] */
 /*! other exports [not provided] [no usage info] */
@@ -34694,7 +34754,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             type: "text",
             placeholder: "TYPE HERE",
             style: {"z-index":"1"},
-            onInput: _cache[2] || (_cache[2] = (...args) => ($options.onInput(...args))),
+            onKeyup: _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withKeys)((...args) => ($options.onEnter(...args)), ["enter"])),
+            onInput: _cache[3] || (_cache[3] = (...args) => ($options.onInput(...args))),
             maxlength: "8"
           }, null, 34 /* CLASS, HYDRATE_EVENTS */)
         ])
@@ -34713,14 +34774,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("a", {
         href: "#",
         class: [$data.showLanguageButton ? 'appear' : '', 'float3'],
-        onClick: _cache[3] || (_cache[3] = $event => ($options.showMultiple()))
+        onClick: _cache[4] || (_cache[4] = $event => ($options.showMultiple()))
       }, [
         _hoisted_6
       ], 2 /* CLASS */),
       (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("a", {
         href: "#",
         class: [$data.showLanguageButton ? 'appear' : '', 'float3'],
-        onClick: _cache[4] || (_cache[4] = $event => ($options.showMultiple2()))
+        onClick: _cache[5] || (_cache[5] = $event => ($options.showMultiple2()))
       }, [
         _hoisted_7
       ], 2 /* CLASS */)

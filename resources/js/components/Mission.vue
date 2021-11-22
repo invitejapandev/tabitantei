@@ -72,7 +72,7 @@ export default {
 
     .btnReady{
         position: fixed;
-        top: 60%;
+        top: 80%;
         color:white;
         font-size: 3vw;
         border-style: solid;

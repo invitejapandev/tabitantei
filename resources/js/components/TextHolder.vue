@@ -61,7 +61,7 @@ demonstrate your puzzle-solving and team working skills...`,
 
     .btnReady{
         position: fixed;
-        top: 50%;
+        top: 80%;
         color:white;
         font-size: 3vw;
         border-style: solid;

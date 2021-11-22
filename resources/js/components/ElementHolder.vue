@@ -7,7 +7,7 @@
                 <img class="desk" v-bind:src="img"  />
             </div>
             <div class="actions2">
-                <input :class="[isCorrect ? 'correct' : '' , 'answer']" type="text" placeholder="TYPE HERE" style="z-index: 1" @input="onInput" maxlength="8"/>
+                <input :class="[isCorrect ? 'correct' : '' , 'answer']" type="text" placeholder="TYPE HERE" style="z-index: 1" v-on:keyup.enter="onEnter" @input="onInput" maxlength="8"/>
         
             </div>
         </div>
@@ -63,6 +63,13 @@ const page_8_en = '/images/page_8_en.png';
 
 const en_manual = [cover_en, page_1_en, page_2_en, page_8_en];
 
+const floor1_image = '/images/floor1.png';
+const floor2_image = '/images/floor2.png';
+const floor3_image = '/images/floor3.png';
+const floor4_image = '/images/floor4.png';
+
+const en_floor_image = [floor1_image, floor2_image, floor3_image, floor4_image];
+
 var typingTimer;
 var doneTypingInterval = 1000;
 var presscount = 0;
@@ -116,6 +123,34 @@ export default{
                         this.isCorrect = false;
                     }
                 },
+            onEnter(e){
+                 keystrokeSound.play();
+                    console.log(e.target.value);
+                    if(e.target.value.includes(this.correctAnswer)){
+                        this.isCorrect = true;
+                        correctSound.play();
+                        this.$emit('pause-time');
+                           this.$swal({
+                                title:'Great! That is the correct answer!',
+                                icon:'success'    
+                                        }).then(response => {
+                        // console.log(response);
+                                if(this.puzzleNumber == 2){
+                                    this.$router.push({ name: 'demo.index' })
+                                }
+                                else{
+                                     this.$router.push({ name: 'archive.index' })
+                                }
+                    });
+                    }
+                    else{
+                        this.$swal({
+                                title:`That is not the correct answer. Please try again.`,
+                                icon:'error'    
+                                        });
+                        this.isCorrect = false;
+                    }
+            },
            showSingle() {
         this.imgs = 'http://via.placeholder.com/350x150'
         // or
@@ -127,14 +162,24 @@ export default{
       },
       showMultiple() {
         this.showLanguageButton= true;
-        this.imgs =jp_manual
+        if(this.puzzleNumber == 1){
+            this.imgs = en_floor_image;
+        }
+        else{
+            this.imgs =jp_manual
+        }
 
         this.index = 0 // index of imgList
         this.show()
       },
       showMultiple2() {
         this.showLanguageButton= true;
-        this.imgs = en_manual
+        if(this.puzzleNumber == 1){
+            this.imgs = en_floor_image
+        }
+        else{
+            this.imgs =en_manual
+        }
 
         this.index = 0 // index of imgList
         this.show()
@@ -164,7 +209,7 @@ export default{
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        width: 50vw;
+        width: 60vw;
     }
 
     .element_holder{
@@ -200,7 +245,7 @@ export default{
     .actions2{
         position: relative;
         display: flex;
-        width: 95%;
+        width: 87%;
         flex-grow: 1;
     }
 
@@ -267,6 +312,10 @@ export default{
      @media only screen and (max-width: 1024px) {
          .actions2{
                 width: 50vw;
+         }
+
+         .right_panel{
+             width: 50vw;
          }
     }
 

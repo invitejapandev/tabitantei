@@ -18,12 +18,25 @@
     import ElementHolder from './ElementHolder.vue'
     import Miro from './Miro.vue';
 
+    let computerMIRO = "https://miro.com/app/live-embed/o9J_ltgInS4=/?embedAutoplay=true&moveToViewport=-2638,-351,2934,3605"
+    let  floorMIRO = "https://miro.com/app/live-embed/o9J_ltgIkjg=/?embedAutoplay=true&moveToViewport=2560,-648,1472,1160";
+
+    let selectedMIRO = "";
+
     export default{
         name: 'Main',
+        beforeCreate(){
+            if(this.puzzleNumber == 1){
+                selectedMIRO = floorMIRO;
+            }
+            else{
+                selectedMIRO = computerMIRO;
+            }
+        },
         data(){
             return{
                 timeisPaused: false,
-                miroURLData: "https://miro.com/app/live-embed/o9J_ltgIkjg=/?embedAutoplay=true&moveToViewport=2560,-648,1472,1160",
+                miroURLData: selectedMIRO,
                 imgCover: '/images/computer.png',
                 isShowned: this.miroCovered
             }
