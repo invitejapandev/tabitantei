@@ -8,8 +8,15 @@
     export default {
         name: 'Player',
         mounted(){
-            this.playerNameStored = localStorage.getItem('playerName');
-            this.playerTeam = localStorage.getItem('playerTeam');
+
+            let teamSetup = JSON.parse(localStorage.getItem('teamSetup'));
+            if(teamSetup){
+                this.playerNameStored = teamSetup.playerName;
+                this.playerTeam = teamSetup.playerTeam;
+            }
+            else{
+                this.$router.push({ name: 'login.index' });
+            }
         },
         data(){
             return{

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\GameEvent;
 use App\Models\GamePlayer;
+use App\Models\GameProgress;
 
 class GameController extends Controller
 {
@@ -40,6 +41,19 @@ class GameController extends Controller
         
         $player->save();
 
-        return $playerCount;
+        return $playerCount+1;
+    }
+
+    public function get_status(Request $request){
+        $playerTeam = $request->playerTeam;
+        $event_id = $request->game_event_id;
+        $puzzle_progress = $request->puzzleNumber;
+
+        $gameStatus= GameProgress::where('game_event_id', $event_id)->where( 'teamNumber', $playerTeam)->where( 'puzzle_progress', $puzzle_progress)->get();
+        if(count($gameStatus) > 0){
+            return $gameStatus;
+        }
+        
+        return "No game status found.";
     }
 }

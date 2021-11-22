@@ -23,4 +23,5 @@ Route::get('/games', [GameController::class, 'index']);
 Route::prefix('/game')->group(function (){
     Route::post('/validate_key', [GameController::class, 'validate_key']);
     Route::post('/store_player', [GameController::class, 'store_player']);
+    Route::post('/get_status', [GameController::class, 'get_status']);
 });

@@ -34,7 +34,36 @@
             }
         },
         beforeCreate(){
-            console.log(JSON.parse(localStorage.getItem('codeResponse')));
+            let codeResponse = JSON.parse(localStorage.getItem('codeResponse'));
+           
+            if(codeResponse){
+                
+                let teamSetup = JSON.parse(localStorage.getItem('teamSetup'));
+                
+                if(teamSetup){
+                    if(teamSetup.game_event_id == codeResponse.id && teamSetup.playerTeam){
+                        let gameProgress = JSON.parse(localStorage.getItem('gameProgress'));
+                        if(gameProgress && gameProgress.game_event_id == codeResponse.id){
+
+                            switch(gameProgress.puzzleProgress){
+                                case 1:
+                                    this.$router.push({ name: 'main.index1' });
+                                    break;
+                                case 2: 
+                                    this.$router.push({ name: 'main.computer' });
+                                    break;
+                            }
+                        }
+                        else{
+                            this.$router.push({ name: 'introduction.index' });
+                        }
+                    }
+                }
+
+            }
+            else{
+                 this.$router.push({ name: 'login.index' });
+            }
         },
         components:{
             Team
@@ -45,7 +74,7 @@
                 
                 this.$swal({
                         title:'Are you sure want to select Team '+n+'?',
-                        text: "You won't be able to change team after this.",
+                        text: "You might not be able to change team after this.",
                         // icon:'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
@@ -63,8 +92,14 @@
                                     console.log(response);
                                     
                                     if(response){
-                                        localStorage.setItem('playerName', 'Player '+ response['data']);
-                                        localStorage.setItem('playerTeam', this.teamSelected)
+                                        let teamSetup = {
+                                            playerName : 'Player '+response['data'],
+                                            playerTeam : this.teamSelected,
+                                            game_event_id : codeResponse.id
+                                        }
+
+                                        localStorage.setItem('teamSetup', JSON.stringify(teamSetup));
+
                                         this.$router.push({ name: 'introduction.index' })
                                     }
                                     else{
@@ -155,7 +190,7 @@
     .choose_header{
         position: absolute;
         font-size: 7vw;
-        top:  7%;
+        top:  3%;
         color: white;
         font-weight: regular;
         font-family: CA-Geheimagent;

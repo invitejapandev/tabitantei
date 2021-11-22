@@ -1,6 +1,6 @@
 <template>
         <div class="login_container">
-            <form class="login_form" autocomplete="off">
+            <form class="login_form" autocomplete="off" v-on:submit.prevent="onEnter">
                 <input autocomplete="off" id="1" type="text" placeholder="ENTER GAME CODE"  maxlength="5" v-model="item.name" @input="onInput"/>
             </form>
              <img class="login-logo" src="../assets/green_logo.png" />
@@ -53,11 +53,7 @@
             }
         },
         methods: {
-            playMusic(){
-                
-            var spy_music = new Audio('/mp3/spy_music.mp3');
-            spy_music.play();
-            },
+            
             validateGame(){
                 if(this.item.name == ''){
                     return;
@@ -73,16 +69,14 @@
                     console.log(error);
                 })
             },
-            onInput(e){
-                // spy_music.play();
+            onEnter(e){
                 console.log(e.target.value);
-                if(e.target.value.length==5){
                    axios.post('api/game/validate_key',{
                     code: this.item.name
                     }).then(response => {
                         
                         console.log(response['data'][0].game_code)
-                        if(response['data'][0].id >= 1){
+                        if(response['data'][0].id >= 1 && response['data'][0].Status == 1){
                             this.$swal({
                                 title:'Game Code is Valid. You will now be redirected to team selection.',
                                 icon:'success'    
@@ -94,7 +88,40 @@
                         }
                         else{
                             this.$swal({
-                                title:'Game Code is Valid.  Please try again.',
+                                title:'Game Code is invalid.  Please try again.',
+                                icon:'warning'    
+                                        });
+                        }
+                    }).catch( error => {
+                           this.$swal({
+                                title:'Game Code is Invalid. Please try again.',
+                                icon:'warning'    
+                                        });
+                    })
+                
+            },
+            onInput(e){
+                // spy_music.play();
+                console.log(e.target.value);
+                if(e.target.value.length==5){
+                   axios.post('api/game/validate_key',{
+                    code: this.item.name
+                    }).then(response => {
+                        
+                        console.log(response['data'][0].game_code)
+                        if(response['data'][0].id >= 1 && response['data'][0].Status == 1){
+                            this.$swal({
+                                title:'Game Code is Valid. You will now be redirected to team selection.',
+                                icon:'success'    
+                                        }).then((result) =>{
+                                            this.$router.push({ name: 'team.index' })
+                                            localStorage.setItem('codeResponse', JSON.stringify(response['data'][0]));
+                                        });
+                           
+                        }
+                        else{
+                            this.$swal({
+                                title:'Game Code is invalid.  Please try again.',
                                 icon:'warning'    
                                         });
                         }
@@ -134,7 +161,7 @@
 .welcome_header{
     position: absolute;
     font-size: 7vw;
-    top:  7%;
+    top:  3%;
     color: white;
     font-weight: regular;
     font-family: CA-Geheimagent;

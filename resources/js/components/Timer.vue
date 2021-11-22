@@ -6,16 +6,30 @@
 
 <script>
     
+    let currentGameTime = 0;
+    let gameProgress;
+
     export default{
         name: 'Timer',
         data(){
             return {
                 isRunning: true,
-                currentTime: 1,
+                currentTime: currentGameTime,
                 currentTimer:null,
                 minutes:0,
 		        secondes:0,
                 displayedTime: '0:00:00'
+            }
+        },
+        beforeCreate(){
+            let codeResponse = JSON.parse(localStorage.getItem('codeResponse'));
+            if(codeResponse){
+                
+                gameProgress = JSON.parse(localStorage.getItem('gameProgress'));
+
+                 if(gameProgress.GameTime != null){
+                     currentGameTime = gameProgress.GameTime;
+                 }
             }
         },
         mounted(){
@@ -27,9 +41,11 @@
         },
         watch: {
             timeIsPaused: function(val){
-                console.log('test'+val)
+                console.log('test'+this.currentTime)
                 if(val === true){
                     this.isRunning = false;
+                    gameProgress.GameTime = this.currentTime;
+                    localStorage.setItem('gameProgress', JSON.stringify(gameProgress));
                 }
             }
         },

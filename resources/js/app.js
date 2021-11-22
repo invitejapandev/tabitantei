@@ -6,6 +6,8 @@ import MainIndex from './components/Main.vue'
 import LoginIndex from './components/Login.vue'
 import VueEasyLightbox from 'vue-easy-lightbox'
 
+
+
 import 'sweetalert2/dist/sweetalert2.min.css';
 import VueSweetalert2 from 'vue-sweetalert2';
 

@@ -14,6 +14,7 @@
 </template>
 
 <script>
+    import axios from 'axios';
     import Header from './Header.vue';
     import ElementHolder from './ElementHolder.vue'
     import Miro from './Miro.vue';
@@ -22,16 +23,40 @@
     let  floorMIRO = "https://miro.com/app/live-embed/o9J_ltgIkjg=/?embedAutoplay=true&moveToViewport=2560,-648,1472,1160";
 
     let selectedMIRO = "";
+    let gameProgress;
+    let codeResponse, teamSetup;
+    var getStatusInterval;
 
     export default{
         name: 'Main',
         beforeCreate(){
-            if(this.puzzleNumber == 1){
-                selectedMIRO = floorMIRO;
+            codeResponse = JSON.parse(localStorage.getItem('codeResponse'));
+            teamSetup = JSON.parse(localStorage.getItem('teamSetup'));
+            gameProgress = JSON.parse(localStorage.getItem('gameProgress'));
+
+            if(codeResponse && teamSetup && teamSetup.game_event_id == codeResponse.id){
+                
+                if(gameProgress){
+                    gameProgress.puzzleProgress = this.puzzleNumber;
+                    localStorage.setItem('gameProgress', JSON.stringify(gameProgress));
+                }
+                else{
+                    gameProgress = {
+                        game_event_id: codeResponse.id,
+                        puzzleProgress: this.puzzleNumber
+                    }
+                    localStorage.setItem('gameProgress', JSON.stringify(gameProgress));
+                }
+
+                if(this.puzzleNumber == 1){
+                    selectedMIRO = floorMIRO;
+                }
+                else{
+                    selectedMIRO = computerMIRO;
+                }
             }
-            else{
-                selectedMIRO = computerMIRO;
-            }
+
+             getStatusInterval = setInterval(() => this.getStatus(), 2000);
         },
         data(){
             return{
@@ -49,6 +74,27 @@
         methods:{
             pauseTime(){
                 this.timeisPaused = true;
+            },
+            getStatus(){
+                    axios.post('api/game/get_status',{
+                        game_event_id: codeResponse.id,
+                        playerTeam: teamSetup.playerTeam,
+                        puzzleNumber: this.puzzleNumber
+                        }).then(response => {
+                            console.log(response['data'][0].answered_current);
+                               if(response['data'][0].answered_current == 1){
+                                this.timeisPaused = true;
+                                clearInterval(getStatusInterval);
+                                this.$swal({
+                                        title:'Great! Your team got the correct answer.',
+                                        icon:'success'    
+                                                });
+                                }
+                        }).catch(error => {
+                           console.log(error);
+                        });
+
+                 
             }
         },
         props:{
@@ -86,6 +132,7 @@
         justify-content: center;
         flex-wrap: wrap;
         height: 85%;
+        min-height: 800px;
         width: 100%;
     }
 
