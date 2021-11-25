@@ -44,7 +44,7 @@
                                 }
                             }
                         }).catch(error => {
-                            alert('something went wrong');
+                            // alert('something went wrong');
                         });
                 }
                 else{

@@ -1,10 +1,10 @@
 <template>
 
     <div class="main">
-        <Header class="header2" :timePaused="timeisPaused"/>
+        <Header  :puzzleNumber="puzzleNumber" class="header2" :timePaused="timeisPaused" />
         <div class="main_body">
             <Miro class="miro_holder" :miroURL="miroURLData" :isShowned="isShowned" :imgCover="imgCover"/>
-            <ElementHolder @pause-time="pauseTime" :elementImage="elementImage" class="main_element_holder" :answer="answer" :puzzleNumber="puzzleNumber" />
+            <ElementHolder @pauseTime="pause-time" :elementImage="elementImage" class="main_element_holder" :answer="answer" :puzzleNumber="puzzleNumber" />
         </div>
         <a href="#" class="float">
             <img src="../assets/chloe_version.png" style="width: 120px; height: 120px;"/>
@@ -63,7 +63,8 @@
                 timeisPaused: false,
                 miroURLData: selectedMIRO,
                 imgCover: '/images/computer.png',
-                isShowned: this.miroCovered
+                isShowned: this.miroCovered,
+                updatedTime: 0
             }
         },
         components: {
@@ -85,10 +86,18 @@
                                if(response['data'][0].answered_current == 1){
                                 this.timeisPaused = true;
                                 clearInterval(getStatusInterval);
-                                this.$swal({
-                                        title:'Great! Your team got the correct answer.',
-                                        icon:'success'    
-                                                });
+                                if(response['data'][0].player_number != teamSetup.playerName){
+                                    this.$swal({
+                                            title:'Great! Your team got the correct answer.',
+                                            icon:'success'}).then(response => {
+                                                    if(this.puzzleNumber == 2){
+                                                        this.$router.push({ name: 'demo.index' })
+                                                    }
+                                                    else{
+                                                        this.$router.push({ name: 'archive.index' })
+                                                    } 
+                                                    });
+                                    }
                                 }
                         }).catch(error => {
                            console.log(error);

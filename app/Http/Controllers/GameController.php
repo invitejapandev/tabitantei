@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\GameEvent;
 use App\Models\GamePlayer;
 use App\Models\GameProgress;
+use App\Models\GameTime;
 
 class GameController extends Controller
 {
@@ -55,5 +56,43 @@ class GameController extends Controller
         }
         
         return "No game status found.";
+    }
+
+    public function store_status(Request $request){
+
+        $gameProgress = new GameProgress([
+            'game_event_id' => $request->game_event_id,
+            'teamNumber' => $request->teamNumber,
+            'puzzle_progress' => $request->puzzle_progress,
+            'player_number' => $request->player_number,
+            'answered_current' => 1
+        ]);
+
+        $gameProgress->save();
+
+        return true;
+    }
+
+    public function store_game_time(Request $request){
+
+        $gameTime = new GameTime ([
+            'game_event_id' => $request->game_event_id,
+            'puzzle_number' => $request->puzzle_number,
+            'game_time' => $request->game_time,
+            'team_number' => $request->team_number
+        ]);
+
+        $gameTime->save();
+        return true;
+    }
+
+    public function get_game_time(Request $request){
+        $puzzle_number = $request->puzzle_number;
+        $team_number = $request->team_number;
+        $game_event_id = $request->game_event_id;
+
+       
+        return GameTime::where('puzzle_number', $puzzle_number)->where('team_number', $team_number)->where('game_event_id', $game_event_id)->orderBy('created_at', 'ASC')->first();
+        
     }
 }

@@ -30569,7 +30569,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! namespace exports */
 /*! export default [provided] [no usage info] [missing usage info prevents renaming] */
 /*! other exports [not provided] [no usage info] */
-/*! runtime requirements: __webpack_require__, __webpack_exports__, __webpack_require__.r, __webpack_require__.d, __webpack_require__.* */
+/*! runtime requirements: __webpack_require__, __webpack_require__.n, __webpack_exports__, __webpack_require__.r, __webpack_require__.d, __webpack_require__.* */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -30578,6 +30578,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ });
 /* harmony import */ var vue_easy_lightbox__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-easy-lightbox */ "./node_modules/vue-easy-lightbox/dist/vue-easy-lightbox.es5.esm.min.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+
 
 var keystrokeSound = new Audio('https://dl.dropboxusercontent.com/s/hjx4xlxyx39uzv7/18660_1464810669.mp3');
 var correctSound = new Audio('https://www.freesoundslibrary.com/wp-content/uploads/2018/03/right-answer-ding-ding-sound-effect.mp3');
@@ -30593,14 +30596,15 @@ var page_1_en = '/images/page_1_en.png';
 var page_2_en = '/images/page_2_en.png';
 var page_8_en = '/images/page_8_en.png';
 var en_manual = [cover_en, page_1_en, page_2_en, page_8_en];
-var floor1_image = '/images/floor1.png';
-var floor2_image = '/images/floor2.png';
-var floor3_image = '/images/floor3.png';
+var floor1_image = '/images/floor3.png';
+var floor2_image = '/images/floor1.png';
+var floor3_image = '/images/floor2.png';
 var floor4_image = '/images/floor4.png';
 var en_floor_image = [floor1_image, floor2_image, floor3_image, floor4_image];
 var typingTimer;
 var doneTypingInterval = 1000;
 var presscount = 0;
+var teamSetup;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'ElementHolder',
   components: {
@@ -30627,6 +30631,9 @@ var presscount = 0;
     answer: String,
     puzzleNumber: Number
   },
+  beforeCreate: function beforeCreate() {
+    teamSetup = JSON.parse(localStorage.getItem('teamSetup'));
+  },
   methods: {
     onInput: function onInput(e) {
       var _this = this;
@@ -30638,19 +30645,32 @@ var presscount = 0;
         this.isCorrect = true;
         correctSound.play();
         this.$emit('pause-time');
-        this.$swal({
-          title: 'Great! That is the correct answer!',
-          icon: 'success'
+        var gameProgress = JSON.parse(localStorage.getItem('gameProgress'));
+        axios__WEBPACK_IMPORTED_MODULE_1___default().post('api/game/store_status', {
+          game_event_id: teamSetup.game_event_id,
+          teamNumber: teamSetup.playerTeam,
+          puzzle_progress: this.puzzleNumber,
+          player_number: teamSetup.playerName
         }).then(function (response) {
-          // console.log(response);
-          if (_this.puzzleNumber == 2) {
-            _this.$router.push({
-              name: 'demo.index'
+          console.log(response);
+
+          if (response) {
+            _this.$swal({
+              title: 'Great! That is the correct answer!',
+              icon: 'success'
+            }).then(function (response) {
+              if (_this.puzzleNumber == 2) {
+                _this.$router.push({
+                  name: 'demo.index'
+                });
+              } else {
+                _this.$router.push({
+                  name: 'archive.index'
+                });
+              }
             });
-          } else {
-            _this.$router.push({
-              name: 'archive.index'
-            });
+          } else {//show db error
+            //alert('something went wrong');
           }
         });
       } else {
@@ -30663,23 +30683,36 @@ var presscount = 0;
       keystrokeSound.play();
       console.log(e.target.value);
 
-      if (e.target.value.includes(this.correctAnswer)) {
+      if (e.target.value.toLowerCase().indexOf(this.correctAnswer) > 0) {
         this.isCorrect = true;
         correctSound.play();
         this.$emit('pause-time');
-        this.$swal({
-          title: 'Great! That is the correct answer!',
-          icon: 'success'
+        var gameProgress = JSON.parse(localStorage.getItem('gameProgress'));
+        axios__WEBPACK_IMPORTED_MODULE_1___default().post('api/game/store_status', {
+          game_event_id: teamSetup.game_event_id,
+          teamNumber: teamSetup.playerTeam,
+          puzzle_progress: this.puzzleNumber,
+          player_number: teamSetup.playerName
         }).then(function (response) {
-          // console.log(response);
-          if (_this2.puzzleNumber == 2) {
-            _this2.$router.push({
-              name: 'demo.index'
+          console.log(response);
+
+          if (response) {
+            _this2.$swal({
+              title: 'Great! That is the correct answer!',
+              icon: 'success'
+            }).then(function (response) {
+              if (_this2.puzzleNumber == 2) {
+                _this2.$router.push({
+                  name: 'demo.index'
+                });
+              } else {
+                _this2.$router.push({
+                  name: 'archive.index'
+                });
+              }
             });
-          } else {
-            _this2.$router.push({
-              name: 'archive.index'
-            });
+          } else {//show db error
+            //alert('something went wrong');
           }
         });
       } else {
@@ -30795,7 +30828,7 @@ __webpack_require__.r(__webpack_exports__);
     Timer: _Timer_vue__WEBPACK_IMPORTED_MODULE_1__.default,
     Inventory: _Inventory_vue__WEBPACK_IMPORTED_MODULE_2__.default
   },
-  props: ['timePaused']
+  props: ['timePaused', 'puzzleNumber']
 });
 
 /***/ }),
@@ -30901,8 +30934,7 @@ __webpack_require__.r(__webpack_exports__);
               });
             }
           }
-        })["catch"](function (error) {
-          alert('something went wrong');
+        })["catch"](function (error) {// alert('something went wrong');
         });
       } else {
         this.$router.push({
@@ -31069,7 +31101,8 @@ var getStatusInterval;
       timeisPaused: false,
       miroURLData: selectedMIRO,
       imgCover: '/images/computer.png',
-      isShowned: this.miroCovered
+      isShowned: this.miroCovered,
+      updatedTime: 0
     };
   },
   components: {
@@ -31095,10 +31128,22 @@ var getStatusInterval;
           _this2.timeisPaused = true;
           clearInterval(getStatusInterval);
 
-          _this2.$swal({
-            title: 'Great! Your team got the correct answer.',
-            icon: 'success'
-          });
+          if (response['data'][0].player_number != teamSetup.playerName) {
+            _this2.$swal({
+              title: 'Great! Your team got the correct answer.',
+              icon: 'success'
+            }).then(function (response) {
+              if (_this2.puzzleNumber == 2) {
+                _this2.$router.push({
+                  name: 'demo.index'
+                });
+              } else {
+                _this2.$router.push({
+                  name: 'archive.index'
+                });
+              }
+            });
+          }
         }
       })["catch"](function (error) {
         console.log(error);
@@ -31482,7 +31527,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! namespace exports */
 /*! export default [provided] [no usage info] [missing usage info prevents renaming] */
 /*! other exports [not provided] [no usage info] */
-/*! runtime requirements: __webpack_exports__, __webpack_require__.r, __webpack_require__.d, __webpack_require__.* */
+/*! runtime requirements: __webpack_require__, __webpack_require__.n, __webpack_exports__, __webpack_require__.r, __webpack_require__.d, __webpack_require__.* */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -31490,8 +31535,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
 var currentGameTime = 0;
-var gameProgress;
+var gameProgress, teamSetup, codeResponse;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'Timer',
   data: function data() {
@@ -31505,14 +31553,37 @@ var gameProgress;
     };
   },
   beforeCreate: function beforeCreate() {
-    var codeResponse = JSON.parse(localStorage.getItem('codeResponse'));
+    var _this = this;
+
+    codeResponse = JSON.parse(localStorage.getItem('codeResponse'));
 
     if (codeResponse) {
-      gameProgress = JSON.parse(localStorage.getItem('gameProgress'));
-
-      if (gameProgress.GameTime != null) {
-        currentGameTime = gameProgress.GameTime;
-      }
+      teamSetup = JSON.parse(localStorage.getItem('teamSetup'));
+      axios__WEBPACK_IMPORTED_MODULE_0___default().post('api/game/get_game_time', {
+        game_event_id: codeResponse.id,
+        team_number: teamSetup.playerTeam,
+        puzzle_number: this.puzzleNumber
+      }).then(function (response) {
+        // console.log(response);
+        if (response['data'].id) {
+          // alert(response['data'].created_at);
+          var created_at = new Date(response['data'].created_at);
+          var today = new Date();
+          var diff = Math.round((today - created_at) / 1000);
+          _this.currentTime = diff;
+        } else {
+          axios__WEBPACK_IMPORTED_MODULE_0___default().post('api/game/store_game_time', {
+            game_event_id: codeResponse.id,
+            team_number: teamSetup.playerTeam,
+            puzzle_number: _this.puzzleNumber,
+            game_time: _this.currentTime
+          }).then(function (response) {
+            if (response) {// alert('saved!')
+            } else {// alert('error!');
+              }
+          });
+        }
+      });
     }
   },
   mounted: function mounted() {
@@ -31520,30 +31591,54 @@ var gameProgress;
   },
   props: {
     time: String,
-    timeIsPaused: Boolean
+    timeIsPaused: Boolean,
+    puzzleNumber: Number
   },
   watch: {
     timeIsPaused: function timeIsPaused(val) {
-      console.log('test' + this.currentTime);
+      var _this2 = this;
 
+      // console.log('test'+this.currentTime)
       if (val === true) {
         this.isRunning = false;
-        gameProgress.GameTime = this.currentTime;
-        localStorage.setItem('gameProgress', JSON.stringify(gameProgress));
+        axios__WEBPACK_IMPORTED_MODULE_0___default().post('api/game/get_game_time', {
+          game_event_id: codeResponse.id,
+          team_number: teamSetup.playerTeam,
+          puzzle_number: this.puzzleNumber + 1
+        }).then(function (response) {
+          // console.log(response);
+          if (response['data'].id) {
+            // alert(response['data'].created_at);
+            var created_at = new Date(response['data'].created_at);
+            var today = new Date();
+            var diff = Math.round((today - created_at) / 1000);
+            _this2.currentTime = diff;
+          } else {
+            axios__WEBPACK_IMPORTED_MODULE_0___default().post('api/game/store_game_time', {
+              game_event_id: codeResponse.id,
+              team_number: teamSetup.playerTeam,
+              puzzle_number: _this2.puzzleNumber + 1,
+              game_time: _this2.currentTime
+            }).then(function (response) {
+              if (response) {// alert('saved!')
+              } else {// alert('error!');
+                }
+            });
+          }
+        });
       }
     }
   },
   methods: {
     start: function start() {
-      var _this = this;
+      var _this3 = this;
 
-      console.log('test');
-
+      // console.log('test');
       if (!this.currentTimer) {
         this.currentTimer = setInterval(function () {
-          if (_this.isRunning == true) {
-            _this.currentTime++;
-            var newTime = _this.currentTime / 60;
+          if (_this3.isRunning == true) {
+            _this3.currentTime++;
+            var newTime = _this3.currentTime / 60;
             var newMinute = parseInt(newTime);
 
             if (newMinute < 10) {
@@ -31556,11 +31651,11 @@ var gameProgress;
               newSecond = "0" + newSecond;
             }
 
-            _this.displayedTime = String("0:" + newMinute + ":" + newSecond);
+            _this3.displayedTime = String("0:" + newMinute + ":" + newSecond);
           } else {
-            clearInterval(_this.currentTimer);
+            clearInterval(_this3.currentTimer);
 
-            _this.reset();
+            _this3.reset();
           }
         }, 1000);
       }
@@ -31806,7 +31901,7 @@ var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBP
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()(_assets_circuit_board_red_png__WEBPACK_IMPORTED_MODULE_2__.default);
 var ___CSS_LOADER_URL_REPLACEMENT_1___ = _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_1___default()(_assets_circuit_board_green_png__WEBPACK_IMPORTED_MODULE_3__.default);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.right_panel{\r\n        position: relative;\r\n        display: flex;\r\n        flex-wrap: wrap;\r\n        justify-content: center;\r\n        width: 60vw;\n}\n.element_holder{\r\n        position: relative;\r\n        display: flex;\r\n        flex-direction: column;\r\n        flex-wrap: wrap;\r\n        height: 100%;\r\n        width: 100%;\n}\n.manual_div{\r\n        display: flex;\r\n        position: relative;\r\n        cursor: pointer;\r\n        justify-content: center;\r\n        align-items: center;\r\n        width: 100%;\r\n        height: 40vh;\r\n        flex-grow: 1;\r\n        /* border-style: solid; */\n}\n.desk{\r\n        border-radius: 10px;\r\n        width: 95%;\r\n        height: 100%;\r\n        -o-object-fit: cover;\r\n           object-fit: cover;\n}\n.actions2{\r\n        position: relative;\r\n        display: flex;\r\n        width: 87%;\r\n        flex-grow: 1;\n}\n.answer{\r\n        font-size: 3vw;\r\n        width: 100%;\r\n        background: transparent;\r\n        background-size: 100%;\r\n        background-repeat: no-repeat;\r\n        background-position: center;\r\n        border:none;\r\n        outline: none;\r\n        color: greenyellow;\r\n        text-transform:uppercase;\r\n        font-weight: bold;\r\n        padding-left: 26.5%;\r\n        background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\r\n        font-family: 'VT323', monospace;\n}\n.answer.correct{\r\n        background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_1___ + ");\n}\n.language_buttons{\r\n        display: flex;\r\n        position: fixed;\r\n        overflow: hidden;\r\n        left: 50%;\r\n        transform: translate(-50%);\r\n        bottom: 46px;\r\n        flex-wrap: wrap;\r\n        z-index: 99999999;\r\n        padding: 0;\r\n        gap: 10px;\n}\n.float3{\r\n        max-height: 40px;\r\n        max-width: 40px;\r\n        width:auto;\r\n        height:auto;\r\n        -o-object-fit: cover;\r\n           object-fit: cover;\r\n        border-radius:50px;\r\n        text-align:center;\r\n        visibility: hidden;\r\n        margin-right: 2px;\n}\n.appear{\r\n        visibility: visible;\n}\n@media only screen and (max-width: 1024px) {\n.actions2{\r\n                width: 50vw;\n}\n.right_panel{\r\n             width: 50vw;\n}\n}\r\n\r\n\r\n\r\n/* \r\n     @media only screen and (max-width: 1921px) {\r\n         .manual_div{\r\n             height: 70%;\r\n         }\r\n    }\r\n\r\n\r\n\r\n\r\n\r\n    @media only screen and (max-width: 1600px) {\r\n         .manual_div{\r\n             height: 80%;\r\n         }\r\n    }\r\n\r\n     @media only screen and (max-width: 1400px) {\r\n         .manual_div{\r\n             height: 70%;\r\n         }\r\n    } */\r\n\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.right_panel{\r\n        position: relative;\r\n        display: flex;\r\n        flex-wrap: wrap;\r\n        justify-content: center;\r\n        width: 60vw;\n}\n.element_holder{\r\n        position: relative;\r\n        display: flex;\r\n        flex-direction: column;\r\n        flex-wrap: wrap;\r\n        height: 100%;\r\n        width: 100%;\n}\n.manual_div{\r\n        display: flex;\r\n        position: relative;\r\n        cursor: pointer;\r\n        justify-content: center;\r\n        align-items: center;\r\n        width: 100%;\r\n        height: 40vh;\r\n        flex-grow: 1;\r\n        /* border-style: solid; */\n}\n.desk{\r\n        border-radius: 10px;\r\n        width: 95%;\r\n        height: 100%;\r\n        -o-object-fit: cover;\r\n           object-fit: cover;\n}\n.actions2{\r\n        position: relative;\r\n        display: flex;\r\n        width: 87%;\r\n        flex-grow: 1;\n}\n.answer{\r\n        font-size: 3vw;\r\n        width: 100%;\r\n        background: transparent;\r\n        background-size: 100%;\r\n        background-repeat: no-repeat;\r\n        background-position: center;\r\n        border:none;\r\n        outline: none;\r\n        color: greenyellow;\r\n        text-transform:uppercase;\r\n        font-weight: bold;\r\n        padding-left: 26.5%;\r\n        padding-right: 42%;\r\n        background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\r\n        font-family: 'VT323', monospace;\n}\n.answer.correct{\r\n        background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_1___ + ");\n}\n.language_buttons{\r\n        display: flex;\r\n        position: fixed;\r\n        overflow: hidden;\r\n        left: 50%;\r\n        transform: translate(-50%);\r\n        bottom: 46px;\r\n        flex-wrap: wrap;\r\n        z-index: 99999999;\r\n        padding: 0;\r\n        gap: 10px;\n}\n.float3{\r\n        max-height: 40px;\r\n        max-width: 40px;\r\n        width:auto;\r\n        height:auto;\r\n        -o-object-fit: cover;\r\n           object-fit: cover;\r\n        border-radius:50px;\r\n        text-align:center;\r\n        visibility: hidden;\r\n        margin-right: 2px;\n}\n.appear{\r\n        visibility: visible;\n}\n@media only screen and (max-width: 1024px) {\n.actions2{\r\n                width: 50vw;\n}\n.right_panel{\r\n             width: 50vw;\n}\n}\r\n\r\n\r\n\r\n/* \r\n     @media only screen and (max-width: 1921px) {\r\n         .manual_div{\r\n             height: 70%;\r\n         }\r\n    }\r\n\r\n\r\n\r\n\r\n\r\n    @media only screen and (max-width: 1600px) {\r\n         .manual_div{\r\n             height: 80%;\r\n         }\r\n    }\r\n\r\n     @media only screen and (max-width: 1400px) {\r\n         .manual_div{\r\n             height: 70%;\r\n         }\r\n    } */\r\n\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -33654,7 +33749,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ });
-/* harmony import */ var _Header_vue_vue_type_template_id_1f42fb90_bindings_timePaused_props___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Header.vue?vue&type=template&id=1f42fb90&bindings={"timePaused":"props"} */ "./resources/js/components/Header.vue?vue&type=template&id=1f42fb90&bindings={\"timePaused\":\"props\"}");
+/* harmony import */ var _Header_vue_vue_type_template_id_1f42fb90_bindings_timePaused_props_puzzleNumber_props___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Header.vue?vue&type=template&id=1f42fb90&bindings={"timePaused":"props","puzzleNumber":"props"} */ "./resources/js/components/Header.vue?vue&type=template&id=1f42fb90&bindings={\"timePaused\":\"props\",\"puzzleNumber\":\"props\"}");
 /* harmony import */ var _Header_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Header.vue?vue&type=script&lang=js */ "./resources/js/components/Header.vue?vue&type=script&lang=js");
 /* harmony import */ var _Header_vue_vue_type_style_index_0_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Header.vue?vue&type=style&index=0&lang=css */ "./resources/js/components/Header.vue?vue&type=style&index=0&lang=css");
 
@@ -33662,7 +33757,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-_Header_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.render = _Header_vue_vue_type_template_id_1f42fb90_bindings_timePaused_props___WEBPACK_IMPORTED_MODULE_0__.render
+_Header_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.render = _Header_vue_vue_type_template_id_1f42fb90_bindings_timePaused_props_puzzleNumber_props___WEBPACK_IMPORTED_MODULE_0__.render
 /* hot reload */
 if (false) {}
 
@@ -33787,7 +33882,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ });
-/* harmony import */ var _Main_vue_vue_type_template_id_b9c20fb8_bindings_timeisPaused_data_miroURLData_data_imgCover_data_isShowned_data_pauseTime_options_getStatus_options_miroCovered_props_elementImage_props_answer_props_puzzleNumber_props___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Main.vue?vue&type=template&id=b9c20fb8&bindings={"timeisPaused":"data","miroURLData":"data","imgCover":"data","isShowned":"data","pauseTime":"options","getStatus":"options","miroCovered":"props","elementImage":"props","answer":"props","puzzleNumber":"props"} */ "./resources/js/components/Main.vue?vue&type=template&id=b9c20fb8&bindings={\"timeisPaused\":\"data\",\"miroURLData\":\"data\",\"imgCover\":\"data\",\"isShowned\":\"data\",\"pauseTime\":\"options\",\"getStatus\":\"options\",\"miroCovered\":\"props\",\"elementImage\":\"props\",\"answer\":\"props\",\"puzzleNumber\":\"props\"}");
+/* harmony import */ var _Main_vue_vue_type_template_id_b9c20fb8_bindings_timeisPaused_data_miroURLData_data_imgCover_data_isShowned_data_updatedTime_data_pauseTime_options_getStatus_options_miroCovered_props_elementImage_props_answer_props_puzzleNumber_props___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Main.vue?vue&type=template&id=b9c20fb8&bindings={"timeisPaused":"data","miroURLData":"data","imgCover":"data","isShowned":"data","updatedTime":"data","pauseTime":"options","getStatus":"options","miroCovered":"props","elementImage":"props","answer":"props","puzzleNumber":"props"} */ "./resources/js/components/Main.vue?vue&type=template&id=b9c20fb8&bindings={\"timeisPaused\":\"data\",\"miroURLData\":\"data\",\"imgCover\":\"data\",\"isShowned\":\"data\",\"updatedTime\":\"data\",\"pauseTime\":\"options\",\"getStatus\":\"options\",\"miroCovered\":\"props\",\"elementImage\":\"props\",\"answer\":\"props\",\"puzzleNumber\":\"props\"}");
 /* harmony import */ var _Main_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Main.vue?vue&type=script&lang=js */ "./resources/js/components/Main.vue?vue&type=script&lang=js");
 /* harmony import */ var _Main_vue_vue_type_style_index_0_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Main.vue?vue&type=style&index=0&lang=css */ "./resources/js/components/Main.vue?vue&type=style&index=0&lang=css");
 
@@ -33795,7 +33890,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-_Main_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.render = _Main_vue_vue_type_template_id_b9c20fb8_bindings_timeisPaused_data_miroURLData_data_imgCover_data_isShowned_data_pauseTime_options_getStatus_options_miroCovered_props_elementImage_props_answer_props_puzzleNumber_props___WEBPACK_IMPORTED_MODULE_0__.render
+_Main_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.render = _Main_vue_vue_type_template_id_b9c20fb8_bindings_timeisPaused_data_miroURLData_data_imgCover_data_isShowned_data_updatedTime_data_pauseTime_options_getStatus_options_miroCovered_props_elementImage_props_answer_props_puzzleNumber_props___WEBPACK_IMPORTED_MODULE_0__.render
 /* hot reload */
 if (false) {}
 
@@ -33991,7 +34086,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ });
-/* harmony import */ var _Timer_vue_vue_type_template_id_54f9552c_scoped_true_bindings_isRunning_data_currentTime_data_currentTimer_data_minutes_data_secondes_data_displayedTime_data_time_props_timeIsPaused_props_start_options_stop_options_reset_options_setTime_options___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Timer.vue?vue&type=template&id=54f9552c&scoped=true&bindings={"isRunning":"data","currentTime":"data","currentTimer":"data","minutes":"data","secondes":"data","displayedTime":"data","time":"props","timeIsPaused":"props","start":"options","stop":"options","reset":"options","setTime":"options"} */ "./resources/js/components/Timer.vue?vue&type=template&id=54f9552c&scoped=true&bindings={\"isRunning\":\"data\",\"currentTime\":\"data\",\"currentTimer\":\"data\",\"minutes\":\"data\",\"secondes\":\"data\",\"displayedTime\":\"data\",\"time\":\"props\",\"timeIsPaused\":\"props\",\"start\":\"options\",\"stop\":\"options\",\"reset\":\"options\",\"setTime\":\"options\"}");
+/* harmony import */ var _Timer_vue_vue_type_template_id_54f9552c_scoped_true_bindings_isRunning_data_currentTime_data_currentTimer_data_minutes_data_secondes_data_displayedTime_data_time_props_timeIsPaused_props_puzzleNumber_props_start_options_stop_options_reset_options_setTime_options___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Timer.vue?vue&type=template&id=54f9552c&scoped=true&bindings={"isRunning":"data","currentTime":"data","currentTimer":"data","minutes":"data","secondes":"data","displayedTime":"data","time":"props","timeIsPaused":"props","puzzleNumber":"props","start":"options","stop":"options","reset":"options","setTime":"options"} */ "./resources/js/components/Timer.vue?vue&type=template&id=54f9552c&scoped=true&bindings={\"isRunning\":\"data\",\"currentTime\":\"data\",\"currentTimer\":\"data\",\"minutes\":\"data\",\"secondes\":\"data\",\"displayedTime\":\"data\",\"time\":\"props\",\"timeIsPaused\":\"props\",\"puzzleNumber\":\"props\",\"start\":\"options\",\"stop\":\"options\",\"reset\":\"options\",\"setTime\":\"options\"}");
 /* harmony import */ var _Timer_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Timer.vue?vue&type=script&lang=js */ "./resources/js/components/Timer.vue?vue&type=script&lang=js");
 /* harmony import */ var _Timer_vue_vue_type_style_index_0_id_54f9552c_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Timer.vue?vue&type=style&index=0&id=54f9552c&scoped=true&lang=css */ "./resources/js/components/Timer.vue?vue&type=style&index=0&id=54f9552c&scoped=true&lang=css");
 
@@ -33999,7 +34094,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-_Timer_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.render = _Timer_vue_vue_type_template_id_54f9552c_scoped_true_bindings_isRunning_data_currentTime_data_currentTimer_data_minutes_data_secondes_data_displayedTime_data_time_props_timeIsPaused_props_start_options_stop_options_reset_options_setTime_options___WEBPACK_IMPORTED_MODULE_0__.render
+_Timer_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.render = _Timer_vue_vue_type_template_id_54f9552c_scoped_true_bindings_isRunning_data_currentTime_data_currentTimer_data_minutes_data_secondes_data_displayedTime_data_time_props_timeIsPaused_props_puzzleNumber_props_start_options_stop_options_reset_options_setTime_options___WEBPACK_IMPORTED_MODULE_0__.render
 _Timer_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.__scopeId = "data-v-54f9552c"
 /* hot reload */
 if (false) {}
@@ -34590,12 +34685,12 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/Header.vue?vue&type=template&id=1f42fb90&bindings={\"timePaused\":\"props\"}":
-/*!**********************************************************************************************************!*\
-  !*** ./resources/js/components/Header.vue?vue&type=template&id=1f42fb90&bindings={"timePaused":"props"} ***!
-  \**********************************************************************************************************/
+/***/ "./resources/js/components/Header.vue?vue&type=template&id=1f42fb90&bindings={\"timePaused\":\"props\",\"puzzleNumber\":\"props\"}":
+/*!*********************************************************************************************************************************!*\
+  !*** ./resources/js/components/Header.vue?vue&type=template&id=1f42fb90&bindings={"timePaused":"props","puzzleNumber":"props"} ***!
+  \*********************************************************************************************************************************/
 /*! namespace exports */
-/*! export render [provided] [no usage info] [missing usage info prevents renaming] -> ./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Header.vue?vue&type=template&id=1f42fb90&bindings={"timePaused":"props"} .render */
+/*! export render [provided] [no usage info] [missing usage info prevents renaming] -> ./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Header.vue?vue&type=template&id=1f42fb90&bindings={"timePaused":"props","puzzleNumber":"props"} .render */
 /*! other exports [not provided] [no usage info] */
 /*! runtime requirements: __webpack_require__, __webpack_exports__, __webpack_require__.d, __webpack_require__.r, __webpack_require__.* */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -34603,9 +34698,9 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => /* reexport safe */ _node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Header_vue_vue_type_template_id_1f42fb90_bindings_timePaused_props___WEBPACK_IMPORTED_MODULE_0__.render
+/* harmony export */   "render": () => /* reexport safe */ _node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Header_vue_vue_type_template_id_1f42fb90_bindings_timePaused_props_puzzleNumber_props___WEBPACK_IMPORTED_MODULE_0__.render
 /* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Header_vue_vue_type_template_id_1f42fb90_bindings_timePaused_props___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./Header.vue?vue&type=template&id=1f42fb90&bindings={"timePaused":"props"} */ "./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Header.vue?vue&type=template&id=1f42fb90&bindings={\"timePaused\":\"props\"}");
+/* harmony import */ var _node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Header_vue_vue_type_template_id_1f42fb90_bindings_timePaused_props_puzzleNumber_props___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./Header.vue?vue&type=template&id=1f42fb90&bindings={"timePaused":"props","puzzleNumber":"props"} */ "./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Header.vue?vue&type=template&id=1f42fb90&bindings={\"timePaused\":\"props\",\"puzzleNumber\":\"props\"}");
 
 
 /***/ }),
@@ -34670,12 +34765,12 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/Main.vue?vue&type=template&id=b9c20fb8&bindings={\"timeisPaused\":\"data\",\"miroURLData\":\"data\",\"imgCover\":\"data\",\"isShowned\":\"data\",\"pauseTime\":\"options\",\"getStatus\":\"options\",\"miroCovered\":\"props\",\"elementImage\":\"props\",\"answer\":\"props\",\"puzzleNumber\":\"props\"}":
-/*!****************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./resources/js/components/Main.vue?vue&type=template&id=b9c20fb8&bindings={"timeisPaused":"data","miroURLData":"data","imgCover":"data","isShowned":"data","pauseTime":"options","getStatus":"options","miroCovered":"props","elementImage":"props","answer":"props","puzzleNumber":"props"} ***!
-  \****************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./resources/js/components/Main.vue?vue&type=template&id=b9c20fb8&bindings={\"timeisPaused\":\"data\",\"miroURLData\":\"data\",\"imgCover\":\"data\",\"isShowned\":\"data\",\"updatedTime\":\"data\",\"pauseTime\":\"options\",\"getStatus\":\"options\",\"miroCovered\":\"props\",\"elementImage\":\"props\",\"answer\":\"props\",\"puzzleNumber\":\"props\"}":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./resources/js/components/Main.vue?vue&type=template&id=b9c20fb8&bindings={"timeisPaused":"data","miroURLData":"data","imgCover":"data","isShowned":"data","updatedTime":"data","pauseTime":"options","getStatus":"options","miroCovered":"props","elementImage":"props","answer":"props","puzzleNumber":"props"} ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! namespace exports */
-/*! export render [provided] [no usage info] [missing usage info prevents renaming] -> ./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Main.vue?vue&type=template&id=b9c20fb8&bindings={"timeisPaused":"data","miroURLData":"data","imgCover":"data","isShowned":"data","pauseTime":"options","getStatus":"options","miroCovered":"props","elementImage":"props","answer":"props","puzzleNumber":"props"} .render */
+/*! export render [provided] [no usage info] [missing usage info prevents renaming] -> ./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Main.vue?vue&type=template&id=b9c20fb8&bindings={"timeisPaused":"data","miroURLData":"data","imgCover":"data","isShowned":"data","updatedTime":"data","pauseTime":"options","getStatus":"options","miroCovered":"props","elementImage":"props","answer":"props","puzzleNumber":"props"} .render */
 /*! other exports [not provided] [no usage info] */
 /*! runtime requirements: __webpack_require__, __webpack_exports__, __webpack_require__.d, __webpack_require__.r, __webpack_require__.* */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -34683,9 +34778,9 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => /* reexport safe */ _node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Main_vue_vue_type_template_id_b9c20fb8_bindings_timeisPaused_data_miroURLData_data_imgCover_data_isShowned_data_pauseTime_options_getStatus_options_miroCovered_props_elementImage_props_answer_props_puzzleNumber_props___WEBPACK_IMPORTED_MODULE_0__.render
+/* harmony export */   "render": () => /* reexport safe */ _node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Main_vue_vue_type_template_id_b9c20fb8_bindings_timeisPaused_data_miroURLData_data_imgCover_data_isShowned_data_updatedTime_data_pauseTime_options_getStatus_options_miroCovered_props_elementImage_props_answer_props_puzzleNumber_props___WEBPACK_IMPORTED_MODULE_0__.render
 /* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Main_vue_vue_type_template_id_b9c20fb8_bindings_timeisPaused_data_miroURLData_data_imgCover_data_isShowned_data_pauseTime_options_getStatus_options_miroCovered_props_elementImage_props_answer_props_puzzleNumber_props___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./Main.vue?vue&type=template&id=b9c20fb8&bindings={"timeisPaused":"data","miroURLData":"data","imgCover":"data","isShowned":"data","pauseTime":"options","getStatus":"options","miroCovered":"props","elementImage":"props","answer":"props","puzzleNumber":"props"} */ "./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Main.vue?vue&type=template&id=b9c20fb8&bindings={\"timeisPaused\":\"data\",\"miroURLData\":\"data\",\"imgCover\":\"data\",\"isShowned\":\"data\",\"pauseTime\":\"options\",\"getStatus\":\"options\",\"miroCovered\":\"props\",\"elementImage\":\"props\",\"answer\":\"props\",\"puzzleNumber\":\"props\"}");
+/* harmony import */ var _node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Main_vue_vue_type_template_id_b9c20fb8_bindings_timeisPaused_data_miroURLData_data_imgCover_data_isShowned_data_updatedTime_data_pauseTime_options_getStatus_options_miroCovered_props_elementImage_props_answer_props_puzzleNumber_props___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./Main.vue?vue&type=template&id=b9c20fb8&bindings={"timeisPaused":"data","miroURLData":"data","imgCover":"data","isShowned":"data","updatedTime":"data","pauseTime":"options","getStatus":"options","miroCovered":"props","elementImage":"props","answer":"props","puzzleNumber":"props"} */ "./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Main.vue?vue&type=template&id=b9c20fb8&bindings={\"timeisPaused\":\"data\",\"miroURLData\":\"data\",\"imgCover\":\"data\",\"isShowned\":\"data\",\"updatedTime\":\"data\",\"pauseTime\":\"options\",\"getStatus\":\"options\",\"miroCovered\":\"props\",\"elementImage\":\"props\",\"answer\":\"props\",\"puzzleNumber\":\"props\"}");
 
 
 /***/ }),
@@ -34790,12 +34885,12 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/Timer.vue?vue&type=template&id=54f9552c&scoped=true&bindings={\"isRunning\":\"data\",\"currentTime\":\"data\",\"currentTimer\":\"data\",\"minutes\":\"data\",\"secondes\":\"data\",\"displayedTime\":\"data\",\"time\":\"props\",\"timeIsPaused\":\"props\",\"start\":\"options\",\"stop\":\"options\",\"reset\":\"options\",\"setTime\":\"options\"}":
-/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./resources/js/components/Timer.vue?vue&type=template&id=54f9552c&scoped=true&bindings={"isRunning":"data","currentTime":"data","currentTimer":"data","minutes":"data","secondes":"data","displayedTime":"data","time":"props","timeIsPaused":"props","start":"options","stop":"options","reset":"options","setTime":"options"} ***!
-  \***************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./resources/js/components/Timer.vue?vue&type=template&id=54f9552c&scoped=true&bindings={\"isRunning\":\"data\",\"currentTime\":\"data\",\"currentTimer\":\"data\",\"minutes\":\"data\",\"secondes\":\"data\",\"displayedTime\":\"data\",\"time\":\"props\",\"timeIsPaused\":\"props\",\"puzzleNumber\":\"props\",\"start\":\"options\",\"stop\":\"options\",\"reset\":\"options\",\"setTime\":\"options\"}":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./resources/js/components/Timer.vue?vue&type=template&id=54f9552c&scoped=true&bindings={"isRunning":"data","currentTime":"data","currentTimer":"data","minutes":"data","secondes":"data","displayedTime":"data","time":"props","timeIsPaused":"props","puzzleNumber":"props","start":"options","stop":"options","reset":"options","setTime":"options"} ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! namespace exports */
-/*! export render [provided] [no usage info] [missing usage info prevents renaming] -> ./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Timer.vue?vue&type=template&id=54f9552c&scoped=true&bindings={"isRunning":"data","currentTime":"data","currentTimer":"data","minutes":"data","secondes":"data","displayedTime":"data","time":"props","timeIsPaused":"props","start":"options","stop":"options","reset":"options","setTime":"options"} .render */
+/*! export render [provided] [no usage info] [missing usage info prevents renaming] -> ./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Timer.vue?vue&type=template&id=54f9552c&scoped=true&bindings={"isRunning":"data","currentTime":"data","currentTimer":"data","minutes":"data","secondes":"data","displayedTime":"data","time":"props","timeIsPaused":"props","puzzleNumber":"props","start":"options","stop":"options","reset":"options","setTime":"options"} .render */
 /*! other exports [not provided] [no usage info] */
 /*! runtime requirements: __webpack_require__, __webpack_exports__, __webpack_require__.d, __webpack_require__.r, __webpack_require__.* */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -34803,9 +34898,9 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => /* reexport safe */ _node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Timer_vue_vue_type_template_id_54f9552c_scoped_true_bindings_isRunning_data_currentTime_data_currentTimer_data_minutes_data_secondes_data_displayedTime_data_time_props_timeIsPaused_props_start_options_stop_options_reset_options_setTime_options___WEBPACK_IMPORTED_MODULE_0__.render
+/* harmony export */   "render": () => /* reexport safe */ _node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Timer_vue_vue_type_template_id_54f9552c_scoped_true_bindings_isRunning_data_currentTime_data_currentTimer_data_minutes_data_secondes_data_displayedTime_data_time_props_timeIsPaused_props_puzzleNumber_props_start_options_stop_options_reset_options_setTime_options___WEBPACK_IMPORTED_MODULE_0__.render
 /* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Timer_vue_vue_type_template_id_54f9552c_scoped_true_bindings_isRunning_data_currentTime_data_currentTimer_data_minutes_data_secondes_data_displayedTime_data_time_props_timeIsPaused_props_start_options_stop_options_reset_options_setTime_options___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./Timer.vue?vue&type=template&id=54f9552c&scoped=true&bindings={"isRunning":"data","currentTime":"data","currentTimer":"data","minutes":"data","secondes":"data","displayedTime":"data","time":"props","timeIsPaused":"props","start":"options","stop":"options","reset":"options","setTime":"options"} */ "./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Timer.vue?vue&type=template&id=54f9552c&scoped=true&bindings={\"isRunning\":\"data\",\"currentTime\":\"data\",\"currentTimer\":\"data\",\"minutes\":\"data\",\"secondes\":\"data\",\"displayedTime\":\"data\",\"time\":\"props\",\"timeIsPaused\":\"props\",\"start\":\"options\",\"stop\":\"options\",\"reset\":\"options\",\"setTime\":\"options\"}");
+/* harmony import */ var _node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Timer_vue_vue_type_template_id_54f9552c_scoped_true_bindings_isRunning_data_currentTime_data_currentTimer_data_minutes_data_secondes_data_displayedTime_data_time_props_timeIsPaused_props_puzzleNumber_props_start_options_stop_options_reset_options_setTime_options___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./Timer.vue?vue&type=template&id=54f9552c&scoped=true&bindings={"isRunning":"data","currentTime":"data","currentTimer":"data","minutes":"data","secondes":"data","displayedTime":"data","time":"props","timeIsPaused":"props","puzzleNumber":"props","start":"options","stop":"options","reset":"options","setTime":"options"} */ "./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Timer.vue?vue&type=template&id=54f9552c&scoped=true&bindings={\"isRunning\":\"data\",\"currentTime\":\"data\",\"currentTimer\":\"data\",\"minutes\":\"data\",\"secondes\":\"data\",\"displayedTime\":\"data\",\"time\":\"props\",\"timeIsPaused\":\"props\",\"puzzleNumber\":\"props\",\"start\":\"options\",\"stop\":\"options\",\"reset\":\"options\",\"setTime\":\"options\"}");
 
 
 /***/ }),
@@ -34897,8 +34992,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             placeholder: "TYPE HERE",
             style: {"z-index":"1"},
             onKeyup: _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withKeys)((...args) => ($options.onEnter(...args)), ["enter"])),
-            onInput: _cache[3] || (_cache[3] = (...args) => ($options.onInput(...args))),
-            maxlength: "8"
+            onInput: _cache[3] || (_cache[3] = (...args) => ($options.onInput(...args)))
           }, null, 34 /* CLASS, HYDRATE_EVENTS */)
         ])
       ]),
@@ -34961,10 +35055,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Header.vue?vue&type=template&id=1f42fb90&bindings={\"timePaused\":\"props\"}":
-/*!*******************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Header.vue?vue&type=template&id=1f42fb90&bindings={"timePaused":"props"} ***!
-  \*******************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Header.vue?vue&type=template&id=1f42fb90&bindings={\"timePaused\":\"props\",\"puzzleNumber\":\"props\"}":
+/*!******************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Header.vue?vue&type=template&id=1f42fb90&bindings={"timePaused":"props","puzzleNumber":"props"} ***!
+  \******************************************************************************************************************************************************************************************************************************************************************/
 /*! namespace exports */
 /*! export render [provided] [no usage info] [missing usage info prevents renaming] */
 /*! other exports [not provided] [no usage info] */
@@ -34995,10 +35089,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         teamName: "7"
       }),
       (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Timer, {
+        puzzleNumber: $props.puzzleNumber,
         timeIsPaused: $props.timePaused,
         class: "timer",
         time: "01:06:30"
-      }, null, 8 /* PROPS */, ["timeIsPaused"])
+      }, null, 8 /* PROPS */, ["puzzleNumber", "timeIsPaused"])
     ]),
     (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Inventory, { class: "inventory_holder" })
   ]))
@@ -35123,10 +35218,10 @@ const render = /*#__PURE__*/_withId(function render(_ctx, _cache, $props, $setup
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Main.vue?vue&type=template&id=b9c20fb8&bindings={\"timeisPaused\":\"data\",\"miroURLData\":\"data\",\"imgCover\":\"data\",\"isShowned\":\"data\",\"pauseTime\":\"options\",\"getStatus\":\"options\",\"miroCovered\":\"props\",\"elementImage\":\"props\",\"answer\":\"props\",\"puzzleNumber\":\"props\"}":
-/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Main.vue?vue&type=template&id=b9c20fb8&bindings={"timeisPaused":"data","miroURLData":"data","imgCover":"data","isShowned":"data","pauseTime":"options","getStatus":"options","miroCovered":"props","elementImage":"props","answer":"props","puzzleNumber":"props"} ***!
-  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Main.vue?vue&type=template&id=b9c20fb8&bindings={\"timeisPaused\":\"data\",\"miroURLData\":\"data\",\"imgCover\":\"data\",\"isShowned\":\"data\",\"updatedTime\":\"data\",\"pauseTime\":\"options\",\"getStatus\":\"options\",\"miroCovered\":\"props\",\"elementImage\":\"props\",\"answer\":\"props\",\"puzzleNumber\":\"props\"}":
+/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Main.vue?vue&type=template&id=b9c20fb8&bindings={"timeisPaused":"data","miroURLData":"data","imgCover":"data","isShowned":"data","updatedTime":"data","pauseTime":"options","getStatus":"options","miroCovered":"props","elementImage":"props","answer":"props","puzzleNumber":"props"} ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! namespace exports */
 /*! export render [provided] [no usage info] [missing usage info prevents renaming] */
 /*! other exports [not provided] [no usage info] */
@@ -35163,9 +35258,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   return ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [
     (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Header, {
+      puzzleNumber: $props.puzzleNumber,
       class: "header2",
       timePaused: $data.timeisPaused
-    }, null, 8 /* PROPS */, ["timePaused"]),
+    }, null, 8 /* PROPS */, ["puzzleNumber", "timePaused"]),
     (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [
       (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Miro, {
         class: "miro_holder",
@@ -35174,12 +35270,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         imgCover: $data.imgCover
       }, null, 8 /* PROPS */, ["miroURL", "isShowned", "imgCover"]),
       (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ElementHolder, {
-        onPauseTime: $options.pauseTime,
+        onPauseTime: _cache[1] || (_cache[1] = $event => (_ctx.pause-_ctx.time)),
         elementImage: $props.elementImage,
         class: "main_element_holder",
         answer: $props.answer,
         puzzleNumber: $props.puzzleNumber
-      }, null, 8 /* PROPS */, ["onPauseTime", "elementImage", "answer", "puzzleNumber"])
+      }, null, 8 /* PROPS */, ["elementImage", "answer", "puzzleNumber"])
     ]),
     _hoisted_3
   ]))
@@ -35429,10 +35525,10 @@ const render = /*#__PURE__*/_withId(function render(_ctx, _cache, $props, $setup
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Timer.vue?vue&type=template&id=54f9552c&scoped=true&bindings={\"isRunning\":\"data\",\"currentTime\":\"data\",\"currentTimer\":\"data\",\"minutes\":\"data\",\"secondes\":\"data\",\"displayedTime\":\"data\",\"time\":\"props\",\"timeIsPaused\":\"props\",\"start\":\"options\",\"stop\":\"options\",\"reset\":\"options\",\"setTime\":\"options\"}":
-/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Timer.vue?vue&type=template&id=54f9552c&scoped=true&bindings={"isRunning":"data","currentTime":"data","currentTimer":"data","minutes":"data","secondes":"data","displayedTime":"data","time":"props","timeIsPaused":"props","start":"options","stop":"options","reset":"options","setTime":"options"} ***!
-  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Timer.vue?vue&type=template&id=54f9552c&scoped=true&bindings={\"isRunning\":\"data\",\"currentTime\":\"data\",\"currentTimer\":\"data\",\"minutes\":\"data\",\"secondes\":\"data\",\"displayedTime\":\"data\",\"time\":\"props\",\"timeIsPaused\":\"props\",\"puzzleNumber\":\"props\",\"start\":\"options\",\"stop\":\"options\",\"reset\":\"options\",\"setTime\":\"options\"}":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Timer.vue?vue&type=template&id=54f9552c&scoped=true&bindings={"isRunning":"data","currentTime":"data","currentTimer":"data","minutes":"data","secondes":"data","displayedTime":"data","time":"props","timeIsPaused":"props","puzzleNumber":"props","start":"options","stop":"options","reset":"options","setTime":"options"} ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! namespace exports */
 /*! export render [provided] [no usage info] [missing usage info prevents renaming] */
 /*! other exports [not provided] [no usage info] */

@@ -7,7 +7,7 @@
                 <img class="desk" v-bind:src="img"  />
             </div>
             <div class="actions2">
-                <input :class="[isCorrect ? 'correct' : '' , 'answer']" type="text" placeholder="TYPE HERE" style="z-index: 1" v-on:keyup.enter="onEnter" @input="onInput" maxlength="8"/>
+                <input :class="[isCorrect ? 'correct' : '' , 'answer']" type="text" placeholder="TYPE HERE" style="z-index: 1" v-on:keyup.enter="onEnter" @input="onInput" />
         
             </div>
         </div>
@@ -44,6 +44,7 @@
 <script>
 
 import VueEasyLightbox from 'vue-easy-lightbox'
+import axios from 'axios'
 
 var keystrokeSound = new Audio('https://dl.dropboxusercontent.com/s/hjx4xlxyx39uzv7/18660_1464810669.mp3');
 var correctSound = new Audio('https://www.freesoundslibrary.com/wp-content/uploads/2018/03/right-answer-ding-ding-sound-effect.mp3');
@@ -63,9 +64,9 @@ const page_8_en = '/images/page_8_en.png';
 
 const en_manual = [cover_en, page_1_en, page_2_en, page_8_en];
 
-const floor1_image = '/images/floor1.png';
-const floor2_image = '/images/floor2.png';
-const floor3_image = '/images/floor3.png';
+const floor1_image = '/images/floor3.png';
+const floor2_image = '/images/floor1.png';
+const floor3_image = '/images/floor2.png';
 const floor4_image = '/images/floor4.png';
 
 const en_floor_image = [floor1_image, floor2_image, floor3_image, floor4_image];
@@ -73,7 +74,7 @@ const en_floor_image = [floor1_image, floor2_image, floor3_image, floor4_image];
 var typingTimer;
 var doneTypingInterval = 1000;
 var presscount = 0;
-
+let teamSetup;
 export default{
     name:'ElementHolder',
     components:{
@@ -98,6 +99,9 @@ export default{
         answer: String,
         puzzleNumber: Number
     },
+    beforeCreate(){
+        teamSetup = JSON.parse(localStorage.getItem('teamSetup'));
+    },
     methods: {
             onInput(e){
                     keystrokeSound.play();
@@ -106,18 +110,38 @@ export default{
                         this.isCorrect = true;
                         correctSound.play();
                         this.$emit('pause-time');
-                           this.$swal({
-                                title:'Great! That is the correct answer!',
-                                icon:'success'    
-                                        }).then(response => {
-                        // console.log(response);
-                                if(this.puzzleNumber == 2){
-                                    this.$router.push({ name: 'demo.index' })
-                                }
-                                else{
-                                     this.$router.push({ name: 'archive.index' })
-                                }
-                    });
+                        
+                        let gameProgress = JSON.parse(localStorage.getItem('gameProgress'));
+
+
+                          axios.post('api/game/store_status',{
+                                    game_event_id: teamSetup.game_event_id,
+                                    teamNumber: teamSetup.playerTeam,
+                                    puzzle_progress: this.puzzleNumber,
+                                    player_number: teamSetup.playerName
+                                }).then(response => {
+                                    console.log(response);
+                                    
+
+
+                                    if(response){
+                                        this.$swal({
+                                                    title:'Great! That is the correct answer!',
+                                                    icon:'success'    
+                                                            }).then(response => {
+                                                    if(this.puzzleNumber == 2){
+                                                        this.$router.push({ name: 'demo.index' })
+                                                    }
+                                                    else{
+                                                        this.$router.push({ name: 'archive.index' })
+                                                    }
+                                        });
+                                    }
+                                    else{
+                                        //show db error
+                                        //alert('something went wrong');
+                                    }
+                                });
                     }
                     else{
                         this.isCorrect = false;
@@ -126,22 +150,45 @@ export default{
             onEnter(e){
                  keystrokeSound.play();
                     console.log(e.target.value);
-                    if(e.target.value.includes(this.correctAnswer)){
+                    if(e.target.value.toLowerCase().indexOf(this.correctAnswer) > 0){
                         this.isCorrect = true;
                         correctSound.play();
                         this.$emit('pause-time');
-                           this.$swal({
-                                title:'Great! That is the correct answer!',
-                                icon:'success'    
-                                        }).then(response => {
-                        // console.log(response);
-                                if(this.puzzleNumber == 2){
-                                    this.$router.push({ name: 'demo.index' })
-                                }
-                                else{
-                                     this.$router.push({ name: 'archive.index' })
-                                }
-                    });
+
+                        let gameProgress = JSON.parse(localStorage.getItem('gameProgress'));
+
+                            axios.post('api/game/store_status',{
+                                    game_event_id: teamSetup.game_event_id,
+                                    teamNumber: teamSetup.playerTeam,
+                                    puzzle_progress: this.puzzleNumber,
+                                    player_number: teamSetup.playerName
+                                }).then(response => {
+                                    console.log(response);
+                                    
+
+
+                                    if(response){
+                                        this.$swal({
+                                                    title:'Great! That is the correct answer!',
+                                                    icon:'success'    
+                                                            }).then(response => {
+                                                    if(this.puzzleNumber == 2){
+                                                        this.$router.push({ name: 'demo.index' })
+                                                    }
+                                                    else{
+                                                        this.$router.push({ name: 'archive.index' })
+                                                    }
+                                        });
+                                    }
+                                    else{
+                                        //show db error
+                                        //alert('something went wrong');
+                                    }
+                                });
+                            
+
+
+                          
                     }
                     else{
                         this.$swal({
@@ -262,6 +309,7 @@ export default{
         text-transform:uppercase;
         font-weight: bold;
         padding-left: 26.5%;
+        padding-right: 42%;
         background-image: url('../assets/circuit_board_red.png');
         font-family: 'VT323', monospace;
     }

@@ -5,9 +5,11 @@
 </template>
 
 <script>
-    
+    import axios from 'axios'
+
+
     let currentGameTime = 0;
-    let gameProgress;
+    let gameProgress, teamSetup, codeResponse;
 
     export default{
         name: 'Timer',
@@ -22,14 +24,45 @@
             }
         },
         beforeCreate(){
-            let codeResponse = JSON.parse(localStorage.getItem('codeResponse'));
+            codeResponse = JSON.parse(localStorage.getItem('codeResponse'));
             if(codeResponse){
-                
-                gameProgress = JSON.parse(localStorage.getItem('gameProgress'));
+                teamSetup = JSON.parse(localStorage.getItem('teamSetup'));
 
-                 if(gameProgress.GameTime != null){
-                     currentGameTime = gameProgress.GameTime;
-                 }
+                          axios.post('api/game/get_game_time',{
+                                    game_event_id: codeResponse.id,
+                                    team_number: teamSetup.playerTeam,
+                                    puzzle_number: this.puzzleNumber,
+                                }).then(response => {
+                                    // console.log(response);
+
+                                    if(response['data'].id){
+                                        // alert(response['data'].created_at);
+                                        let created_at = new Date(response['data'].created_at);
+                                            
+                                        const today = new Date();
+
+                                        let diff = Math.round((today-created_at)/(1000));
+                                        
+                                        this.currentTime = diff;
+
+                                        
+                                    }
+                                    else{
+                                        axios.post('api/game/store_game_time',{
+                                            game_event_id: codeResponse.id,
+                                            team_number: teamSetup.playerTeam,
+                                            puzzle_number: this.puzzleNumber,
+                                            game_time: this.currentTime
+                                        }).then(response => {
+                                            if(response){
+                                                // alert('saved!')
+                                            }
+                                            else{
+                                                // alert('error!');
+                                            }
+                                        });
+                                    }
+                                });
             }
         },
         mounted(){
@@ -38,20 +71,54 @@
         props:{
             time: String,
             timeIsPaused: Boolean,
+            puzzleNumber: Number
         },
         watch: {
             timeIsPaused: function(val){
-                console.log('test'+this.currentTime)
+                // console.log('test'+this.currentTime)
                 if(val === true){
                     this.isRunning = false;
-                    gameProgress.GameTime = this.currentTime;
-                    localStorage.setItem('gameProgress', JSON.stringify(gameProgress));
+                     axios.post('api/game/get_game_time',{
+                                    game_event_id: codeResponse.id,
+                                    team_number: teamSetup.playerTeam,
+                                    puzzle_number: this.puzzleNumber+1,
+                                }).then(response => {
+                                    // console.log(response);
+
+                                    if(response['data'].id){
+                                        // alert(response['data'].created_at);
+                                        let created_at = new Date(response['data'].created_at);
+                                            
+                                        const today = new Date();
+
+                                        let diff = Math.round((today-created_at)/(1000));
+                                        
+                                        this.currentTime = diff;
+
+                                        
+                                    }
+                                    else{
+                                        axios.post('api/game/store_game_time',{
+                                            game_event_id: codeResponse.id,
+                                            team_number: teamSetup.playerTeam,
+                                            puzzle_number: this.puzzleNumber+1,
+                                            game_time: this.currentTime
+                                        }).then(response => {
+                                            if(response){
+                                                // alert('saved!')
+                                            }
+                                            else{
+                                                // alert('error!');
+                                            }
+                                        });
+                                    }
+                                });
                 }
             }
         },
         methods:{
             start () {
-                console.log('test');
+                // console.log('test');
 			 if (!this.currentTimer) {
 				  this.currentTimer = setInterval( () => {
 						if (this.isRunning == true) {
