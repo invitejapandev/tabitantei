@@ -4,7 +4,7 @@
         <Header  :puzzleNumber="puzzleNumber" class="header2" :timePaused="timeisPaused" />
         <div class="main_body">
             <Miro class="miro_holder" :miroURL="miroURLData" :isShowned="isShowned" :imgCover="imgCover"/>
-            <ElementHolder @pauseTime="pause-time" :elementImage="elementImage" class="main_element_holder" :answer="answer" :puzzleNumber="puzzleNumber" />
+            <MapElement @pauseTime="pause-time" :elementImage="elementImage" class="main_element_holder" :answer="answer" :puzzleNumber="puzzleNumber" />
         </div>
         <a href="#" class="float">
             <img src="../assets/chloe_version.png" style="width: 120px; height: 120px;"/>
@@ -16,12 +16,13 @@
 <script>
     import axios from 'axios';
     import Header from './Header.vue';
-    import ElementHolder from './ElementHolder.vue'
+    import MapElement from './MapElement.vue'
     import Miro from './Miro.vue';
 
     let computerMIRO = "https://miro.com/app/live-embed/o9J_ltgInS4=/?embedAutoplay=true&moveToViewport=-2638,-351,2934,3605";
     let  floorMIRO = "https://miro.com/app/live-embed/o9J_ltgIkjg=/?embedAutoplay=true&moveToViewport=2560,-648,1472,1160";
     let mapMIRO = 'https://miro.com/app/live-embed/o9J_ljJrZyw=/?embedAutoplay=true&moveToViewport=-1717,-895,2432,1658';
+    let mapMIRO2 = 'https://miro.com/app/live-embed/o9J_liws9Qc=/?embedAutoplay=true&moveToViewport=-3591,-2318,6046,4402';
 
     let selectedMIRO = "";
     let gameProgress;
@@ -29,7 +30,7 @@
     var getStatusInterval;
 
     export default{
-        name: 'Main',
+        name: 'Map',
         beforeCreate(){
             codeResponse = JSON.parse(localStorage.getItem('codeResponse'));
             teamSetup = JSON.parse(localStorage.getItem('teamSetup'));
@@ -49,11 +50,14 @@
                     localStorage.setItem('gameProgress', JSON.stringify(gameProgress));
                 }
 
-                if(this.puzzleNumber == 1){
+                 if(this.puzzleNumber == 1){
                     selectedMIRO = floorMIRO;
                 }
                 else if(this.puzzleNumber == 3){
                     selectedMIRO = mapMIRO;
+                }
+                else if(this.puzzleNumber == 4){
+                    selectedMIRO = mapMIRO2;
                 }
                 else{
                     selectedMIRO = computerMIRO;
@@ -73,7 +77,7 @@
         },
         components: {
             Header,
-            ElementHolder,
+            MapElement,
             Miro
         },
         methods:{
@@ -99,6 +103,9 @@
                                                     }
                                                     else if(this.puzzleNumber == 3){
                                                         this.$router.push({ name: 'MapTextPartThree.index'})
+                                                    }
+                                                    else if(this.puzzleNumber == 4){
+                                                        //
                                                     }
                                                     else{
                                                         this.$router.push({ name: 'archive.index' })

@@ -6,9 +6,17 @@
                 <!-- <img class="desk" src="../assets/bulletin_board.png"  /> -->
                 <img class="desk" v-bind:src="img"  />
             </div>
-            <div class="actions2">
+            <div :class="[puzzleNumber == 3 ? 'appear' : '' , 'actions2']" >
                 <input :class="[isCorrect ? 'correct' : '' , 'answer']" type="text" placeholder="TYPE HERE" style="z-index: 1" v-on:keyup.enter="onEnter" @input="onInput" />
         
+            </div>
+
+            <div :class="[puzzleNumber == 4 ? 'appear' : '' , 'actions3']" >
+                <div class="btnBoxes blue" @click="onButtonClicked('blue')">Wine Testing</div>
+                <div class="btnBoxes green" @click="onButtonClicked('green')">Street Art Walking</div>
+                <div class="btnBoxes yellow" @click="onButtonClicked('yellow')">Literary Walking</div>
+                <div class="btnBoxes red" @click="onButtonClicked('red')">Photo Spot</div>
+
             </div>
         </div>
        
@@ -71,12 +79,29 @@ const floor4_image = '/images/floor4.png';
 
 const en_floor_image = [floor1_image, floor2_image, floor3_image, floor4_image];
 
+const map1_image = '/images/Map1.png';
+const map2_image = '/images/Map2.png';
+const map3_image = '/images/Map3.png';
+const map4_image = '/images/Map4.png';
+const map5_image = '/images/Map5.png';
+const map6_image = '/images/Map6.png';
+const map7_image = '/images/Map7.png';
+
+const en_map_images = [map1_image, map2_image, map3_image, map4_image, map5_image, map6_image, map7_image];
+
+const blue_image = '/images/Blue.png';
+const yellow_image = '/images/Yellow.png';
+const green_image = '/images/Green.png';
+const red_image = '/images/Red.png';
+
+const en_color_iamges = [blue_image, yellow_image, green_image, red_image];
+
 var typingTimer;
 var doneTypingInterval = 1000;
 var presscount = 0;
 let teamSetup;
 export default{
-    name:'ElementHolder',
+    name:'MapElement',
     components:{
         VueEasyLightbox
     },
@@ -130,10 +155,13 @@ export default{
                                                     icon:'success'    
                                                             }).then(response => {
                                                     if(this.puzzleNumber == 2){
-                                                        this.$router.push({ name: 'MapText.index' })
+                                                        this.$router.push({ name: 'demo.index' })
                                                     }
                                                     else if(this.puzzleNumber == 3){
                                                         this.$router.push({ name: 'MapTextPartThree.index'})
+                                                    }
+                                                    else if(this.puzzleNumber == 4){
+                                                         this.$router.push({ name: 'ParisText.index'})
                                                     }
                                                     else{
                                                         this.$router.push({ name: 'archive.index' })
@@ -150,6 +178,57 @@ export default{
                         this.isCorrect = false;
                     }
                 },
+            onButtonClicked(e){
+                if(e == this.correctAnswer){
+                    this.isCorrect = true;
+                        correctSound.play();
+                        this.$emit('pause-time');
+
+                        let gameProgress = JSON.parse(localStorage.getItem('gameProgress'));
+
+                            axios.post('api/game/store_status',{
+                                    game_event_id: teamSetup.game_event_id,
+                                    teamNumber: teamSetup.playerTeam,
+                                    puzzle_progress: this.puzzleNumber,
+                                    player_number: teamSetup.playerName
+                                }).then(response => {
+                                    console.log(response);
+                                    
+
+
+                                    if(response){
+                                        this.$swal({
+                                                    title:'Great! That is the correct answer!',
+                                                    icon:'success'    
+                                                            }).then(response => {
+                                                    if(this.puzzleNumber == 2){
+                                                        this.$router.push({ name: 'demo.index' })
+                                                    }
+                                                    else if(this.puzzleNumber == 3){
+                                                        this.$router.push({ name: 'MapTextPartThree.index'})
+                                                    }
+                                                    else if(this.puzzleNumber == 4){
+                                                         this.$router.push({ name: 'ParisText.index'})
+                                                    }
+                                                    else{
+                                                        this.$router.push({ name: 'archive.index' })
+                                                    }
+                                        });
+                                    }
+                                    else{
+                                        //show db error
+                                        //alert('something went wrong');
+                                    }
+                                });
+                }
+                else{
+                        this.$swal({
+                                title:`That is not the correct answer. Please try again.`,
+                                icon:'error'    
+                                        });
+                        this.isCorrect = false;
+                }
+            },
             onEnter(e){
                  keystrokeSound.play();
                     console.log(e.target.value);
@@ -177,6 +256,12 @@ export default{
                                                             }).then(response => {
                                                     if(this.puzzleNumber == 2){
                                                         this.$router.push({ name: 'demo.index' })
+                                                    }
+                                                    else if(this.puzzleNumber == 3){
+                                                        this.$router.push({ name: 'MapTextPartThree.index'})
+                                                    }
+                                                    else if(this.puzzleNumber == 4){
+                                                         this.$router.push({ name: 'ParisText.index'})
                                                     }
                                                     else{
                                                         this.$router.push({ name: 'archive.index' })
@@ -211,9 +296,15 @@ export default{
         this.show()
       },
       showMultiple() {
-        this.showLanguageButton= true;
+        this.showLanguageButton= false;
         if(this.puzzleNumber == 1){
             this.imgs = en_floor_image;
+        }
+        else if(this.puzzleNumber == 3){
+            this.imgs = en_map_images;
+        }
+        else if(this.puzzleNumber == 4){
+            this.imgs = en_color_iamges;
         }
         else{
             this.imgs =jp_manual
@@ -223,9 +314,12 @@ export default{
         this.show()
       },
       showMultiple2() {
-        this.showLanguageButton= true;
+        this.showLanguageButton= false;
         if(this.puzzleNumber == 1){
             this.imgs = en_floor_image
+        }
+        else if(this.puzzleNumber == 3){
+            this.imgs = en_map_images;
         }
         else{
             this.imgs =en_manual
@@ -297,7 +391,9 @@ export default{
         display: flex;
         width: 87%;
         flex-grow: 1;
+        display: none;
     }
+
 
     .answer{
         font-size: 3vw;
@@ -352,11 +448,55 @@ export default{
     }
 
 
-    .appear{
-        visibility: visible;
+    .actions3{
+        position: relative;
+        display: flex;
+        width: 87%;
+        flex-grow: 1;
+        flex-wrap: wrap;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        gap: 30px;
+    }
+
+     .btnBoxes{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 10rem;
+        height: 10rem;
+        border-radius: 10%;
+        font-size: 1.5rem;
+        font-weight: bold;
+        font-family: CA-Geheimagent;
+        cursor: pointer;
+    }
+
+    .btnBoxes.blue{
+        background-color: blue;
+    }
+
+    .btnBoxes.red{
+        background-color: red;
+    }
+
+    .btnBoxes.green{
+        background-color: green;
+    }
+
+    .btnBoxes.yellow{
+        background-color: yellow;
+        color: black;
     }
 
 
+    .appear{
+        visibility: visible;
+        display: flex;
+    }
+
+   
 
 
   

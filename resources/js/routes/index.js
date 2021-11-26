@@ -5,6 +5,11 @@ import LoginIndex from '../components/Login'
 import TeamSelect from '../components/TeamSelect'
 import TextHolder from '../components/TextHolder'
 import Mission from '../components/Mission'
+import MapText from '../components/MapText'
+import MapTextPartTwo from '../components/MapTextPartTwo'
+import MainMap from '../components/Map'
+import ParisText from '../components/ParisText'
+import ParisSelect from '../components/PuzzleSelect'
 
 
 const routes = [
@@ -36,6 +41,28 @@ const routes = [
         }
     },
     {
+        path: '/map1',
+        name: 'main.map1',
+        component: MainMap,
+        props: {
+            miroCovered: false,
+            elementImage: '/images/desk_new.png',
+            answer: 'f2',
+            puzzleNumber: 3
+        }
+    },
+    {
+        path: '/map2',
+        name: 'main.map2',
+        component: MainMap,
+        props: {
+            miroCovered: false,
+            elementImage: '/images/desk_new.png',
+            answer: 'green',
+            puzzleNumber: 4
+        }
+    },
+    {
         path: '/',
         name: 'login.index',
         component: LoginIndex
@@ -52,6 +79,63 @@ const routes = [
         component: TextHolder
     }
     ,
+    {
+        path: '/MapText',
+        name:'MapText.index',
+        component: MapText
+    },
+    {
+        path: '/MapText2',
+        name:'MapTextPartTwo.index',
+        component: MapTextPartTwo,
+        props:{
+            mapPart: 1,
+            speaker:'Mayumi:',
+            mapMessage:`In my training to be an agent, I learned that in order to travel the city of Paris undetected, I should always start at the Arc De Triomphe, and use the oldest paths to go from point A to point B.If you look in my scrapbook, you will find a very old map of Paris.
+            I marked it with some possible locations of the Palais Garnier, but you may be able to accurately identify the right spot...`
+        }
+    }
+    ,
+    {
+        path: '/MapText3',
+        name:'MapTextPartThree.index',
+        component: MapTextPartTwo,
+        props:{
+            mapPart: 2,
+            speaker:'Mayumi:',
+            mapMessage:`Great! I think that's the right place! Now in order to take the oldest path and avoid detection, I need you to tell me which path from the old map still exists today. 
+            Which path should I choose?`
+        }
+    },
+    {
+        path: '/MapText4',
+        name:'MapTextPartFour.index',
+        component: MapTextPartTwo,
+        props:{
+            mapPart: 2,
+            speaker:'Mayumi:',
+            mapMessage:`Agents! I located the locksmith thanks to your help.
+            From what I can tell though, there may be more to this case than I thought.
+            I am need some backup here in Paris. Come here immeditaely and meet me at the 
+            Locksmith's location. Hurry, we don't have much time left!`
+        }
+    },
+    {
+        path: '/ParisText',
+        name:'ParisText.index',
+        component: ParisText,
+        props:{
+            parisPart: 1,
+            speaker:'Locksmith: ',
+            mapMessage:`Who are you?! Oh, you're from the Invite Japan Agency, aren't you? So you found me, then.
+            Shhh! Be quiet, they probably have the place bugged.
+            I am the locksmith. But my beautiful masterpiece has been corrupted and used to hide stolen artwork...such a shame!
+            I can tell you how to break, but it's up to you to actually do it.The lock uses keywords that are scattered across four locations in Paris. You'll have to go to each one and find the keyword. The order of the locations doesn't matter, just as long as you go to every location. Do you understand? That's the only way you will be able to retrieve the painting. 
+            Here, I'll give you a guide to help you find them. 
+            \n\n
+            I'll text you when I can to help you out, but you have to leave now. There are agents all around from your agency collecting pieces of information that you need. You'll have to figure out a way to piece them together on your own. `
+        }
+    },
     {
         path: '/mission',
         name:'mission.index',
@@ -94,6 +178,11 @@ const routes = [
             newLink: true,
             linkData: 'main.index2'
         }
+    },
+    {
+        path: '/parispuzzle',
+        name:'paris.index',
+        component: ParisSelect
     }
 ];
 
