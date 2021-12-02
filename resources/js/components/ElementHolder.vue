@@ -16,7 +16,6 @@
        <div class="btnCard"></div>
      <vue-easy-lightbox
       scrollDisabled
-      moveDisabled
       :visible="visible"
       :imgs="imgs"
       :index="index"
@@ -71,6 +70,9 @@ const floor4_image = '/images/floor4.png';
 
 const en_floor_image = [floor1_image, floor2_image, floor3_image, floor4_image];
 
+const cafe_img = '/images/google_review.png';
+const cafe_imgs = [cafe_img];
+
 var typingTimer;
 var doneTypingInterval = 1000;
 var presscount = 0;
@@ -120,7 +122,6 @@ export default{
                                     puzzle_progress: this.puzzleNumber,
                                     player_number: teamSetup.playerName
                                 }).then(response => {
-                                    console.log(response);
                                     
 
 
@@ -130,10 +131,16 @@ export default{
                                                     icon:'success'    
                                                             }).then(response => {
                                                     if(this.puzzleNumber == 2){
-                                                        this.$router.push({ name: 'MapText.index' })
+                                                        this.$router.push({ name: 'main.piano' })
                                                     }
                                                     else if(this.puzzleNumber == 3){
-                                                        this.$router.push({ name: 'MapTextPartThree.index'})
+                                                        this.$router.push({ name: 'MapText.index'})
+                                                    }
+                                                    else if(this.puzzleNumber === 8){
+                                                        this.$router.push({ name: 'paris.index'})
+                                                    }
+                                                    else if(this.puzzleNumber == 6){
+                                                        this.$router.push({name: 'paris.index'})
                                                     }
                                                     else{
                                                         this.$router.push({ name: 'archive.index' })
@@ -178,6 +185,12 @@ export default{
                                                     if(this.puzzleNumber == 2){
                                                         this.$router.push({ name: 'demo.index' })
                                                     }
+                                                    else if(this.puzzleNumber === 8){
+                                                        this.$router.push({ name: 'paris.index'})
+                                                    }
+                                                    else if(this.puzzleNumber == 6){
+                                                        this.$router.push({name: 'paris.index'})
+                                                    }
                                                     else{
                                                         this.$router.push({ name: 'archive.index' })
                                                     }
@@ -215,6 +228,9 @@ export default{
         if(this.puzzleNumber == 1){
             this.imgs = en_floor_image;
         }
+        else if(this.puzzleNumber === 8){
+            this.imgs = cafe_imgs;
+        }
         else{
             this.imgs =jp_manual
         }
@@ -226,6 +242,9 @@ export default{
         this.showLanguageButton= true;
         if(this.puzzleNumber == 1){
             this.imgs = en_floor_image
+        }
+        else if(this.puzzleNumber === 8){
+            this.imgs = cafe_imgs;
         }
         else{
             this.imgs =en_manual

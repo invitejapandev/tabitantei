@@ -36,7 +36,7 @@ My sources have indicated that he is likely at the Palais Garnier.`,
         },
         methods:{
             proceed(){
-                if (this.inc < this.text1.length) {
+                if (this.inc > this.text1.length) {
                      //Text is still printing
                  }
                  else{

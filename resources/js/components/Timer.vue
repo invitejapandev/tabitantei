@@ -81,7 +81,7 @@
                      axios.post('api/game/get_game_time',{
                                     game_event_id: codeResponse.id,
                                     team_number: teamSetup.playerTeam,
-                                    puzzle_number: this.puzzleNumber+1,
+                                    puzzle_number: this.puzzleNumber,
                                 }).then(response => {
                                     // console.log(response);
 
@@ -101,7 +101,7 @@
                                         axios.post('api/game/store_game_time',{
                                             game_event_id: codeResponse.id,
                                             team_number: teamSetup.playerTeam,
-                                            puzzle_number: this.puzzleNumber+1,
+                                            puzzle_number: this.puzzleNumber,
                                             game_time: this.currentTime
                                         }).then(response => {
                                             if(response){
@@ -124,15 +124,23 @@
 						if (this.isRunning == true) {
 							 this.currentTime++
                             let newTime = this.currentTime / 60
-                            let newMinute = parseInt(newTime);
+                            let newMinute = 0;
+                            let newHour = 0;
+                            if(parseInt(newTime)%60 >= 1){
+                                newHour = Math.round(parseInt(newTime)/60);
+                                newMinute = Math.round(parseInt(newTime)%60);
+                            }
+                            else{
+                                newMinute = parseInt(newTime);
+                            }
                             if(newMinute<10){
                                 newMinute = "0"+newMinute;
                             }
-                            let newSecond = Math.round((newTime - newMinute) * 60)
+                            let newSecond = Math.round((newTime - parseInt(newTime)) * 60)
                             if(newSecond<10){
                                 newSecond = "0"+newSecond;
                             }
-                            this.displayedTime = String("0:"+newMinute+":"+newSecond)
+                            this.displayedTime = String(newHour+":"+newMinute+":"+newSecond)
 						} else {
 							 clearInterval(this.currentTimer)
 							 this.reset()

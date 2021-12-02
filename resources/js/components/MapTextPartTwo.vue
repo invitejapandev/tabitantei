@@ -30,7 +30,7 @@ export default {
         },
         methods:{
             proceed(){
-                 if (this.inc < this.text1.length) {
+                 if (this.inc > this.text1.length) {
                      //Text is still printing
                  }
                  else{

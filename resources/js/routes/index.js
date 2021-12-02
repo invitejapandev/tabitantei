@@ -10,6 +10,11 @@ import MapTextPartTwo from '../components/MapTextPartTwo'
 import MainMap from '../components/Map'
 import ParisText from '../components/ParisText'
 import ParisSelect from '../components/PuzzleSelect'
+import PianoIndex from '../components/Piano'
+import SemaphoreIndex from '../components/Sem'
+import semtest from '../components/semtest'
+import SecurityIndex from '../components/Security'
+import GraffitiIndex from '../components/Graffiti'
 
 
 const routes = [
@@ -41,6 +46,17 @@ const routes = [
         }
     },
     {
+        path: '/piano',
+        name: 'main.piano',
+        component: PianoIndex,
+        props: {
+            miroCovered: true,
+            elementImage: '/images/pianos.png',
+            answer: 'piano2',
+            puzzleNumber: 3
+        }
+    },
+    {
         path: '/map1',
         name: 'main.map1',
         component: MainMap,
@@ -48,7 +64,7 @@ const routes = [
             miroCovered: false,
             elementImage: '/images/desk_new.png',
             answer: 'f2',
-            puzzleNumber: 3
+            puzzleNumber: 4
         }
     },
     {
@@ -59,7 +75,18 @@ const routes = [
             miroCovered: false,
             elementImage: '/images/desk_new.png',
             answer: 'green',
-            puzzleNumber: 4
+            puzzleNumber: 5
+        }
+    },
+    {
+        path: '/semaphore',
+        name: 'main.semaphore',
+        component: SemaphoreIndex,
+        props: {
+            miroCovered: true,
+            elementImage: '/images/tower_plan.png',
+            answer: 'cheater',
+            puzzleNumber: 6
         }
     },
     {
@@ -71,6 +98,11 @@ const routes = [
         path: '/team',
         name:'team.index',
         component: TeamSelect
+    },
+    {
+        path: '/semtest',
+        name:'sem.index',
+        component: semtest
     }
     ,
     {
@@ -112,7 +144,7 @@ const routes = [
         name:'MapTextPartFour.index',
         component: MapTextPartTwo,
         props:{
-            mapPart: 2,
+            mapPart: 3,
             speaker:'Mayumi:',
             mapMessage:`Agents! I located the locksmith thanks to your help.
             From what I can tell though, there may be more to this case than I thought.
@@ -183,6 +215,36 @@ const routes = [
         path: '/parispuzzle',
         name:'paris.index',
         component: ParisSelect
+    },
+    {
+        path: '/security',
+        name:'security.index',
+        component: SecurityIndex,
+        props: {
+            puzzleNumber: 7
+        }
+    },
+    {
+        path: '/cafe',
+        name: 'cafe.index',
+        component: MainIndex,
+        props: {
+            miroCovered: false,
+            elementImage: '/images/cafe_cover.png',
+            answer: 'suspicious',
+            puzzleNumber: 8
+        }
+    },
+    {
+        path: '/graffiti',
+        name:'graffiti.index',
+        component: GraffitiIndex,
+        props: {
+            miroCovered: false,
+            elementImage: '/images/graffiti_cover.jpg',
+            answer: 'pearls',
+            puzzleNumber: 9
+        }
     }
 ];
 

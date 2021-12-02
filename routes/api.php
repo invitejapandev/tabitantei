@@ -27,4 +27,12 @@ Route::prefix('/game')->group(function (){
     Route::post('/store_status', [GameController::class, 'store_status']);
     Route::post('/store_game_time', [GameController::class, 'store_game_time']);
     Route::post('/get_game_time', [GameController::class, 'get_game_time']);
+    Route::post('/submit_color', [GameController::class, 'submit_color']);
+    Route::post('/get_status_piano', [GameController::class, 'get_status_piano']);
+    Route::post('/get_player_count', [GameController::class, 'get_player_count']);
+    Route::post('/get_player_matrix', [GameController::class, 'get_player_matrix']);
+    Route::post('/get_status_last', [GameController::class, 'get_status_last']);
+    Route::post('/get_selected_mission', [GameController::class, 'get_selected_mission']);
+    Route::post('/store_team_mission', [GameController::class, 'store_team_mission']);
+    Route::post('/update_team_mission', [GameController::class, 'update_team_mission']);
 });

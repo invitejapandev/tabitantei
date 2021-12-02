@@ -5,7 +5,8 @@ import router from './routes'
 import MainIndex from './components/Main.vue'
 import LoginIndex from './components/Login.vue'
 import VueEasyLightbox from 'vue-easy-lightbox'
-
+import Vue3VideoPlayer from '@cloudgeek/vue3-video-player'
+import '@cloudgeek/vue3-video-player/dist/vue3-video-player.css'
 
 
 import 'sweetalert2/dist/sweetalert2.min.css';
@@ -17,4 +18,4 @@ createApp({
         MainIndex,
         LoginIndex
     }
-}).use(router).use(VueSweetalert2).use(VueEasyLightbox).mount('#app')
+}).use(router).use(VueSweetalert2).use(Vue3VideoPlayer).use(VueEasyLightbox).mount('#app')

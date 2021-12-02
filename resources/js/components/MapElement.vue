@@ -6,12 +6,12 @@
                 <!-- <img class="desk" src="../assets/bulletin_board.png"  /> -->
                 <img class="desk" v-bind:src="img"  />
             </div>
-            <div :class="[puzzleNumber == 3 ? 'appear' : '' , 'actions2']" >
+            <div :class="[puzzleNumber == 4 ? 'appear' : '' , 'actions2']" >
                 <input :class="[isCorrect ? 'correct' : '' , 'answer']" type="text" placeholder="TYPE HERE" style="z-index: 1" v-on:keyup.enter="onEnter" @input="onInput" />
         
             </div>
 
-            <div :class="[puzzleNumber == 4 ? 'appear' : '' , 'actions3']" >
+            <div :class="[puzzleNumber == 5 ? 'appear' : '' , 'actions3']" >
                 <div class="btnBoxes blue" @click="onButtonClicked('blue')">Wine Testing</div>
                 <div class="btnBoxes green" @click="onButtonClicked('green')">Street Art Walking</div>
                 <div class="btnBoxes yellow" @click="onButtonClicked('yellow')">Literary Walking</div>
@@ -157,10 +157,10 @@ export default{
                                                     if(this.puzzleNumber == 2){
                                                         this.$router.push({ name: 'demo.index' })
                                                     }
-                                                    else if(this.puzzleNumber == 3){
+                                                    else if(this.puzzleNumber == 4){
                                                         this.$router.push({ name: 'MapTextPartThree.index'})
                                                     }
-                                                    else if(this.puzzleNumber == 4){
+                                                    else if(this.puzzleNumber == 5){
                                                          this.$router.push({ name: 'ParisText.index'})
                                                     }
                                                     else{
@@ -204,10 +204,10 @@ export default{
                                                     if(this.puzzleNumber == 2){
                                                         this.$router.push({ name: 'demo.index' })
                                                     }
-                                                    else if(this.puzzleNumber == 3){
+                                                    else if(this.puzzleNumber == 4){
                                                         this.$router.push({ name: 'MapTextPartThree.index'})
                                                     }
-                                                    else if(this.puzzleNumber == 4){
+                                                    else if(this.puzzleNumber == 5){
                                                          this.$router.push({ name: 'ParisText.index'})
                                                     }
                                                     else{
@@ -257,10 +257,10 @@ export default{
                                                     if(this.puzzleNumber == 2){
                                                         this.$router.push({ name: 'demo.index' })
                                                     }
-                                                    else if(this.puzzleNumber == 3){
+                                                    else if(this.puzzleNumber == 4){
                                                         this.$router.push({ name: 'MapTextPartThree.index'})
                                                     }
-                                                    else if(this.puzzleNumber == 4){
+                                                    else if(this.puzzleNumber == 5){
                                                          this.$router.push({ name: 'ParisText.index'})
                                                     }
                                                     else{
@@ -300,10 +300,10 @@ export default{
         if(this.puzzleNumber == 1){
             this.imgs = en_floor_image;
         }
-        else if(this.puzzleNumber == 3){
+        else if(this.puzzleNumber == 4){
             this.imgs = en_map_images;
         }
-        else if(this.puzzleNumber == 4){
+        else if(this.puzzleNumber == 5){
             this.imgs = en_color_iamges;
         }
         else{
@@ -318,7 +318,7 @@ export default{
         if(this.puzzleNumber == 1){
             this.imgs = en_floor_image
         }
-        else if(this.puzzleNumber == 3){
+        else if(this.puzzleNumber == 4){
             this.imgs = en_map_images;
         }
         else{
@@ -346,7 +346,7 @@ export default{
 </script>
 
 
-<style>
+<style scoped>
 
     .right_panel{
         position: relative;

@@ -22,7 +22,7 @@
     let computerMIRO = "https://miro.com/app/live-embed/o9J_ltgInS4=/?embedAutoplay=true&moveToViewport=-2638,-351,2934,3605";
     let  floorMIRO = "https://miro.com/app/live-embed/o9J_ltgIkjg=/?embedAutoplay=true&moveToViewport=2560,-648,1472,1160";
     let mapMIRO = 'https://miro.com/app/live-embed/o9J_ljJrZyw=/?embedAutoplay=true&moveToViewport=-1717,-895,2432,1658';
-
+    let cafeMIRO = 'https://miro.com/app/live-embed/o9J_lkaWZtQ=/?embedAutoplay=true&moveToViewport=-808,-1845,2834,3668';
     let selectedMIRO = "";
     let gameProgress;
     let codeResponse, teamSetup;
@@ -54,6 +54,9 @@
                 }
                 else if(this.puzzleNumber == 3){
                     selectedMIRO = mapMIRO;
+                }
+                else if(this.puzzleNumber == 8){
+                    selectedMIRO = cafeMIRO;
                 }
                 else{
                     selectedMIRO = computerMIRO;
@@ -95,10 +98,13 @@
                                             title:'Great! Your team got the correct answer.',
                                             icon:'success'}).then(response => {
                                                     if(this.puzzleNumber == 2){
-                                                        this.$router.push({ name: 'MapText.index' })
+                                                        this.$router.push({ name: 'main.piano' })
                                                     }
                                                     else if(this.puzzleNumber == 3){
-                                                        this.$router.push({ name: 'MapTextPartThree.index'})
+                                                        this.$router.push({ name: 'MapText.index'})
+                                                    }
+                                                    else if(this.puzzleNumber === 8){
+                                                        this.$router.push({ name: 'paris.index'})
                                                     }
                                                     else{
                                                         this.$router.push({ name: 'archive.index' })

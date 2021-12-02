@@ -53,10 +53,10 @@
                  if(this.puzzleNumber == 1){
                     selectedMIRO = floorMIRO;
                 }
-                else if(this.puzzleNumber == 3){
+                else if(this.puzzleNumber == 4){
                     selectedMIRO = mapMIRO;
                 }
-                else if(this.puzzleNumber == 4){
+                else if(this.puzzleNumber == 5){
                     selectedMIRO = mapMIRO2;
                 }
                 else{
@@ -98,13 +98,13 @@
                                     this.$swal({
                                             title:'Great! Your team got the correct answer.',
                                             icon:'success'}).then(response => {
-                                                    if(this.puzzleNumber == 2){
+                                                    if(this.puzzleNumber == 3){
                                                         this.$router.push({ name: 'MapText.index' })
                                                     }
-                                                    else if(this.puzzleNumber == 3){
+                                                    else if(this.puzzleNumber == 4){
                                                         this.$router.push({ name: 'MapTextPartThree.index'})
                                                     }
-                                                    else if(this.puzzleNumber == 4){
+                                                    else if(this.puzzleNumber == 5){
                                                         //
                                                     }
                                                     else{
