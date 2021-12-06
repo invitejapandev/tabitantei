@@ -74,6 +74,7 @@ import axios from 'axios'
 var keystrokeSound = new Audio('https://dl.dropboxusercontent.com/s/hjx4xlxyx39uzv7/18660_1464810669.mp3');
 var correctSound = new Audio('https://www.freesoundslibrary.com/wp-content/uploads/2018/03/right-answer-ding-ding-sound-effect.mp3');
             var interval,  newInterval;
+var clickSound = new Audio('/images/button_click.mp3');
 const compImage = '/images/computer.png';
 const cover_jp = '/images/cover_jp.png';
 const page_1_jp = '/images/page_1_jp.png';
@@ -111,17 +112,18 @@ const yellow_image = '/images/Yellow.png';
 const green_image = '/images/Green.png';
 const red_image = '/images/Red.png';
 
-const g_1 = '/images/g_1.jpg';
-const g_2 = '/images/g_2.jpg';
-const g_3 = '/images/g_3.jpg';
-const g_4 = '/images/g_4.jpg';
-const g_5 = '/images/g_5.jpg';
+const g_1 = '/images/g_1.png';
+const g_2 = '/images/g_2.png';
+const g_3 = '/images/g_3.png';
+const g_4 = '/images/g_4.png';
+
+
 let arrowIndex = 0;
 let arrowUp = ['P', 'H', 'A', 'E', 'T', 'T'];
 let arrowLeft = ['S', 'O', 'R', 'R', 'L', 'G'];
 let arrowRight = ['T', 'E', 'I', 'I', 'N', 'S'];
 let arrowDown = ['M', 'A', 'V', 'N', 'A', 'Y'];
-const g_images = [g_1, g_2, g_3, g_4, g_5];
+const g_images = [g_1, g_2, g_3, g_4];
 let answer = '';
 
 const en_color_iamges = [blue_image, yellow_image, green_image, red_image];
@@ -167,6 +169,7 @@ export default{
     methods: {
             updateLetter(arrowPressed){
                 // let arraySet = [this.firstLetter, this.secondLetter];
+                    // clickSound.play();
                 if(arrowIndex<6){
                     if(arrowPressed == 1){
                         this.lettersFinal[arrowIndex] = arrowUp[arrowIndex];
@@ -209,6 +212,7 @@ export default{
                     // alert(answer);
                     
                     if(answer=='PEARLS'){
+                        correctSound.play();
                           axios.post('api/game/store_status',{
                                     game_event_id: teamSetup.game_event_id,
                                     teamNumber: teamSetup.playerTeam,
@@ -603,6 +607,7 @@ body{
   text-align: center;
   line-height: 35px;
   cursor: pointer;
+pointer-events: auto;
 }
 
 .crossCircle{
@@ -617,6 +622,7 @@ body{
   font-weight: bold;
   line-height: 25px;
   cursor: pointer;
+pointer-events: auto;
 }
 
 .crossTop{
@@ -636,9 +642,9 @@ body{
   border-radius: 15%;
   margin-top: 30px;
   cursor: pointer;
+pointer-events: auto;
   text-align: center;
   line-height: 35px;
-  cursor: pointer;
 }
 
 .crossLeft{
@@ -649,9 +655,9 @@ body{
   border-radius: 15%;
   margin-left: -30px;
   cursor: pointer;
+pointer-events: auto;
   text-align: center;
   height: 35px;
-  cursor: pointer;
 }
 
 .crossRight{
@@ -664,7 +670,7 @@ body{
   text-align: center;
   height: 35px;
   cursor: pointer;
-  cursor: pointer;
+pointer-events: auto;
 }
 
 .centerBlue{
@@ -673,6 +679,7 @@ body{
   height: 20px;
   margin-left: 175px;
   cursor: pointer;
+pointer-events: auto;
   margin-top: 30px;
   background-color: #0099FF;
 }
@@ -828,6 +835,7 @@ body{
         display: flex;
         position: relative;
         cursor: pointer;
+pointer-events: auto;
         justify-content: center;
         align-items: center;
         width: 100%;
@@ -940,6 +948,7 @@ body{
         font-weight: bold;
         font-family: CA-Geheimagent;
         cursor: pointer;
+pointer-events: auto;
     }
 
     .btnBoxes.blue{

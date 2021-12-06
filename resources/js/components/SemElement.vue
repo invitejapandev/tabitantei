@@ -4,10 +4,13 @@
         <div class="element_holder">
             <div class="manual_div" @click="showMultiple()">
                 <!-- <img class="desk" src="../assets/bulletin_board.png"  /> -->
-                <img class="desk" v-bind:src="img"  />
+                <!-- <img class="desk" v-bind:src="img"  /> -->
+                 <div class="iframeHolder">
+            <iframe class="responsive" style="z-index: -1 !important" :src="mirURL" frameBorder="0" scrolling="no" allowFullScreen></iframe>
+        </div>
             </div>
             <div class="actions2">
-                <input :class="[isCorrect ? 'correct' : '' , 'answer']" type="text" placeholder="TYPE HERE" style="z-index: 1" v-on:keyup.enter="onEnter" @input="onInput" />
+                <input maxlength="10" :class="[isCorrect ? 'correct' : '' , 'answer']" type="text" placeholder="TYPE HERE" style="z-index: 1" v-on:keyup.enter="onEnter" @input="onInput" />
         
             </div>
         </div>
@@ -78,7 +81,7 @@ var doneTypingInterval = 1000;
 var presscount = 0;
 let teamSetup;
 export default{
-    name:'ElementHolder',
+    name:'SemElement',
     components:{
         VueEasyLightbox
     },
@@ -93,20 +96,22 @@ export default{
             visible: false,
             index: 0, // default: 0,
             showLanguageButton: false,
-            img: this.elementImage
+            img: this.elementImage,
+            mirURL: this.miroURL
         }
     },
     props:{
         elementImage: String,
         answer: String,
-        puzzleNumber: Number
+        puzzleNumber: Number,
+            miroURL: String,
     },
     beforeCreate(){
         teamSetup = JSON.parse(localStorage.getItem('teamSetup'));
     },
     methods: {
             onInput(e){
-                    keystrokeSound.play();
+                    // keystrokeSound.play();
                     console.log(e.target.value.toLowerCase().value);
                     if(e.target.value.includes(this.correctAnswer)){
                         this.isCorrect = true;
@@ -251,6 +256,7 @@ export default{
 
 <style>
 
+
     .right_panel{
         position: relative;
         display: flex;
@@ -258,6 +264,7 @@ export default{
         justify-content: center;
         width: 60vw;
     }
+
 
     .element_holder{
         position: relative;
@@ -276,10 +283,25 @@ export default{
         justify-content: center;
         align-items: center;
         width: 100%;
-        height: 40vh;
-        flex-grow: 1;
+        height: 60vh;
+        flex-grow: 2;
         /* border-style: solid; */
     }
+    
+    .iframeHolder{
+        position: absolute;
+        padding:0; 
+        margin: 0;
+        z-index: 98;
+        cursor: pointer;
+        /* background-color: pink; */
+        width: 98%;
+        height: 100%;
+
+    }
+
+
+
     
     .desk{
         border-radius: 10px;
@@ -298,24 +320,24 @@ export default{
 
     .answer{
         font-size: 3vw;
+        text-align: center;
         width: 100%;
+        padding: 100px;
         background: transparent;
         background-size: 100%;
         background-repeat: no-repeat;
         background-position: center;
         border:none;
         outline: none;
-        color: greenyellow;
+        color: black;
         text-transform:uppercase;
         font-weight: bold;
-        padding-left: 26.5%;
-        padding-right: 42%;
-        background-image: url('../assets/circuit_board_red.png');
+        background-image: url('../assets/tower_answer.png');
         font-family: 'VT323', monospace;
     }
 
     .answer.correct{
-        background-image: url('../assets/circuit_board_green.png');
+        background-image: url('../assets/tower_answer.png');
     }
 
 

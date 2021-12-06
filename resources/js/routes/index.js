@@ -5,6 +5,7 @@ import LoginIndex from '../components/Login'
 import TeamSelect from '../components/TeamSelect'
 import TextHolder from '../components/TextHolder'
 import Mission from '../components/Mission'
+import Bubble from '../components/Bubble'
 import MapText from '../components/MapText'
 import MapTextPartTwo from '../components/MapTextPartTwo'
 import MainMap from '../components/Map'
@@ -63,7 +64,7 @@ const routes = [
         props: {
             miroCovered: false,
             elementImage: '/images/desk_new.png',
-            answer: 'f2',
+            answer: 'F2',
             puzzleNumber: 4
         }
     },
@@ -189,6 +190,115 @@ const routes = [
         }
     },
     {
+        path: '/norman',
+        name:'bubble.index',
+        component: Bubble,
+        props:{
+            headerText: `Hello trainees. You will have to put your spy skills to work 
+            faster than we expected. We have an emergency. 
+            We have lost all contact with one of our agents, 
+            alias Mayumi, who was working on retrieving a famous 
+            painting for one of our clients.We have no idea where 
+            she went or why we lost contact with her, but her mission 
+            is vitally important. All our other agents are in the field, 
+            so it is up to you to meet this challenge. 
+            It appears that she was working somewhere in the 
+            Invite Japan Agency building before she left. Perhaps 
+            that is a good place to start…`,
+            buttonText:"Enter the Game",
+            buttonVisible: true,
+            elementImage: ['/images/msg_norm_1.png','/images/msg_norm_2.png','/images/msg_norm_3.png','/images/msg_norm_4.png']
+        }
+    },
+    {
+        path: '/mayu_palais',
+        name:'mayu_palais.index',
+        component: Bubble,
+        props:{
+            headerText: `Hello trainees. You will have to put your spy skills to work 
+            faster than we expected. We have an emergency. 
+            We have lost all contact with one of our agents, 
+            alias Mayumi, who was working on retrieving a famous 
+            painting for one of our clients.We have no idea where 
+            she went or why we lost contact with her, but her mission 
+            is vitally important. All our other agents are in the field, 
+            so it is up to you to meet this challenge. 
+            It appears that she was working somewhere in the 
+            Invite Japan Agency building before she left. Perhaps 
+            that is a good place to start…`,
+            buttonText:"Enter the Game",
+            buttonVisible: true,
+            puzzleNumber: 4,
+            elementImage: ['/images/msg_mayu_1.png','/images/msg_mayu_2.png','/images/msg_mayu_3.png','/images/msg_mayu_4.png','/images/msg_palais_1.png','/images/msg_palais_2.png','/images/msg_palais_3.png']
+        }
+    },
+    {
+        path: '/tour',
+        name:'tour.index',
+        component: Bubble,
+        props:{
+            headerText: `Hello trainees. You will have to put your spy skills to work 
+            faster than we expected. We have an emergency. 
+            We have lost all contact with one of our agents, 
+            alias Mayumi, who was working on retrieving a famous 
+            painting for one of our clients.We have no idea where 
+            she went or why we lost contact with her, but her mission 
+            is vitally important. All our other agents are in the field, 
+            so it is up to you to meet this challenge. 
+            It appears that she was working somewhere in the 
+            Invite Japan Agency building before she left. Perhaps 
+            that is a good place to start…`,
+            buttonText:"Enter the Game",
+            buttonVisible: true,
+            puzzleNumber: 5,
+            elementImage: ['/images/msg_tour_1.png','/images/msg_tour_2.png','/images/msg_tour_3.png']
+        }
+    },
+    {
+        path: '/travel_paris',
+        name:'travel_paris.index',
+        component: Bubble,
+        props:{
+            headerText: `Hello trainees. You will have to put your spy skills to work 
+            faster than we expected. We have an emergency. 
+            We have lost all contact with one of our agents, 
+            alias Mayumi, who was working on retrieving a famous 
+            painting for one of our clients.We have no idea where 
+            she went or why we lost contact with her, but her mission 
+            is vitally important. All our other agents are in the field, 
+            so it is up to you to meet this challenge. 
+            It appears that she was working somewhere in the 
+            Invite Japan Agency building before she left. Perhaps 
+            that is a good place to start…`,
+            buttonText:"Enter the Game",
+            buttonVisible: true,
+            puzzleNumber: 6,
+            elementImage: ['/images/msg_mission_1.png','/images/msg_mission_2.png']
+        }
+    },
+    {
+        path: '/sato',
+        name:'sato.index',
+        component: Bubble,
+        props:{
+            headerText: `Hello trainees. You will have to put your spy skills to work 
+            faster than we expected. We have an emergency. 
+            We have lost all contact with one of our agents, 
+            alias Mayumi, who was working on retrieving a famous 
+            painting for one of our clients.We have no idea where 
+            she went or why we lost contact with her, but her mission 
+            is vitally important. All our other agents are in the field, 
+            so it is up to you to meet this challenge. 
+            It appears that she was working somewhere in the 
+            Invite Japan Agency building before she left. Perhaps 
+            that is a good place to start…`,
+            buttonText:"Enter the Game",
+            buttonVisible: true,
+            puzzleNumber: 99,
+            elementImage: ['/images/msg_sato_1.png','/images/msg_sato_2.png','/images/msg_sato_3.png','/images/msg_sato_4.png','/images/msg_sato_5.png','/images/msg_sato_6.png','/images/msg_sato_7.png','/images/msg_sato_8.png','/images/msg_sato_9.png']
+        }
+    },
+    {
         path: '/demoend',
         name:'demo.index',
         component: Mission,
@@ -200,15 +310,23 @@ const routes = [
     {
         path: '/archive',
         name:'archive.index',
-        component: Mission,
+        component: Bubble,
         props:{
-            headerText: `Good work agents! You've found the computer Mayumi was 
-            working on. Access the computer and maybe you will find 
-            her whereabouts.`,
-            buttonText:"Check the Computer",
+            headerText: `Hello trainees. You will have to put your spy skills to work 
+            faster than we expected. We have an emergency. 
+            We have lost all contact with one of our agents, 
+            alias Mayumi, who was working on retrieving a famous 
+            painting for one of our clients.We have no idea where 
+            she went or why we lost contact with her, but her mission 
+            is vitally important. All our other agents are in the field, 
+            so it is up to you to meet this challenge. 
+            It appears that she was working somewhere in the 
+            Invite Japan Agency building before she left. Perhaps 
+            that is a good place to start…`,
+            buttonText:"Enter the Game",
             buttonVisible: true,
             newLink: true,
-            linkData: 'main.index2'
+            elementImage: ['/images/msg_norm_5.png']
         }
     },
     {
@@ -241,7 +359,7 @@ const routes = [
         component: GraffitiIndex,
         props: {
             miroCovered: false,
-            elementImage: '/images/graffiti_cover.jpg',
+            elementImage: '/images/graffiti_cover.png',
             answer: 'pearls',
             puzzleNumber: 9
         }

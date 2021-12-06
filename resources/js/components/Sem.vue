@@ -4,7 +4,7 @@
         <Header  :puzzleNumber="puzzleNumber" class="header2" :timePaused="timeisPaused" />
         <div class="main_body">
             <SemBody @showSemTest="showSemTest" @pauseTime="pause-time" class="miro_holder" :miroURL="miroURLData" :isShowned="isShowned" :imgCover="imgCover"/>
-            <SemElement @pauseTime="pause-time" :elementImage="elementImage" class="main_element_holder" :answer="answer" :puzzleNumber="puzzleNumber" />
+            <SemElement :miroURL="miroURLData" @pauseTime="pause-time" :elementImage="elementImage" class="main_element_holder" :answer="answer" :puzzleNumber="puzzleNumber" />
             <semtest :imgName="semImage" @hideSemtest="hideSemtest" class=""  :shouldShow="shouldShow"/>
         </div>
         <a href="#" class="float">

@@ -2,22 +2,51 @@
 <!-- <div></div> -->
     <div class="right_panel"  >
         <div class="element_holder">
-            <div class="manual_div" @click="showMultiple()">
+            <div class="manual_div">
                 <!-- <img class="desk" src="../assets/bulletin_board.png"  /> -->
-                <img class="desk" v-bind:src="img"  />
+                <!-- <img class="desk" v-bind:src="img"  /> -->
+                <div  :class="[puzzleNumber == 4 ? 'appear' : '' , 'form_container']">
+                    <div class="form_input">
+                        <div class="form_label">X</div>
+                        <select v-model="xSelected" class="form_select">
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                            <option value="E">E</option>
+                            <option value="F">F</option>
+                            <option value="G">G</option>
+                        </select>
+                    </div>
+                    <div class="form_input">
+                        <div class="form_label">Y</div>
+                        <select  v-model="ySelected" class="form_select">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                    <div class="form_action">
+                        <button  @click="validateAnswer()" class="form_submit">Submit</button>
+                    </div>
+                </div>
+
+                
+                <div :class="[puzzleNumber == 5 ? 'appear' : '' , 'actions3']" >
+                    <div class="btnBoxes blue" @click="onButtonClicked('blue')">Wine Testing</div>
+                    <div class="btnBoxes green" @click="onButtonClicked('green')">Street Art Walking</div>
+                    <div class="btnBoxes yellow" @click="onButtonClicked('yellow')">Literary Walking</div>
+                    <div class="btnBoxes red" @click="onButtonClicked('red')">Photo Spot</div>
+
+                </div>
             </div>
-            <div :class="[puzzleNumber == 4 ? 'appear' : '' , 'actions2']" >
+            <!-- <div :class="[puzzleNumber == 4 ? 'appear' : '' , 'actions2']" >
                 <input :class="[isCorrect ? 'correct' : '' , 'answer']" type="text" placeholder="TYPE HERE" style="z-index: 1" v-on:keyup.enter="onEnter" @input="onInput" />
         
-            </div>
+            </div> -->
 
-            <div :class="[puzzleNumber == 5 ? 'appear' : '' , 'actions3']" >
-                <div class="btnBoxes blue" @click="onButtonClicked('blue')">Wine Testing</div>
-                <div class="btnBoxes green" @click="onButtonClicked('green')">Street Art Walking</div>
-                <div class="btnBoxes yellow" @click="onButtonClicked('yellow')">Literary Walking</div>
-                <div class="btnBoxes red" @click="onButtonClicked('red')">Photo Spot</div>
-
-            </div>
         </div>
        
        
@@ -116,7 +145,9 @@ export default{
             visible: false,
             index: 0, // default: 0,
             showLanguageButton: false,
-            img: this.elementImage
+            img: this.elementImage,
+            xSelected: 'A',
+            ySelected: '1'
         }
     },
     props:{
@@ -128,11 +159,11 @@ export default{
         teamSetup = JSON.parse(localStorage.getItem('teamSetup'));
     },
     methods: {
-            onInput(e){
-                    keystrokeSound.play();
-                    console.log(e.target.value);
-                    if(e.target.value.includes(this.correctAnswer)){
-                        this.isCorrect = true;
+            validateAnswer(){
+                // alert(this.xSelected+' '+this.ySelected);
+                let answer = this.xSelected+''+this.ySelected;
+                if(answer.includes(this.correctAnswer)){
+                    this.isCorrect = true;
                         correctSound.play();
                         this.$emit('pause-time');
                         
@@ -173,11 +204,15 @@ export default{
                                         //alert('something went wrong');
                                     }
                                 });
-                    }
-                    else{
+                }
+                else{
+                      this.$swal({
+                                title:`That is not the correct answer. Please try again.`,
+                                icon:'error'    
+                                        });
                         this.isCorrect = false;
-                    }
-                },
+                }
+            },
             onButtonClicked(e){
                 if(e == this.correctAnswer){
                     this.isCorrect = true;
@@ -228,63 +263,6 @@ export default{
                                         });
                         this.isCorrect = false;
                 }
-            },
-            onEnter(e){
-                 keystrokeSound.play();
-                    console.log(e.target.value);
-                    if(e.target.value.toLowerCase().indexOf(this.correctAnswer) > 0){
-                        this.isCorrect = true;
-                        correctSound.play();
-                        this.$emit('pause-time');
-
-                        let gameProgress = JSON.parse(localStorage.getItem('gameProgress'));
-
-                            axios.post('api/game/store_status',{
-                                    game_event_id: teamSetup.game_event_id,
-                                    teamNumber: teamSetup.playerTeam,
-                                    puzzle_progress: this.puzzleNumber,
-                                    player_number: teamSetup.playerName
-                                }).then(response => {
-                                    console.log(response);
-                                    
-
-
-                                    if(response){
-                                        this.$swal({
-                                                    title:'Great! That is the correct answer!',
-                                                    icon:'success'    
-                                                            }).then(response => {
-                                                    if(this.puzzleNumber == 2){
-                                                        this.$router.push({ name: 'demo.index' })
-                                                    }
-                                                    else if(this.puzzleNumber == 4){
-                                                        this.$router.push({ name: 'MapTextPartThree.index'})
-                                                    }
-                                                    else if(this.puzzleNumber == 5){
-                                                         this.$router.push({ name: 'ParisText.index'})
-                                                    }
-                                                    else{
-                                                        this.$router.push({ name: 'archive.index' })
-                                                    }
-                                        });
-                                    }
-                                    else{
-                                        //show db error
-                                        //alert('something went wrong');
-                                    }
-                                });
-                            
-
-
-                          
-                    }
-                    else{
-                        this.$swal({
-                                title:`That is not the correct answer. Please try again.`,
-                                icon:'error'    
-                                        });
-                        this.isCorrect = false;
-                    }
             },
            showSingle() {
         this.imgs = 'http://via.placeholder.com/350x150'
@@ -348,12 +326,70 @@ export default{
 
 <style scoped>
 
+    .form_container{
+        height: 220px;
+        width: 150px;
+        background: #FFFFFFB3;
+        border-radius: 5%;
+        display: none;
+        flex-wrap: wrap;
+        flex-direction: column;
+        justify-content: center;
+        align-content: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: black;
+        font-family: CA-Geheimagent;
+
+    }
+
+    .form_input{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-content: center;
+    }
+
+    .form_action{
+        margin-top: 10px;
+    }
+
+    .form_submit{
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: black;
+        border-radius: 5px;
+        font-family: CA-Geheimagent;
+
+    }
+    
+    .form_select{
+        width: 100%;
+        height: 40px;
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+        font-family: CA-Geheimagent;
+        text-indent: 1px;
+        background: black;
+        -webkit-appearance: none;
+        color: white;
+        -moz-appearance: none;
+    }
+
+    
+    
+    .form_label{
+        text-align: center;
+    }
+
     .right_panel{
         position: relative;
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        width: 60vw;
+        width: 10vw;
+        max-width: 10vw;
     }
 
     .element_holder{
@@ -370,8 +406,6 @@ export default{
         display: flex;
         position: relative;
         cursor: pointer;
-        justify-content: center;
-        align-items: center;
         width: 100%;
         height: 40vh;
         flex-grow: 1;
@@ -462,32 +496,52 @@ export default{
 
      .btnBoxes{
         display: flex;
+        text-align: center;
         justify-content: center;
         align-items: center;
-        width: 10rem;
-        height: 10rem;
+        width: 7rem;
+        height: 7rem;
         border-radius: 10%;
         font-size: 1.5rem;
         font-weight: bold;
         font-family: CA-Geheimagent;
         cursor: pointer;
+        border-style: solid;
+        border-width: 1px;
+        border-color: #004D40;
+	box-shadow: 2px 2px 3px #000;
     }
 
     .btnBoxes.blue{
-        background-color: blue;
+        background-color: #2962FF;
+    }
+
+    .btnBoxes.blue:hover {     
+        background-color: #0D47A1;
     }
 
     .btnBoxes.red{
-        background-color: red;
+        background-color: #C62828;
+    }
+
+    .btnBoxes.red:hover{
+        background-color: #B71C1C;
     }
 
     .btnBoxes.green{
-        background-color: green;
+        background-color: #00C853;
+    }
+
+    .btnBoxes.green:hover{
+        background-color: #1B5E20;
     }
 
     .btnBoxes.yellow{
-        background-color: yellow;
-        color: black;
+        background-color: #6D4C41;
+    }
+
+    .btnBoxes.yellow:hover{
+        background-color: #3E2723;
     }
 
 

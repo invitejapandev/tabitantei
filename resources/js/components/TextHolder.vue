@@ -1,5 +1,5 @@
 <template>
-  <div class="textHolder">
+  <div class="textHolder"  @click="proceed">
         
          <span class="text_handler">{{ outputText }}</span>
         <a class="btnReady" @click="proceed">Proceed</a>
@@ -24,11 +24,11 @@ demonstrate your puzzle-solving and team working skills...`,
             }
         },
         mounted(){
-            this.outText()
+            // this.outText()
         },
         methods:{
             proceed(){
-                this.$router.push({ name: 'mission.index' })
+                this.$router.push({ name: 'bubble.index' })
             },
             outText() {
 
@@ -45,9 +45,22 @@ demonstrate your puzzle-solving and team working skills...`,
 
 <style scoped>
     .textHolder{
+        height: 100%;
+        width: 100%;
+        background-size: contain;
+        background-color: black;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-attachment: scroll;
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
+        background-image: url('../assets/welcome_page_1.png');
+        padding:0;
+        margin: 0;
+        /* min-width: 1440px; */
+        /* min-height: 810px; */
+        cursor: pointer;
     }
 
     .text_handler{
@@ -61,12 +74,12 @@ demonstrate your puzzle-solving and team working skills...`,
 
     .btnReady{
         position: fixed;
-        top: 80%;
+        bottom: 3%;
         color:white;
-        font-size: 3vw;
+        font-size: 2vw;
         border-style: solid;
         border-radius: 10px;
-        padding: 10px;
+        padding: 3px;
         cursor: pointer;
         font-weight: regular;
         font-family: CA-Geheimagent;

@@ -271,7 +271,7 @@ export default{
 </script>
 
 
-<style>
+<style scoped>
 
     .right_panel{
         position: relative;

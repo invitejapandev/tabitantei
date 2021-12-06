@@ -8,22 +8,22 @@
             </div> -->
             <div @click="selectGame('Semaphore')" class="missionHolder">
                 <span style="text-align: center;">Semaphore</span>
-                <div class="missionBox"> <img :src="semaphore_img" style="width: 21rem; height: 21rem; "/></div>
+                <div :class="[semaphore_solved ? 'unlocked':'', 'missionBox']"> <img :src="semaphore_img" style="width: 21rem; height: 21rem; "/></div>
             </div>
 
             <div @click="selectGame('Cafe')" class="missionHolder">
                 <span style="text-align: center;">Cafe</span>
-                 <div class="missionBox">  <img :src="cafe_img" style="width: 21rem; height: 21rem; "/></div>
+                 <div :class="[cafe_solved ? 'unlocked':'', 'missionBox']">  <img :src="cafe_img" style="width: 21rem; height: 21rem; "/></div>
             </div>
 
             <div @click="selectGame('Security')" class="missionHolder">
                 <span style="text-align: center;">Security</span>
-                <div class="missionBox "> <img :src="security_img" style="width: 21rem; height: 21rem; "/></div>
+                <div :class="[security_solved ? 'unlocked':'', 'missionBox']"> <img :src="security_img" style="width: 21rem; height: 21rem; "/></div>
             </div>
 
             <div @click="selectGame('Graffiti')" class="missionHolder">
                 <span style="text-align: center;">Graffiti</span>
-                <div class="missionBox"> <img :src="graffiti_img" style="width: 21rem; height: 21rem; "/></div>
+                <div :class="[graffiti_solved ? 'unlocked':'', 'missionBox']"> <img :src="graffiti_img" style="width: 21rem; height: 21rem; "/></div>
             </div>
 
             <!-- <div class="missionBox"> <img src="../assets/bw_semaphore.png" style="width: 21rem; height: 21rem; "/></div> -->
@@ -270,7 +270,7 @@ let getStatusInterval;
         cursor: pointer;
     }
 
-    missionBox.unlocked{
+    .unlocked{
         background-color: transparent;
     }
 
