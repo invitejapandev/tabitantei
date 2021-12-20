@@ -6,27 +6,27 @@
             <!-- <div :class="[ teamSelected==n ? 'selected' : '', 'teamButton']" :key="n" v-for="n in teamCount" @click="selectTeam(n)">
                 <Team :teamName="n" :selectedId=1 />
             </div> -->
-            <div @click="selectGame('Semaphore')" class="missionHolder">
-                <span style="text-align: center;">Semaphore</span>
-                <div :class="[semaphore_solved ? 'unlocked':'', 'missionBox']"> <img :src="semaphore_img" style="width: 21rem; height: 21rem; "/></div>
+            <div @click="selectGame('Tower View')" class="missionHolder">
+                <span style="text-align: center;">Tower View</span>
+                <div style="flex-" :class="[semaphore_solved ? 'unlocked':'', 'missionBox']"> <img class="final_icon" :src="semaphore_img"/></div>
             </div>
 
-            <div @click="selectGame('Cafe')" class="missionHolder">
-                <span style="text-align: center;">Cafe</span>
-                 <div :class="[cafe_solved ? 'unlocked':'', 'missionBox']">  <img :src="cafe_img" style="width: 21rem; height: 21rem; "/></div>
+            <div @click="selectGame('Café la Parisienne')" class="missionHolder">
+                <span style="text-align: center;">Café la Parisienne</span>
+                 <div :class="[cafe_solved ? 'unlocked':'', 'missionBox']">  <img  class="final_icon" :src="cafe_img" /></div>
             </div>
 
-            <div @click="selectGame('Security')" class="missionHolder">
-                <span style="text-align: center;">Security</span>
-                <div :class="[security_solved ? 'unlocked':'', 'missionBox']"> <img :src="security_img" style="width: 21rem; height: 21rem; "/></div>
+            <div @click="selectGame('Maison de Verre')" class="missionHolder">
+                <span style="text-align: center;">Maison de Verre</span>
+                <div :class="[security_solved ? 'unlocked':'', 'missionBox']"> <img class="final_icon" :src="security_img" /></div>
             </div>
 
-            <div @click="selectGame('Graffiti')" class="missionHolder">
-                <span style="text-align: center;">Graffiti</span>
-                <div :class="[graffiti_solved ? 'unlocked':'', 'missionBox']"> <img :src="graffiti_img" style="width: 21rem; height: 21rem; "/></div>
+            <div @click="selectGame('Graffiti Mural')" class="missionHolder">
+                <span style="text-align: center;">Graffiti Mural</span>
+                <div :class="[graffiti_solved ? 'unlocked':'', 'missionBox']"> <img class="final_icon" :src="graffiti_img" /></div>
             </div>
 
-            <!-- <div class="missionBox"> <img src="../assets/bw_semaphore.png" style="width: 21rem; height: 21rem; "/></div> -->
+            <!-- <div class="missionBox"> <img src="../assets/bw_semaphore.png" style="width: 320px;; height: 320px;; "/></div> -->
            
             
             
@@ -40,9 +40,10 @@
 <script>
     import Team from './Elements/Team.vue'
     import axios from 'axios'
-
+let SelectedpuzzleNumber = 0;
     let codeResponse, teamSetup;
 let getStatusInterval;
+let completedPuzzle = 0;
 
   export default{
         name: 'TeamSelect',
@@ -75,54 +76,62 @@ let getStatusInterval;
                                 if(response.data[i]['puzzle_progress'] == 6){
                                     this.semaphore_img= './images/color_semaphore.png';
                                     this.semaphore_solved = true;
+                                    completedPuzzle = completedPuzzle+ 1;
                                 }
                                 if(response.data[i]['puzzle_progress'] == 7){
                                     this.security_img= './images/color_security.png';
                                     this.security_solved = true;
+                                    completedPuzzle = completedPuzzle+ 1;
                                 }
                                 if(response.data[i]['puzzle_progress'] == 8){
                                     this.cafe_img= './images/color_cafe.png';
                                     this.cafe_solved = true;
+                                    completedPuzzle = completedPuzzle+ 1;
                                 }
                                 if(response.data[i]['puzzle_progress'] == 9){
                                     this.graffiti_img= './images/color_graffiti.png';
                                     this.graffiti_solved = true;
+                                    completedPuzzle = completedPuzzle+ 1;
                                 }
                             }
+                            
+                if(completedPuzzle == 4){
+                    this.$router.push({name: 'finale.index' })
+                }
                         });
         },
         beforeCreate(){
              codeResponse = JSON.parse(localStorage.getItem('codeResponse'));
              getStatusInterval = setInterval(() => this.getSelectedMission(), 2000);
 
-            if(codeResponse){
+            // if(codeResponse){
                 
-                 teamSetup = JSON.parse(localStorage.getItem('teamSetup'));
+            //      teamSetup = JSON.parse(localStorage.getItem('teamSetup'));
                 
-                if(teamSetup){
-                    if(teamSetup.game_event_id == codeResponse.id && teamSetup.playerTeam){
-                        let gameProgress = JSON.parse(localStorage.getItem('gameProgress'));
-                        if(gameProgress && gameProgress.game_event_id == codeResponse.id){
+            //     if(teamSetup){
+            //         if(teamSetup.game_event_id == codeResponse.id && teamSetup.playerTeam){
+            //             let gameProgress = JSON.parse(localStorage.getItem('gameProgress'));
+            //             if(gameProgress && gameProgress.game_event_id == codeResponse.id){
 
-                            switch(gameProgress.puzzleProgress){
-                                case 1:
-                                    this.$router.push({ name: 'main.index1' });
-                                    break;
-                                case 2: 
-                                    this.$router.push({ name: 'main.computer' });
-                                    break;
-                            }
-                        }
-                        else{
-                            this.$router.push({ name: 'introduction.index' });
-                        }
-                    }
-                }
+            //                 switch(gameProgress.puzzleProgress){
+            //                     case 1:
+            //                         this.$router.push({ name: 'main.index1' });
+            //                         break;
+            //                     case 2: 
+            //                         this.$router.push({ name: 'main.computer' });
+            //                         break;
+            //                 }
+            //             }
+            //             else{
+            //                 this.$router.push({ name: 'introduction.index' });
+            //             }
+            //         }
+            //     }
 
-            }
-            else{
-                 this.$router.push({ name: 'login.index' });
-            }
+            // }
+            // else{
+            //      this.$router.push({ name: 'login.index' });
+            // }
         },
         components:{
             Team
@@ -132,34 +141,35 @@ let getStatusInterval;
                  axios.post('api/game/get_selected_mission',{
                             game_event_id: codeResponse.id,
                             playerTeam: teamSetup.playerTeam,
-                            player_number: teamSetup.playerName
+                            player_number: teamSetup.playerName,
+                            puzzle_number: SelectedpuzzleNumber
                         }).then(response => {
                             if(response){
-                                if(response.data['puzzle_number'] > 0){
+                                if(response.data['player_count'] == response.data['voted_count']){
                                     let puz_num = response.data['puzzle_number'];
                                     clearInterval(getStatusInterval);
                                     this.$swal({
-                                            title:'One of your teammates selected a mission. Everyone will be redirected.',
+                                            title:'Your team have comeup with a mission. You will now be redirected.',
                                             icon:'info'    
                                         }).then((result) =>{
                                             
-                                                axios.post('api/game/update_team_mission',{
-                                                    game_event_id: codeResponse.id,
-                                                    playerTeam: teamSetup.playerTeam,
-                                                    player_name: teamSetup.playerName,
-                                                    puzzle_number: puz_num
-                                                }).then(response => {
-                                                });
+                                                // axios.post('api/game/update_team_mission',{
+                                                //     game_event_id: codeResponse.id,
+                                                //     playerTeam: teamSetup.playerTeam,
+                                                //     player_name: teamSetup.playerName,
+                                                //     puzzle_number: puz_num
+                                                // }).then(response => {
+                                                // });
 
 
                                             if(puz_num == 6)
-                                                this.$router.push({ name: 'main.semaphore' });
+                                                this.$router.push({ name: 'tower_intro.index' });
                                             if(puz_num == 7)
-                                                this.$router.push({ name: 'security.index' });
+                                                this.$router.push({ name: 'mdv_intro.index' });
                                             if(puz_num == 8)
-                                                this.$router.push({ name: 'cafe.index' });
+                                                this.$router.push({ name: 'cafe_intro.index' });
                                             if(puz_num == 9)
-                                                this.$router.push({ name: 'graffiti.index' });
+                                                this.$router.push({ name: 'graffiti_intro.index' });
 
 
                                             // localStorage.setItem('codeResponse', JSON.stringify(response['data'][0]));
@@ -170,25 +180,25 @@ let getStatusInterval;
             },
             selectGame(gameName){
                 //  this.$router.push({ name: 'main.index' })
-                if(gameName == 'Semaphore' && this.semaphore_solved == true){
+                if(gameName == 'Tower View' && this.semaphore_solved == true){
                      this.$swal({
                                                     title:'Your team cleared the '+gameName+' mission. Please select another mission.',
                                                     icon:'info'    
                                                             });
                 }
-                else if(gameName == 'Cafe' && this.cafe_solved == true){
+                else if(gameName == 'Café la Parisienne' && this.cafe_solved == true){
                      this.$swal({
                                                     title:'Your team cleared the '+gameName+' mission. Please select another mission.',
                                                     icon:'info'    
                                                             });
                 }
-                else if(gameName == 'Security' && this.security_solved == true){
+                else if(gameName == 'Maison de Verre' && this.security_solved == true){
                      this.$swal({
                                                     title:'Your team cleared the '+gameName+' mission. Please select another mission.',
                                                     icon:'info'    
                                                             });
                 }
-                else if(gameName == 'Graffiti' && this.graffiti_solved == true){
+                else if(gameName == 'Graffiti Mural' && this.graffiti_solved == true){
                      this.$swal({
                                                     title:'Your team cleared the '+gameName+' mission. Please select another mission.',
                                                     icon:'info'    
@@ -207,17 +217,17 @@ let getStatusInterval;
                        if (result.isConfirmed) {
                             codeResponse = JSON.parse(localStorage.getItem('codeResponse'));
 
-                            let SelectedpuzzleNumber = 0;
-                            if(gameName == 'Semaphore'){
+                            
+                            if(gameName == 'Tower View'){
                                 SelectedpuzzleNumber = 6;
                             }
-                            else if(gameName == 'Security'){
+                            else if(gameName == 'Maison de Verre'){
                                 SelectedpuzzleNumber = 7;
                             }
-                            else if(gameName == 'Cafe'){
+                            else if(gameName == 'Café la Parisienne'){
                                 SelectedpuzzleNumber = 8;
                             }
-                            else if(gameName == 'Graffiti'){
+                            else if(gameName == 'Graffiti Mural'){
                                 SelectedpuzzleNumber = 9;
                             }
                            
@@ -228,22 +238,32 @@ let getStatusInterval;
                                     player_name: teamSetup.playerName,
                                     puzzle_number: SelectedpuzzleNumber
                                 }).then(response => {
+                                    this.$swal({
+                                            title:'You have voted for a mission. The team should select the same mission to proceed.',
+                                            icon:'info'    
+                                        }).then((result) =>{});
                                     // console.log(response);
-                                    clearInterval(getStatusInterval);
+                                    // clearInterval(getStatusInterval);
 
-                                    if(response){
-                                         if(SelectedpuzzleNumber == 6)
-                                                this.$router.push({ name: 'main.semaphore' });
-                                            if(SelectedpuzzleNumber == 7)
-                                                this.$router.push({ name: 'security.index' });
-                                            if(SelectedpuzzleNumber == 8)
-                                                this.$router.push({ name: 'cafe.index' });
-                                            if(SelectedpuzzleNumber == 9)
-                                                this.$router.push({ name: 'graffiti.index' });
-                                    }
-                                    else{
-                                        alert('something went wrong');
-                                    }
+                                    // if(response.data != 0){
+                                    //      if(SelectedpuzzleNumber == 6)
+                                    //             this.$router.push({ name: 'tower_intro.index' });
+                                    //         if(SelectedpuzzleNumber == 7)
+                                    //             this.$router.push({ name: 'mdv_intro.index' });
+                                    //         if(SelectedpuzzleNumber == 8)
+                                    //             this.$router.push({ name: 'cafe_intro.index' });
+                                    //         if(SelectedpuzzleNumber == 9)
+                                    //             this.$router.push({ name: 'graffiti_intro.index' });
+                                    // }
+                                    // else{
+                                    //     this.$swal({
+                                    //         title:'One player already selected a mission.',
+                                    //         icon:'info'    
+                                    //     }).then((result) =>{
+                                    //     });
+                                    // }
+
+                                    
                                 });
                             }
                        }
@@ -256,13 +276,38 @@ let getStatusInterval;
 
 <style scoped>
 
+
+    .teamSelect{
+        position: relative;
+        display:flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        gap: 100px;
+    }
+
+    .missionHolder{
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        gap: 20px;
+        justify-content: center;
+        align-content: center;
+        color:white;
+        font-size: 3rem;
+        font-weight: bold;
+        font-family: CA-Geheimagent;
+    }
+
+
     .missionBox{
         display: flex;
         flex-wrap: wrap;
         align-content: center;
         justify-content: center;
-        height: 20rem;
-        width: 20rem;
         border-radius: 50%;
         padding: 0px;
         margin:0px;
@@ -274,43 +319,9 @@ let getStatusInterval;
         background-color: transparent;
     }
 
-    .missionHolder{
-        display: flex;
-        flex-wrap: wrap;
-        flex-direction: column;
-        gap: 20px;
-        align-content: center;
-        justify-content: center;
-        color:white;
-        font-size: 3rem;
-        font-weight: bold;
-        font-family: CA-Geheimagent;
-    }
-
-    .teamSelect{
-        position: relative;
-        display:flex;
-        flex-wrap: wrap;
-        flex-direction: row;
-        align-content: center;
-        justify-content: center;
-        width: 100%;
-        height: 100%;
-        min-height: 900px;
-    }
-
-    .login-logo{
-        position: absolute;
-        top: 20%;
-        width: 100%;
-        max-width: 708px;
-        z-index: 1;
-    }
-
     .choose_header{
-        position: absolute;
+        text-align: center;
         font-size: 7vw;
-        top: 10%;
         color: white;
         font-weight: regular;
         font-family: CA-Geheimagent;
@@ -346,6 +357,11 @@ let getStatusInterval;
     background-color: rgba(180, 10, 10, 0.65);
 }
 
+.final_icon{
+    width: 320px;
+    height: 320px;
+}
+
 </style>
 
 <style scoped>
@@ -376,46 +392,10 @@ form{
 
 
 
-@media only screen and (max-width: 1200px) {
-    .teamButton{
-        font-size: 1rem;
-    }
-
-    
-    .teamHolder{
-        z-index: 2;
-        display:flex;
-        flex-wrap: wrap;
-        align-content: center;
-        justify-content: center;
-        row-gap: 1rem;
-        column-gap: 4rem;
-        margin-top: 0%
-    }
-}
-
-
-@media only screen and (max-width: 600px) {
-    .teamButton{
-        font-size: 1rem;
-    }
-
-    
-    .teamHolder{
-        z-index: 2;
-        display:flex;
-        flex-wrap: wrap;
-        align-content: center;
-        justify-content: center;
-        row-gap: 1rem;
-        column-gap: 4rem;
-        margin-top: -40%
-    }
-}
 
 
 
-@media only screen and (max-width: 500px) {
+/* @media only screen and (max-width: 500px) {
     .teamButton{
         margin-left: 10px;
         padding: 1rem;
@@ -436,5 +416,61 @@ form{
         column-gap: 4rem;
         margin-top: -70%
     }
-}
+} */
+
+/* Small */
+@media (min-width: 600px) {
+      .final_icon{
+        width: 250px;
+        height: 250px;
+    }
+
+    .missionBox{
+        width: 250px;
+        height: 250px;
+    }
+  }
+  
+/* Medium */
+@media (min-width: 1252px) { 
+
+    .final_icon{
+        width: 250px;
+        height: 250px;
+    }
+
+    .missionBox{
+        width: 250px;
+        height: 250px;
+    } 
+ }
+  
+/* Large */
+@media (min-width: 1370px) { 
+    .final_icon{
+        width: 250px;
+        height: 250px;
+    }
+
+    .missionBox{
+        width: 250px;
+        height: 250px;
+    } 
+    }
+  
+/* X-Large */
+@media (min-width: 1500px) { 
+    .final_icon{
+        width: 320px;
+        height: 320px;
+    }
+
+
+    .missionBox{
+        width: 320px;
+        height: 320px;
+    } 
+    }
+
+
 </style>

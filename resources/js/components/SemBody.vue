@@ -1,19 +1,16 @@
 <template>
     <div class="miro_board">
-    <div class="instruction_holder">Over the last 24 hours, we have detected an agent traveling all over the city who is trying to get a message to your team. But there is only one place in Paris where you can view so many places at different times of day. Using the hyper sensitive 24SC positioned on two decks of the Eiffel Tower, you may be able to decode the message he is trying to send.
-<br/><br/>
-You will need to divide into two teams, some of you going to the 2nd Floor Observation Deck and some to the Top Floor high above.
-<br/><br/>
-The code word is 07:45, 08:30, 16:00, 17:42, 00:46, 16:00, 10:50.</div>
-       <div class="pianoHeader">Select which floor <div :class="[selectedColorShown ? 'showing' :'', 'selectedColor']" ></div> </div>
+       <div v-if="floorShowing"  class="pianoHeader">Select which floor <div :class="[selectedColorShown ? 'showing' :'', 'selectedColor']" ></div> </div>
+       <div v-if="exitFloorShowing"  class="pianoHeader">{{ selectedFloor }}</div>
        <div class="towerFloorHolder">
-           <div class="floor fred" @click="topFlorTriggered()"> TOP FLOOR </div>
-           <div class="floor fgreen" @click="secondFloorTriggered()" > 2ND FLOOR </div>
+           <div v-if="floorShowing" class="floor fred" @click="topFlorTriggered()"> TOP FLOOR </div>
+           <div v-if="floorShowing" class="floor fgreen" @click="secondFloorTriggered()" > 2ND FLOOR </div>
+           <div v-if="exitFloorShowing" class="floor fblue" @click="exitFloorTriggered()" > EXIT FLOOR </div>
        </div>
 
         <div class="pianoHeader">Where to point 24SC? <div :class="[selectedColorShown ? 'showing' :'', 'selectedColor']" ></div> </div>
-       <div class="towerFloorHolder">
-           <div  v-for="(item, index) in angles" :key="index" class="angle" @click="showSemTest(item.imageName)"> {{ item.angleName }} </div>
+       <div v-if="exitFloorShowing" class="towerFloorHolder">
+           <div   v-for="(item, index) in angles" :key="index" class="angle" @click="showSemTest(item.imageName)"> {{ item.angleName }} </div>
            <!-- <div class="angle" @click="selectColor('green')"> WEST </div>
            <div class="angle" @click="selectColor('orange')" > SOUTH-WEST </div>
            <div class="angle" @click="selectColor('orange')" > SOUTH-EAST </div>
@@ -63,7 +60,10 @@ var correctSound = new Audio('https://www.freesoundslibrary.com/wp-content/uploa
                 selectedColorShown: false,
                 validatedAnswer: false,
                 userConfirmedData: false,
-                angles: null
+                angles: null,
+                floorShowing: true,
+                exitFloorShowing: false,
+                selectedFloor: ''
             }
         },
         methods:{
@@ -81,6 +81,9 @@ var correctSound = new Audio('https://www.freesoundslibrary.com/wp-content/uploa
                     {angleName: 'South West', imageName: '2f_south_west' },
                     {angleName: 'West', imageName: '2f_west' },
                 ];
+                this.selectedFloor = '2nd Floor';
+                this.floorShowing = false;
+                this.exitFloorShowing = true;
             },
             topFlorTriggered(){
                  this.angles =  [
@@ -89,6 +92,25 @@ var correctSound = new Audio('https://www.freesoundslibrary.com/wp-content/uploa
                     {angleName: 'South', imageName: 'top_south' },
                     {angleName: 'West', imageName: 'top_west' },
                 ];
+                this.selectedFloor = 'Top Floor';
+
+                this.floorShowing = false;
+                this.exitFloorShowing = true;
+            },
+            exitFloorTriggered(){
+                 this.$swal({
+                        title:'Are you sure you want to exit this floor?',
+                        // icon:'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: "Yes"
+                    }).then((result) =>{
+                       if (result.isConfirmed) {
+                           this.floorShowing = true;
+                           this.exitFloorShowing = false;
+                       }
+                    });
             },
             getStatus(){
 
@@ -143,11 +165,12 @@ var correctSound = new Audio('https://www.freesoundslibrary.com/wp-content/uploa
 
                                                                             if(response){
                                                                                 this.$swal({
-                                                                                            title:'Great! That is the correct answer!',
-                                                                                            icon:'success'    
-                                                                                                    }).then(response => {
-                                                                                             this.$router.push({ name: 'MapText.index'})
-                                                                                });
+                                                    imageUrl: '/images/slide_cheater.png',
+                                                    width: 524,
+                                                    height: 277,
+                                                    imageHeight: 267,
+                                                    background: '#ffffff20'
+                                                            });
                                                                             }
                                                                             else{
                                                                                 //show db error
@@ -345,6 +368,11 @@ input[type='checkbox'] {
     .fgreen{
         border-style: solid;
         border-color: #aed79d;
+    }
+
+     .fblue{
+        border-style: solid;
+        border-color: #076fac;
     }
 
     

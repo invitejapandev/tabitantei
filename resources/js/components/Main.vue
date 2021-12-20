@@ -6,7 +6,7 @@
             <Miro class="miro_holder" :miroURL="miroURLData" :isShowned="isShowned" :imgCover="imgCover"/>
             <ElementHolder @pauseTime="pause-time" :elementImage="elementImage" class="main_element_holder" :answer="answer" :puzzleNumber="puzzleNumber" />
         </div>
-        <a href="#" class="float">
+        <a href="#" @click="helpTriggered()" class="float">
             <img src="../assets/chloe_version.png" style="width: 120px; height: 120px;"/>
         </a>
 
@@ -49,26 +49,63 @@
                     localStorage.setItem('gameProgress', JSON.stringify(gameProgress));
                 }
 
-                if(this.puzzleNumber == 1){
-                    selectedMIRO = floorMIRO;
-                }
-                else if(this.puzzleNumber == 3){
-                    selectedMIRO = mapMIRO;
-                }
-                else if(this.puzzleNumber == 8){
-                    selectedMIRO = cafeMIRO;
-                }
-                else{
-                    selectedMIRO = computerMIRO;
-                }
+               
             }
 
-             getStatusInterval = setInterval(() => this.getStatus(), 2000);
+            axios.post('api/game/get_status_last_specific',{
+                        game_event_id: codeResponse.id,
+                        playerTeam: teamSetup.playerTeam
+                        }).then(response => {
+                            // alert(response.data);
+                                if(response.data == 0 && this.puzzleNumber != 1){
+                                    this.$router.push({ name: 'intro_video.index' });
+                                }
+                                else if(response.data == 1  && this.puzzleNumber != 2){
+                                    this.$router.push({ name: 'archive.index' });
+                                }
+                                else if(response.data == 2  && this.puzzleNumber != 3){
+                                    this.$router.push({ name: 'computer_on.index' });
+                                }
+                                else if(response.data == 3 && this.puzzleNumber != 4 ){
+                                    this.$router.push({ name: 'mayu_palais.index' });
+                                }
+                                else if(response.data== 4 && this.puzzleNumber != 5){
+                                    this.$router.push({ name: 'tour.index' });
+                                }
+                                else{
+                                    getStatusInterval = setInterval(() => this.getStatus(), 2000);
+                                }
+                        });
+
+           axios.post('api/game/get_miro_link',{
+                        game_event_id: codeResponse.id,
+                        team_number: teamSetup.playerTeam,
+                        puzzle_number: this.puzzleNumber
+                        }).then(response => {
+                           if(response){
+                               this.miroURLData = response.data;
+                               console.log(response.data)
+                           }
+                           else{
+                                if(this.puzzleNumber == 1){
+                                        this.miroURLData = floorMIRO;
+                                    }
+                                    else if(this.puzzleNumber == 3){
+                                        this.miroURLData = mapMIRO;
+                                    }
+                                    else if(this.puzzleNumber == 8){
+                                        this.miroURLData = cafeMIRO;
+                                    }
+                                    else{
+                                        this.miroURLData = computerMIRO;
+                                    }
+                           }
+                        });
         },
         data(){
             return{
                 timeisPaused: false,
-                miroURLData: selectedMIRO,
+                miroURLData: '',
                 imgCover: '/images/computer.png',
                 isShowned: this.miroCovered,
                 updatedTime: 0
@@ -80,6 +117,33 @@
             Miro
         },
         methods:{
+            helpTriggered(){
+              this.$swal({
+                        title:'Are you sure you want to call for help?',
+                        // icon:'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: "Yes",
+                        icon:'question'
+                    }).then((result) =>{
+                       if (result.isConfirmed) {
+                            axios.post('api/game/store_game_help',{
+                                    game_event_id: codeResponse.id,
+                                    playerTeam: teamSetup.playerTeam,
+                                    player_name: teamSetup.playerName,
+                                    puzzle_number: this.puzzleNumber
+                                }).then(response => {
+                                    this.$swal({
+                                            title:'A facilitator will come for help.',
+                                            icon:'success'}).then(response => {
+                                                
+                                            });
+                                });
+                       }
+
+                    });
+            },
             pauseTime(){
                 this.timeisPaused = true;
             },
@@ -95,16 +159,20 @@
                                 clearInterval(getStatusInterval);
                                 if(response['data'][0].player_number != teamSetup.playerName){
                                     this.$swal({
-                                            title:'Great! Your team got the correct answer.',
-                                            icon:'success'}).then(response => {
+                                                    imageUrl: '/images/correct.png',
+                                                    width: 524,
+                                                    height: 277,
+                                                    imageHeight: 267,
+                                                    background: '#ffffff20'
+                                                            }).then(response => {
                                                     if(this.puzzleNumber == 2){
-                                                        this.$router.push({ name: 'main.piano' })
+                                                        this.$router.push({ name: 'computer_on.index' })
                                                     }
                                                     else if(this.puzzleNumber == 3){
                                                         this.$router.push({ name: 'MapText.index'})
                                                     }
                                                     else if(this.puzzleNumber === 8){
-                                                        this.$router.push({ name: 'paris.index'})
+                                                        this.$router.push({name: 'cafe_completed.index'})
                                                     }
                                                     else{
                                                         this.$router.push({ name: 'archive.index' })
@@ -128,7 +196,7 @@
     }
 </script>
 
-<style>
+<style scoped>
 
     .main{
         display: flex;

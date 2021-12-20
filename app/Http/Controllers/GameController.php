@@ -10,6 +10,8 @@ use App\Models\GameTime;
 use App\Models\PianoAnswer;
 use App\Models\SecurityMatrix;
 use App\Models\TeamMission;
+use App\Models\GameHelp;
+use App\Models\TeamMiro;
 
 class GameController extends Controller
 {
@@ -41,7 +43,8 @@ class GameController extends Controller
         $player = new GamePlayer([
             'game_event_id' => $request->game_event_id,
             'teamNumber' => $request->teamNumber,
-            'nickName' => 'Player '.$playerCount
+            'nickName' => 'Player '.$playerCount,
+            'ActiveStatus' => 1
         ]);
         
         $player->save();
@@ -71,6 +74,13 @@ class GameController extends Controller
             'player_number' => $request->player_number,
             'answered_current' => 1
         ]);
+
+        if($request->puzzle_progress>=6){
+            $puzzle_number = $request->puzzle_progress;
+            $playerTeam =  $request->teamNumber;
+            $event_id = $request->game_event_id;
+            $teamMission = TeamMission::where('team_number', $playerTeam)->where('game_event_id', $event_id)->where('puzzle_number', $puzzle_number)->update(["is_commenced" => 1]);
+        }
 
         $gameProgress->save();
 
@@ -139,19 +149,20 @@ class GameController extends Controller
         $playerTeam = $request->playerTeam;
         $event_id = $request->game_event_id;
         $player_name = $request->player_name;
-        $player_answer = PianoAnswer::select('selected_color')->where('game_event_id', $event_id)->where('team_number', $playerTeam)->where('player_name', $player_name)->first();
+        $player_answer = $request->player_selected_color;
         // return $player_answer['selected_color'];
         if($player_answer){
             $players = GamePlayer::where('teamNumber', $playerTeam)->where('game_event_id', $event_id)->get();
             $player_count = count($players);
 
-            $pianoAnswer= PianoAnswer::where('game_event_id', $event_id)->where( 'team_number', $playerTeam)->where('selected_color', $player_answer['selected_color'])->get();
+            $pianoAnswer= PianoAnswer::where('game_event_id', $event_id)->where( 'team_number', $playerTeam)->where('selected_color', 'like' ,'%'.$player_answer.'%')->get();
             if($pianoAnswer){
                 // return count($pianoAnswer);
                 return $data = array(
                     'answered_player' => count($pianoAnswer),
                     'player_count' => $player_count,
-                    'selected_color' => $player_answer['selected_color']
+                    'selected_color' => $player_answer,
+                    'pianoanswers' => $pianoAnswer
                 );
             }
             else{
@@ -189,7 +200,7 @@ class GameController extends Controller
         $playerTeam = $request->playerTeam;
         $event_id = $request->game_event_id;
 
-        $gameStatus= GameProgress::where('game_event_id', $event_id)->where( 'teamNumber', $playerTeam)->get();
+        $gameStatus= GameProgress::select('game_event_id', 'puzzle_progress', 'answered_current', 'teamNumber')->distinct()->where('game_event_id', $event_id)->where( 'teamNumber', $playerTeam)->get();
         if(count($gameStatus) > 0){
             return $gameStatus;
         }
@@ -197,15 +208,46 @@ class GameController extends Controller
         return "No game status found.";
     }
 
+    public function get_status_last_specific(Request $request){
+        $playerTeam = $request->playerTeam;
+        $event_id = $request->game_event_id;
+
+        $gameStatus= GameProgress::where('game_event_id', $event_id)->where( 'teamNumber', $playerTeam)->orderByDesc('puzzle_progress')->first();
+        if($gameStatus){
+            if($gameStatus['puzzle_progress'] > 0){
+                return $gameStatus['puzzle_progress'];
+            }
+        }
+        
+        return 0;
+    }
+
     public function get_selected_mission(Request $request){
         $playerTeam = $request->playerTeam;
         $event_id = $request->game_event_id;
         $player_name = $request->player_number;
+        $puzzle_number = $request->puzzle_number;
+        if($puzzle_number ==0){
+            $missDetails = TeamMission::where('team_number', $playerTeam)->where('player_name',$player_name)->where('game_event_id', $event_id)->where('is_commenced', 0)->first();
+            if($missDetails){
+                $puzzle_number = $missDetails['puzzle_number'];
+            }
+        }
 
-        $teamMission = TeamMission::where('team_number', $playerTeam)->where('player_name','!=', $player_name)->where('game_event_id', $event_id)->where('is_commenced', 0)->first();
+        $teamMission = TeamMission::where('team_number', $playerTeam)->where('puzzle_number', $puzzle_number)->where('game_event_id', $event_id)->where('is_commenced', 0)->get();
+        
 
 
-        return $teamMission;
+        $players = GamePlayer::where('teamNumber', $playerTeam)->where('game_event_id', $event_id)->get();
+        $player_count = count($players);
+
+        $data = array(
+            'player_count' => $player_count,
+            'voted_count' => count($teamMission),
+            'puzzle_number' => $puzzle_number
+        );
+
+        return $data;
     }
 
     
@@ -216,19 +258,52 @@ class GameController extends Controller
         $player_name = $request->player_name;
         $puzzle_number = $request->puzzle_number;
 
-        $newTeamMission = TeamMission::updateOrCreate(array(
+        $teamMissionList = TeamMission::where('team_number', $playerTeam)->where('player_name', $player_name)->where('game_event_id', $event_id)->where("is_commenced", 0)->get();
+
+        if(count($teamMissionList) == 0){
+            $newTeamMission = TeamMission::updateOrCreate(array(
+                'game_event_id' => $event_id,
+                'team_number' => $playerTeam,
+                'player_name' => $player_name,
+                'puzzle_number' => $puzzle_number,
+                'is_commenced' => 0
+            ));
+            
+            $newTeamMission->save();
+
+
+            
+
+            // $teamMission = TeamMission::where('team_number', $playerTeam)->where('game_event_id', $event_id)->where('is_commenced', 1)->first();
+            return $newTeamMission;
+        }
+        else{
+
+            $teamMission = TeamMission::where('team_number', $playerTeam)->where('player_name', $player_name)->where('game_event_id', $event_id)->where("is_commenced", 0)->update(["puzzle_number" => $puzzle_number]);
+           
+            return $teamMission;
+        }
+
+    }
+
+    public function store_game_help(Request $request){
+        $playerTeam = $request->playerTeam;
+        $event_id = $request->game_event_id;
+        $player_name = $request->player_name;
+        $puzzle_number = $request->puzzle_number;
+
+        
+        $newGameHelp = new GameHelp([
             'game_event_id' => $event_id,
             'team_number' => $playerTeam,
             'player_name' => $player_name,
             'puzzle_number' => $puzzle_number,
-            'is_commenced' => 0
-        ));
+            'isDone' => 0
+        ]);
         
-        $newTeamMission->save();
-        
+        $newGameHelp->save();
 
-        // $teamMission = TeamMission::where('team_number', $playerTeam)->where('game_event_id', $event_id)->where('is_commenced', 1)->first();
-        return $newTeamMission;
+        return true;
     }
 
     public function update_team_mission(Request $request){
@@ -238,20 +313,35 @@ class GameController extends Controller
         $player_name = $request->player_name;
         $puzzle_number = $request->puzzle_number;
 
-        $teamMission = TeamMission::where('team_number', $playerTeam)->where('game_event_id', $event_id)->where('puzzle_number', $puzzle_number)->first();
+        $teamMission = TeamMission::where('team_number', $playerTeam)->where('game_event_id', $event_id)->update(["is_commenced" => 1]);
 
-        if($teamMission){
-            $newArray = array(
-                'game_event_id' => $event_id,
-                'team_number' => $playerTeam,
-                'player_name' => $player_name,
-                'puzzle_number' => $puzzle_number,
-                'is_commenced' => 1
-            );
+        return true;
 
-            $teamMission->update($newArray);
-            return true;
+        
+    }
+
+    public function game_help_list(){
+        $gameHelp = GameHelp::where('isDone', 0)->get();
+
+        return $gameHelp;
+    }
+
+    public function update_help(Request $request){
+        $id = $request->id;
+        $gameHelp = GameHelp::where('id', $id)->update(['isDone' => 1]);
+        return true;
+    }
+
+    public function get_miro_link(Request $request){
+        $puzzle_number = $request->puzzle_number;
+        $team_number = $request->team_number;
+        $miroBoard = TeamMiro::where('puzzle_number', $puzzle_number)->where('team_number', $team_number)->first();
+
+        if($miroBoard)
+        {
+            return $miroBoard['miro_link'];
         }
+        return "";
     }
 
     

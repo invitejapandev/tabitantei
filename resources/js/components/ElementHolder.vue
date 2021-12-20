@@ -6,9 +6,10 @@
                 <!-- <img class="desk" src="../assets/bulletin_board.png"  /> -->
                 <img class="desk" v-bind:src="img"  />
             </div>
-            <div class="actions2">
-                <input :class="[isCorrect ? 'correct' : '' , 'answer']" type="text" placeholder="TYPE HERE" style="z-index: 1" v-on:keyup.enter="onEnter" @input="onInput" />
-        
+            <div class="actions2" >
+                <input v-if="puzzleNumber == 2" :class="[isCorrect ? 'correct' : '' , 'answer']" type="text" placeholder="TYPE HERE" style="z-index: 1" v-on:keyup.enter="onEnter" @input="onInput" />
+                <input v-if="puzzleNumber == 8" class="answer cafe_answer" type="text" placeholder="TYPE HERE" style="z-index: 1" v-on:keyup.enter="onEnter" @input="onInput" />
+                <input v-if="puzzleNumber == 1" :class="[isCorrect ? 'norman_answer_correct' : 'norman_answer' , 'answer']" type="text" placeholder="TYPE HERE" style="z-index: 1" v-on:keyup.enter="onEnter" @input="onInput" />
             </div>
         </div>
        
@@ -70,8 +71,11 @@ const floor4_image = '/images/floor4.png';
 
 const en_floor_image = [floor1_image, floor2_image, floor3_image, floor4_image];
 
-const cafe_img = '/images/google_review.png';
+const cafe_img = '/images/cafe_english.png';
 const cafe_imgs = [cafe_img];
+
+const cafe_img_j ='/images/cafe_japanese.png';
+const cafe_imgs_j = [cafe_img_j];
 
 var typingTimer;
 var doneTypingInterval = 1000;
@@ -93,7 +97,8 @@ export default{
             visible: false,
             index: 0, // default: 0,
             showLanguageButton: false,
-            img: this.elementImage
+            img: this.elementImage,
+            asd: false
         }
     },
     props:{
@@ -126,21 +131,24 @@ export default{
 
 
                                     if(response){
-                                        this.$swal({
-                                                    title:'Great! That is the correct answer!',
-                                                    icon:'success'    
+                                      this.$swal({
+                                                    imageUrl: '/images/correct.png',
+                                                    width: 524,
+                                                    height: 277,
+                                                    imageHeight: 267,
+                                                    background: '#ffffff20'
                                                             }).then(response => {
                                                     if(this.puzzleNumber == 2){
-                                                        this.$router.push({ name: 'main.piano' })
+                                                        this.$router.push({ name: 'computer_on.index' })
                                                     }
                                                     else if(this.puzzleNumber == 3){
                                                         this.$router.push({ name: 'MapText.index'})
                                                     }
                                                     else if(this.puzzleNumber === 8){
-                                                        this.$router.push({ name: 'paris.index'})
+                                                        this.$router.push({name: 'cafe_completed.index'})
                                                     }
                                                     else if(this.puzzleNumber == 6){
-                                                        this.$router.push({name: 'paris.index'})
+                                                        this.$router.push({name: 'semaphore_completed.index'})
                                                     }
                                                     else{
                                                         this.$router.push({ name: 'archive.index' })
@@ -179,17 +187,20 @@ export default{
 
                                     if(response){
                                         this.$swal({
-                                                    title:'Great! That is the correct answer!',
-                                                    icon:'success'    
+                                                    imageUrl: '/images/correct.png',
+                                                    width: 524,
+                                                    height: 277,
+                                                    imageHeight: 267,
+                                                    background: '#ffffff20'
                                                             }).then(response => {
                                                     if(this.puzzleNumber == 2){
                                                         this.$router.push({ name: 'demo.index' })
                                                     }
                                                     else if(this.puzzleNumber === 8){
-                                                        this.$router.push({ name: 'paris.index'})
+                                                        this.$router.push({name: 'cafe_completed.index'})
                                                     }
                                                     else if(this.puzzleNumber == 6){
-                                                        this.$router.push({name: 'paris.index'})
+                                                        this.$router.push({name: 'semaphore_completed.index'})
                                                     }
                                                     else{
                                                         this.$router.push({ name: 'archive.index' })
@@ -208,9 +219,12 @@ export default{
                     }
                     else{
                         this.$swal({
-                                title:`That is not the correct answer. Please try again.`,
-                                icon:'error'    
-                                        });
+                                                    imageUrl: '/images/try_again.png',
+                                                    width: 524,
+                                                    height: 277,
+                                                    imageHeight: 267,
+                                                    background: '#ffffff20'
+                                                            });
                         this.isCorrect = false;
                     }
             },
@@ -244,7 +258,7 @@ export default{
             this.imgs = en_floor_image
         }
         else if(this.puzzleNumber === 8){
-            this.imgs = cafe_imgs;
+            this.imgs = cafe_imgs_j;
         }
         else{
             this.imgs =en_manual
@@ -338,6 +352,34 @@ export default{
 
     .answer.correct{
         background-image: url('../assets/circuit_board_green.png');
+    }
+
+    .cafe_answer{
+        background-image: url('../assets/cafe_answer_box.png');
+        padding-left: 50%;
+        padding-right: 0%;
+        color: black;
+        font-size: 2.8vw;
+        font-weight: normal;
+
+    }
+
+    .norman_answer{
+        font-size: 2vw;
+        background-image: url('../assets/norman_chat.png');
+        padding-left: 48%;
+        padding-right: 0%;
+        color: black;
+
+    }
+
+    .norman_answer_correct{
+        font-size: 2vw;
+        background-image: url('../assets/norman_chat_correct.png');
+        padding-left: 48%;
+        padding-right: 0%;
+        color: black;
+
     }
 
 

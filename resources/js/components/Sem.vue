@@ -7,7 +7,7 @@
             <SemElement :miroURL="miroURLData" @pauseTime="pause-time" :elementImage="elementImage" class="main_element_holder" :answer="answer" :puzzleNumber="puzzleNumber" />
             <semtest :imgName="semImage" @hideSemtest="hideSemtest" class=""  :shouldShow="shouldShow"/>
         </div>
-        <a href="#" class="float">
+        <a @click="helpTriggered" href="#" class="float">
             <img src="../assets/chloe_version.png" style="width: 120px; height: 120px;"/>
         </a>
 
@@ -24,7 +24,9 @@
     let computerMIRO = "https://miro.com/app/live-embed/o9J_ltgInS4=/?embedAutoplay=true&moveToViewport=-2638,-351,2934,3605";
     let  floorMIRO = "https://miro.com/app/live-embed/o9J_ltgIkjg=/?embedAutoplay=true&moveToViewport=2560,-648,1472,1160";
     let mapMIRO = 'https://miro.com/app/live-embed/o9J_ljJrZyw=/?embedAutoplay=true&moveToViewport=-1717,-895,2432,1658';
-
+    let semMiro = 'https://miro.com/app/live-embed/uXjVOdxVdVo=/?embedAutoplay=true&moveToViewport=-4821,5663,4776,2905';
+    // <iframe width="768" height="432" src="https://miro.com/app/live-embed/uXjVOdxVdVo=/?moveToViewport=-4821,5663,4776,2905" frameBorder="0" scrolling="no" allowFullScreen></iframe>
+var correctSound = new Audio('https://www.freesoundslibrary.com/wp-content/uploads/2018/03/right-answer-ding-ding-sound-effect.mp3');
     let selectedMIRO = "";
     let gameProgress;
     let codeResponse, teamSetup;
@@ -51,23 +53,31 @@
                     localStorage.setItem('gameProgress', JSON.stringify(gameProgress));
                 }
 
-                if(this.puzzleNumber == 1){
-                    selectedMIRO = floorMIRO;
-                }
-                else if(this.puzzleNumber == 3){
-                    selectedMIRO = mapMIRO;
-                }
-                else{
-                    selectedMIRO = computerMIRO;
-                }
+                // selectedMIRO = semMiro;
+                
+                axios.post('api/game/get_miro_link',{
+                        game_event_id: codeResponse.id,
+                        team_number: teamSetup.playerTeam,
+                        puzzle_number: this.puzzleNumber
+                        }).then(response => {
+                           if(response){
+                               this.miroURLData = response.data;
+                               console.log(response.data)
+                           }
+                           else{
+                              
+                               this.miroURLData = semMiro;
+                           }
+                        });
             }
 
+             getStatusInterval = setInterval(() => this.getStatus(), 2000);
           
         },
         data(){
             return{
                 timeisPaused: false,
-                miroURLData: selectedMIRO,
+                miroURLData: '',
                 imgCover: '/images/computer.png',
                 isShowned: this.miroCovered,
                 updatedTime: 0,
@@ -83,6 +93,33 @@
             semtest
         },
         methods:{
+             helpTriggered(){
+              this.$swal({
+                        title:'Are you sure you want to call for help?',
+                        // icon:'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: "Yes",
+                        icon:'question'
+                    }).then((result) =>{
+                       if (result.isConfirmed) {
+                            axios.post('api/game/store_game_help',{
+                                    game_event_id: codeResponse.id,
+                                    playerTeam: teamSetup.playerTeam,
+                                    player_name: teamSetup.playerName,
+                                    puzzle_number: this.puzzleNumber
+                                }).then(response => {
+                                    this.$swal({
+                                            title:'A facilitator will come for help.',
+                                            icon:'success'}).then(response => {
+                                                
+                                            });
+                                });
+                       }
+
+                    });
+            },
             pauseTime(){
                 this.timeisPaused = true;
             },
@@ -98,21 +135,15 @@
                                 this.timeisPaused = true;
                                 clearInterval(getStatusInterval);
                                 if(response['data'][0].player_number != teamSetup.playerName){
+                                    correctSound.play();
                                     this.$swal({
-                                            title:'Great! Your team got the correct answer.',
-                                            icon:'success'}).then(response => {
-                                                    if(this.puzzleNumber == 2){
-                                                        this.$router.push({ name: 'main.piano' })
-                                                    }
-                                                    else if(this.puzzleNumber == 3){
-                                                        this.$router.push({ name: 'MapText.index'})
-                                                    }
-                                                    else if(this.puzzleNumber == 6){
-                                                        this.$router.push({name: 'paris.index'})
-                                                    }
-                                                    else{
-                                                        this.$router.push({ name: 'archive.index' })
-                                                    } 
+                                                    imageUrl: '/images/correct.png',
+                                                    width: 524,
+                                                    height: 277,
+                                                    imageHeight: 267,
+                                                    background: '#ffffff20'
+                                                            }).then(response => {
+                                                        this.$router.push({name: 'semaphore_completed.index'})
                                                     });
                                     }
                                 }
@@ -141,7 +172,7 @@
     }
 </script>
 
-<style>
+<style scoped>
 
     .main{
         display: flex;

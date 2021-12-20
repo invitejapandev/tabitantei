@@ -1,15 +1,28 @@
 <template>
     <div class="miro_board">
-        <div class="pianoHeader"><input style="" type="checkbox" v-model="userConfirmedData"/> I am not a robot. </div>
-       <div class="pianoHeader">Select Correct Picture: <div :class="[selectedColorShown ? 'showing' :'', 'selectedColor']" ></div> </div>
-       <div class="pianoPicHolder">
-           <div class="pianoPicture" @click="selectColor('green')"> <img src="../assets/green_piano.png" style="width: 19rem; height: 19rem; "/></div>
-           <div class="pianoPicture" @click="selectColor('orange')" > <img src="../assets/orange_piano.png" style="width: 19rem; height: 19rem; "/></div>
+        
+            <div class="pianoHeader">
+                <input  style="z-index:99" type="checkbox" v-model="userConfirmedData"/> I am not a robot.
+                <br/>Select Correct Picture: 
+                <br/><br/>
+            </div>
+        <div class="main_bod">
+        <div class="piano_body">
+            <div class="pianoPicHolder">
+                <div class="pianoPicture" @click="selectColor('green')" > <img :class="[greenSelected ? 'btnSelected': '', 'piano_final']" src="../assets/green_piano.png" /></div>
+                <div class="pianoPicture" @click="selectColor('orange')" > <img :class="[orangeSelected ? 'btnSelected': '', 'piano_final']" src="../assets/orange_piano.png" /></div>
+            </div>
+            <div class="pianoPicHolder">
+                <div class="pianoPicture" @click="selectColor('red')" > <img :class="[redSelected ? 'btnSelected': '', 'piano_final']"  src="../assets/red_piano.png" /> </div>
+                <div class="pianoPicture" @click="selectColor('blue')" > <img :class="[blueSelected ? 'btnSelected': '', 'piano_final']" src="../assets/blue_piano.png" /></div>
+            </div>
        </div>
-       <div class="pianoPicHolder">
-           <div class="pianoPicture" @click="selectColor('red')" > <img src="../assets/red_piano.png" style="width: 19rem; height: 19rem; "/> </div>
-           <div class="pianoPicture" @click="selectColor('blue')" > <img src="../assets/blue_piano.png" style="width: 19rem; height: 19rem;"/></div>
-       </div>
+       
+             <div class="manual_div" >
+                <!-- <img class="desk" src="../assets/bulletin_board.png"  /> -->
+                <img class="desk" src="/images/pianos.png"  />
+            </div>
+            </div>
        <!-- <div :class="[selectedColorShown ? 'showing' :'', 'selectedHeader']">Selected Color: <div class="selectedColor" ></div></div> -->
     </div>
 </template>
@@ -20,6 +33,8 @@ import axios from 'axios'
    var getStatusInterval;
    let teamSetup, codeResponse ;
    let playerselectedColor;
+
+    let getStatusAttempt = 0;
 
 // <iframe width="768" height="432" src="https://miro.com/app/live-embed/o9J_ltgIkjg=/?moveToViewport=2560,-648,1472,1160" frameBorder="0" scrolling="no" allowFullScreen></iframe>
     const realsrc = 'https://miro.com/app/live-embed/o9J_llppKnc=/?embedAutoplay=true&moveToViewport=-1877,-2465,3763,1996';
@@ -53,7 +68,11 @@ var correctSound = new Audio('https://www.freesoundslibrary.com/wp-content/uploa
                 },
                 selectedColorShown: false,
                 validatedAnswer: false,
-                userConfirmedData: false
+                userConfirmedData: false,
+                greenSelected: false,
+                orangeSelected: false,
+                redSelected: false,
+                blueSelected: false
             }
         },
         methods:{
@@ -62,11 +81,26 @@ var correctSound = new Audio('https://www.freesoundslibrary.com/wp-content/uploa
             },
             getStatus(){
 
+                    getStatusAttempt = getStatusAttempt+1;
+
+                   
+                    
+                    if(this.userConfirmedData && playerselectedColor.length > 0)
+                    {
+
+                         if(getStatusAttempt == 10){
+                          this.$swal({
+                                                                                            title:'Someone is inactive or selected a different color. Coordination is the key.',
+                                                                                            icon:'info'    
+                                                                                                    }).then(response => {
+                                                                                });
+                        }
 
                     axios.post('api/game/get_status_piano',{
                         game_event_id: codeResponse.id,
                         playerTeam: teamSetup.playerTeam,
-                        player_name: teamSetup.playerName
+                        player_name: teamSetup.playerName,
+                        player_selected_color: playerselectedColor
                         }).then(response => {
                             
                             if(response['data'].answered_player){
@@ -74,12 +108,13 @@ var correctSound = new Audio('https://www.freesoundslibrary.com/wp-content/uploa
                                 let player_count = response['data'].player_count;
                                 let selected_color = response['data'].selected_color;
 
-                                if(answered_player == player_count && this.validatedAnswer == false){
+                                       if(getStatusAttempt == 30 && this.userConfirmedData && playerselectedColor.length > 0){
+                                           
                                     // alert('everyone did answer');
                                               clearInterval(getStatusInterval);
                                               let timerInterval;
                                            this.$swal({
-                                                    title: 'Everyone did answer. Validating the answers.',
+                                                    title: 'Validating the answers.',
                                                     timer: 3000,
                                                     timerProgressBar: true,
                                                     allowOutsideClick:false,
@@ -113,10 +148,13 @@ var correctSound = new Audio('https://www.freesoundslibrary.com/wp-content/uploa
 
                                                                             if(response){
                                                                                 this.$swal({
-                                                                                            title:'Great! That is the correct answer!',
-                                                                                            icon:'success'    
-                                                                                                    }).then(response => {
-                                                                                             this.$router.push({ name: 'MapText.index'})
+                                                    imageUrl: '/images/correct.png',
+                                                    width: 524,
+                                                    height: 277,
+                                                    imageHeight: 267,
+                                                    background: '#ffffff20'
+                                                            }).then(response => {
+                                                                                             this.$router.push({ name: 'mayu_palais.index'})
                                                                                 });
                                                                             }
                                                                             else{
@@ -128,11 +166,99 @@ var correctSound = new Audio('https://www.freesoundslibrary.com/wp-content/uploa
                                                             }
                                                             else if(this.validatedAnswer == false){
                                                                 this.$swal({
-                                                                    title:`That is not the correct answer. Please try again.`,
-                                                                    icon:'error'    
-                                                                            });
+                                                    imageUrl: '/images/try_again.png',
+                                                    width: 524,
+                                                    height: 277,
+                                                    imageHeight: 267,
+                                                    background: '#ffffff20'
+                                                            });
+
+                                                                            getStatusAttempt = 0;
                                                                   getStatusInterval = setInterval(() => this.getStatus(), 2000);
                                                                 this.validatedAnswer = true;
+
+                                                                            
+
+
+
+                                                            }
+                                                    });
+
+                    }
+
+
+                                if(answered_player >= player_count && this.validatedAnswer == false )  {
+                                    // alert('everyone did answer');
+                                              clearInterval(getStatusInterval);
+                                              let timerInterval;
+                                           this.$swal({
+                                                    title: 'Validating the answers.',
+                                                    timer: 3000,
+                                                    timerProgressBar: true,
+                                                    allowOutsideClick:false,
+                                                    didOpen: () => {
+                                                        this.$swal.showLoading()
+                                                        const b = this.$swal.getHtmlContainer().querySelector('b')
+                                                        timerInterval = setInterval(() => {
+                                                        b.textContent =  this.$swal.getTimerLeft()
+                                                        }, 100)
+                                                    },
+                                                    willClose: () => {
+                                                        clearInterval(timerInterval)
+                                                    }
+                                                    }).then((result) => {
+                                                          if(selected_color =='blue' && this.validatedAnswer == false){
+                                                                this.validatedAnswer = true;
+                                                                correctSound.play();
+                                                                this.$emit('pause-time');
+                                                                
+                                                                let gameProgress = JSON.parse(localStorage.getItem('gameProgress'));
+
+
+                                                                axios.post('api/game/store_status',{
+                                                                            game_event_id: teamSetup.game_event_id,
+                                                                            teamNumber: teamSetup.playerTeam,
+                                                                            puzzle_progress: 3,
+                                                                            player_number: teamSetup.playerName
+                                                                        }).then(response => {
+                                                                            
+
+
+                                                                            if(response){
+                                                                                this.$swal({
+                                                    imageUrl: '/images/correct.png',
+                                                    width: 524,
+                                                    height: 277,
+                                                    imageHeight: 267,
+                                                    background: '#ffffff20'
+                                                            }).then(response => {
+                                                                                             this.$router.push({ name: 'mayu_palais.index'})
+                                                                                });
+                                                                            }
+                                                                            else{
+                                                                                //show db error
+                                                                                //alert('something went wrong');
+                                                                            }
+                                                                        });
+                                                                
+                                                            }
+                                                            else if(this.validatedAnswer == false){
+                                                                 this.$swal({
+                                                    imageUrl: '/images/try_again.png',
+                                                    width: 524,
+                                                    height: 277,
+                                                    imageHeight: 267,
+                                                    background: '#ffffff20'
+                                                            });
+
+                                                                            
+                                                                  getStatusInterval = setInterval(() => this.getStatus(), 2000);
+                                                                this.validatedAnswer = true;
+
+                                                                            
+
+
+
                                                             }
                                                     });
                                   
@@ -163,16 +289,46 @@ var correctSound = new Audio('https://www.freesoundslibrary.com/wp-content/uploa
                             //                         });
                             //         }
                             //     }
+                            
                         }).catch(error => {
                            console.log(error);
                         });
 
+            }
+
                  
             },
             selectColor(color){
-                
+                getStatusAttempt = 0;
+
                     if(this.userConfirmedData){
                         playerselectedColor = color;
+                        if(playerselectedColor =='green'){
+                            this.greenSelected = true;
+                            this.orangeSelected = false;
+                            this.redSelected = false;
+                            this.blueSelected = false;
+                        }
+                        else if(playerselectedColor =='orange'){
+                            this.greenSelected = false;
+                            this.orangeSelected = true;
+                            this.redSelected = false;
+                            this.blueSelected = false;
+                        }
+                        else if(playerselectedColor == 'red'){
+                            this.greenSelected = false;
+                            this.orangeSelected = false;
+                            this.redSelected = true;
+                            this.blueSelected = false;
+                        }
+                        else{
+                            this.greenSelected = false;
+                            this.orangeSelected = false;
+                            this.redSelected = false;
+                            this.blueSelected = true;
+                        }
+
+
                             axios.post('api/game/submit_color',{
                                             game_event_id: teamSetup.game_event_id,
                                             team_number: teamSetup.playerTeam,
@@ -198,8 +354,8 @@ var correctSound = new Audio('https://www.freesoundslibrary.com/wp-content/uploa
                                         });
 
                         
-                            document.querySelector(".selectedColor").style.backgroundColor =color;
-                            this.selectedColorShown= true;
+                            // document.querySelector(".selectedColor").style.backgroundColor =color;
+                            // this.selectedColorShown= true;
                             this.validatedAnswer = false;
                      }
                      else{
@@ -224,28 +380,48 @@ input[type='checkbox'] {
     margin-top: 16px;
 }
 
+.main_bod{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+}
+
 
 
    .miro_board{
         display: flex;
+        position: relative;
         justify-content: center;
         align-content: center;
         flex-wrap: wrap;
-        width: 50px;
         flex-direction: column;
+        width: 100%;
+    }
+
+    .piano_body{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-content: center;
         gap: 20px;
+        flex-direction: row;
+        position: relative;
+        width: 40vw;
+        flex-grow: 1;
     }
 
     .pianoHeader{
         display: flex;
+        position: relative;
         text-align: center;
         align-content: center;
         justify-content: center;
         font-size: 3rem;
-        gap: 10px;
         font-weight: bold;
         font-family: CA-Geheimagent;
         vertical-align: middle;
+        width: 100%;
     }
     
     .selectedHeader{
@@ -266,27 +442,26 @@ input[type='checkbox'] {
         border-radius: 10%;
         justify-content: end;
         align-content: end;
-        height: 100%;
+        height: 60px;
         width: 60px;
+        z-index: 99;
     }
 
     .showing{
         display: flex;
+        z-index: 99;
     }
 
     .pianoPicHolder{
         display: flex;
         flex-wrap: wrap;
+        flex-direction: column;
+        justify-content: center;
+        align-content: center;
+        width: 100%;
         gap: 20px;
     }
 
-    .pianoPicture{
-        border-radius: 50%;
-        height: 320px;
-        width: 320px;
-        cursor: pointer;
-    }
-    
 
     .iframeHolder{
         position: absolute;
@@ -341,6 +516,35 @@ input[type='checkbox'] {
     }
 
 
+    .pianopicture{
+        display: flex;
+        flex-wrap: wrap;
+        align-content: center;
+        justify-content: center;
+    }
+
+    .btnSelected{
+        border-radius: 50%; border-style: solid; border-color: lightgreen;
+    }
+
+
+.manual_div{
+        display: flex;
+        position: relative;
+        justify-content: center;
+        align-items: center;
+        width: 60vw;
+        height: 50vh;
+        flex-grow: 1;
+        /* border-style: solid; */
+    }
+    
+    .desk{
+        border-radius: 10px;
+        width: 95%;
+        height: 40vh;
+        object-fit: cover;
+    }
 
 /* 
    @media only screen and (max-width: 1024px) {
@@ -371,6 +575,77 @@ input[type='checkbox'] {
         }
 
     } */
+
+/* Small */
+@media (min-width: 600px) {
+      .pianopicture{
+        width: 165px;
+        height: 165px;
+    }
+
+    .piano_final{
+        width: 160px;
+        height: 160px;
+    }
+
+      .pianoPicHolder{
+        height: 160px;
+    }
+  }
+  
+/* Medium */
+@media (min-width: 1252px) { 
+
+    .pianopicture{
+        width: 180px;
+        height: 180px;
+    }
+
+    .piano_final{
+        width: 180px;
+        height: 180px;
+    } 
+
+
+      .pianoPicHolder{
+        height: 180px;
+    }
+ }
+  
+/* Large */
+@media (min-width: 1500px) { 
+    .pianopicture{
+        width: 225px;
+        height: 225px;
+    }
+
+    .piano_final{
+        width: 220px;
+        height: 220px;
+    } 
+
+    .pianoPicHolder{
+        height: 220px;
+    }
+    }
+  
+/* X-Large */
+@media (min-width: 1700px) { 
+    .pianopicture{
+        width: 285px;
+        height: 285px;
+    }
+
+
+    .piano_final{
+        width: 280px;
+        height: 280px;
+    } 
+
+    .pianoPicHolder{
+        height: 280px;
+    }
+    }
 
 
 

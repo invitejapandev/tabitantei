@@ -7,8 +7,14 @@
                 <!-- <img class="desk" v-bind:src="img"  /> -->
                 <div  :class="[puzzleNumber == 4 ? 'appear' : '' , 'form_container']">
                     <div class="form_input">
-                        <div class="form_label">X</div>
-                        <select v-model="xSelected" class="form_select">
+                        <div class="form_label" > <img class="map1_icon_x"  src="../assets/map_icon_circle.png" /> </div>
+                        <div class="form_select" style="text-align: center; line-height: 60px; ">A</div>
+                        <div class="form_select" style="text-align: center; line-height: 60px;">2</div>
+                    </div>
+                    <div class="form_input">
+                        <div class="form_label"> <img class="map1_icon_x"  src="../assets/map_icon_x.png" /> </div>
+                        <select v-model="xSelected" class="form_select" required>
+                            <option value=""></option>
                             <option value="A">A</option>
                             <option value="B">B</option>
                             <option value="C">C</option>
@@ -17,8 +23,16 @@
                             <option value="F">F</option>
                             <option value="G">G</option>
                         </select>
+                         <select  v-model="ySelected" class="form_select" required>
+                             <option value=""></option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
                     </div>
-                    <div class="form_input">
+                    <!-- <div class="form_input">
                         <div class="form_label">Y</div>
                         <select  v-model="ySelected" class="form_select">
                             <option value="1">1</option>
@@ -27,7 +41,7 @@
                             <option value="4">4</option>
                             <option value="5">5</option>
                         </select>
-                    </div>
+                    </div> -->
                     <div class="form_action">
                         <button  @click="validateAnswer()" class="form_submit">Submit</button>
                     </div>
@@ -35,10 +49,10 @@
 
                 
                 <div :class="[puzzleNumber == 5 ? 'appear' : '' , 'actions3']" >
-                    <div class="btnBoxes blue" @click="onButtonClicked('blue')">Wine Testing</div>
-                    <div class="btnBoxes green" @click="onButtonClicked('green')">Street Art Walking</div>
-                    <div class="btnBoxes yellow" @click="onButtonClicked('yellow')">Literary Walking</div>
-                    <div class="btnBoxes red" @click="onButtonClicked('red')">Photo Spot</div>
+                    <div class="btnBoxes blue" @click="onButtonClicked('blue')"></div>
+                    <div class="btnBoxes green" @click="onButtonClicked('green')"></div>
+                    <div class="btnBoxes yellow" @click="onButtonClicked('yellow')"></div>
+                    <div class="btnBoxes red" @click="onButtonClicked('red')"></div>
 
                 </div>
             </div>
@@ -146,8 +160,8 @@ export default{
             index: 0, // default: 0,
             showLanguageButton: false,
             img: this.elementImage,
-            xSelected: 'A',
-            ySelected: '1'
+            xSelected: '',
+            ySelected: ''
         }
     },
     props:{
@@ -182,17 +196,20 @@ export default{
 
                                     if(response){
                                         this.$swal({
-                                                    title:'Great! That is the correct answer!',
-                                                    icon:'success'    
+                                                    imageUrl: '/images/correct.png',
+                                                    width: 524,
+                                                    height: 277,
+                                                    imageHeight: 267,
+                                                    background: '#ffffff20'
                                                             }).then(response => {
                                                     if(this.puzzleNumber == 2){
                                                         this.$router.push({ name: 'demo.index' })
                                                     }
                                                     else if(this.puzzleNumber == 4){
-                                                        this.$router.push({ name: 'MapTextPartThree.index'})
+                                                        this.$router.push({ name: 'tour.index'})
                                                     }
                                                     else if(this.puzzleNumber == 5){
-                                                         this.$router.push({ name: 'ParisText.index'})
+                                                         this.$router.push({ name: 'travel_paris.index'})
                                                     }
                                                     else{
                                                         this.$router.push({ name: 'archive.index' })
@@ -207,9 +224,12 @@ export default{
                 }
                 else{
                       this.$swal({
-                                title:`That is not the correct answer. Please try again.`,
-                                icon:'error'    
-                                        });
+                                                    imageUrl: '/images/try_again.png',
+                                                    width: 524,
+                                                    height: 277,
+                                                    imageHeight: 267,
+                                                    background: '#ffffff20'
+                                                            });
                         this.isCorrect = false;
                 }
             },
@@ -233,17 +253,20 @@ export default{
 
                                     if(response){
                                         this.$swal({
-                                                    title:'Great! That is the correct answer!',
-                                                    icon:'success'    
+                                                    imageUrl: '/images/correct.png',
+                                                    width: 524,
+                                                    height: 277,
+                                                    imageHeight: 267,
+                                                    background: '#ffffff20'
                                                             }).then(response => {
                                                     if(this.puzzleNumber == 2){
                                                         this.$router.push({ name: 'demo.index' })
                                                     }
                                                     else if(this.puzzleNumber == 4){
-                                                        this.$router.push({ name: 'MapTextPartThree.index'})
+                                                        this.$router.push({ name: 'tour.index'})
                                                     }
                                                     else if(this.puzzleNumber == 5){
-                                                         this.$router.push({ name: 'ParisText.index'})
+                                                         this.$router.push({ name: 'travel_paris.index'})
                                                     }
                                                     else{
                                                         this.$router.push({ name: 'archive.index' })
@@ -257,10 +280,13 @@ export default{
                                 });
                 }
                 else{
-                        this.$swal({
-                                title:`That is not the correct answer. Please try again.`,
-                                icon:'error'    
-                                        });
+                       this.$swal({
+                                                    imageUrl: '/images/try_again.png',
+                                                    width: 524,
+                                                    height: 277,
+                                                    imageHeight: 267,
+                                                    background: '#ffffff20'
+                                                            });
                         this.isCorrect = false;
                 }
             },
@@ -326,9 +352,13 @@ export default{
 
 <style scoped>
 
+    .map1_icon_x{
+        height: 30px;
+        width: 30px;
+    }
     .form_container{
         height: 220px;
-        width: 150px;
+        width: 200px;
         background: #FFFFFFB3;
         border-radius: 5%;
         display: none;
@@ -339,18 +369,24 @@ export default{
         font-size: 1.5rem;
         font-weight: bold;
         color: black;
+        gap: 5px;
         font-family: CA-Geheimagent;
 
     }
 
     .form_input{
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         justify-content: center;
         align-content: center;
+        gap: 5px;
     }
 
     .form_action{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-content: center;
         margin-top: 10px;
     }
 
@@ -364,8 +400,8 @@ export default{
     }
     
     .form_select{
-        width: 100%;
-        height: 40px;
+        width: 40px;
+        height: 60px;
         text-align: center;
         font-size: 1.5rem;
         font-weight: bold;
@@ -375,12 +411,16 @@ export default{
         -webkit-appearance: none;
         color: white;
         -moz-appearance: none;
+        cursor: pointer;
     }
 
     
     
     .form_label{
-        text-align: center;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-content: center;
     }
 
     .right_panel{
@@ -388,8 +428,8 @@ export default{
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        width: 10vw;
-        max-width: 10vw;
+        width: 15vw;
+        max-width: 15vw;
     }
 
     .element_holder{
@@ -405,7 +445,6 @@ export default{
     .manual_div{
         display: flex;
         position: relative;
-        cursor: pointer;
         width: 100%;
         height: 40vh;
         flex-grow: 1;
@@ -488,10 +527,10 @@ export default{
         width: 87%;
         flex-grow: 1;
         flex-wrap: wrap;
-        display: none;
         justify-content: center;
-        align-items: center;
+        display: none;
         gap: 30px;
+        height: 20vh;
     }
 
      .btnBoxes{
@@ -506,14 +545,11 @@ export default{
         font-weight: bold;
         font-family: CA-Geheimagent;
         cursor: pointer;
-        border-style: solid;
-        border-width: 1px;
-        border-color: #004D40;
-	box-shadow: 2px 2px 3px #000;
     }
 
     .btnBoxes.blue{
-        background-color: #2962FF;
+        background: url('../assets/icon_blue.png');
+        background-size: cover;
     }
 
     .btnBoxes.blue:hover {     
@@ -521,7 +557,8 @@ export default{
     }
 
     .btnBoxes.red{
-        background-color: #C62828;
+        background: url('../assets/icon_red.png');
+        background-size: cover;
     }
 
     .btnBoxes.red:hover{
@@ -529,7 +566,8 @@ export default{
     }
 
     .btnBoxes.green{
-        background-color: #00C853;
+        background: url('../assets/icon_green.png');
+        background-size: cover;
     }
 
     .btnBoxes.green:hover{
@@ -537,7 +575,8 @@ export default{
     }
 
     .btnBoxes.yellow{
-        background-color: #6D4C41;
+        background: url('../assets/icon_brown.png');
+        background-size: cover;
     }
 
     .btnBoxes.yellow:hover{

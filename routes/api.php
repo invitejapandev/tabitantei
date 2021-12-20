@@ -35,4 +35,9 @@ Route::prefix('/game')->group(function (){
     Route::post('/get_selected_mission', [GameController::class, 'get_selected_mission']);
     Route::post('/store_team_mission', [GameController::class, 'store_team_mission']);
     Route::post('/update_team_mission', [GameController::class, 'update_team_mission']);
+    Route::post('/get_status_last_specific', [GameController::class, 'get_status_last_specific']);
+    Route::post('/store_game_help', [GameController::class, 'store_game_help']);
+    Route::post('/game_help_list', [GameController::class, 'game_help_list']);
+    Route::post('/update_help', [GameController::class, 'update_help']);
+    Route::post('/get_miro_link', [GameController::class, 'get_miro_link']);
 });

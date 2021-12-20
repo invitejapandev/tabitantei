@@ -1,6 +1,6 @@
 <template>
     <div class="playerTeamName">
-        <h1>TEAM {{ playerTeam }} - {{playerNameStored}}</h1>
+        <h1 class="header_div">TEAM {{ playerTeam }} - {{playerNameStored}}</h1>
     </div>
 </template>
 
@@ -36,10 +36,12 @@
         display: flex;
         justify-content: center;
         align-content: center;
+        margin-left: 5px;
     }
 
     h1{
-        font-size: 3rem;    
+        font-size: 3vw;    
        font-weight: bolder;
+       align-content: center;
     }
 </style>

@@ -6,7 +6,7 @@
             <Miro class="miro_holder" :miroURL="miroURLData" :isShowned="isShowned" :imgCover="imgCover"/>
             <GraffitiElement @pauseTime="pause-time" :elementImage="elementImage" class="main_element_holder" :answer="answer" :puzzleNumber="puzzleNumber" />
         </div>
-        <a href="#" class="float">
+        <a @click="helpTriggered()" href="#" class="float">
             <img src="../assets/chloe_version.png" style="width: 120px; height: 120px;"/>
         </a>
 
@@ -51,29 +51,43 @@
                     localStorage.setItem('gameProgress', JSON.stringify(gameProgress));
                 }
 
-                 if(this.puzzleNumber == 1){
-                    selectedMIRO = floorMIRO;
-                }
-                else if(this.puzzleNumber == 4){
-                    selectedMIRO = mapMIRO;
-                }
-                else if(this.puzzleNumber == 5){
-                    selectedMIRO = mapMIRO2;
-                }
-                else if(this.puzzleNumber == 9){
-                    selectedMIRO =GraffitiMIRO;
-                }
-                else{
-                    selectedMIRO = computerMIRO;
-                }
+                
             }
+
+                     axios.post('api/game/get_miro_link',{
+                        game_event_id: codeResponse.id,
+                        team_number: teamSetup.playerTeam,
+                        puzzle_number: this.puzzleNumber
+                        }).then(response => {
+                           if(response){
+                               this.miroURLData = response.data;
+                               console.log(response.data)
+                           }
+                           else{
+                                if(this.puzzleNumber == 1){
+                                    this.miroURLData = floorMIRO;
+                                }
+                                else if(this.puzzleNumber == 4){
+                                    this.miroURLData = mapMIRO;
+                                }
+                                else if(this.puzzleNumber == 5){
+                                    this.miroURLData = mapMIRO2;
+                                }
+                                else if(this.puzzleNumber == 9){
+                                    this.miroURLData =GraffitiMIRO;
+                                }
+                                else{
+                                    this.miroURLData = computerMIRO;
+                                }
+                           }
+                        });
 
              getStatusInterval = setInterval(() => this.getStatus(), 2000);
         },
         data(){
             return{
                 timeisPaused: false,
-                miroURLData: selectedMIRO,
+                miroURLData: '',
                 imgCover: '/images/computer.png',
                 isShowned: this.miroCovered,
                 updatedTime: 0
@@ -84,7 +98,34 @@
             GraffitiElement,
             Miro
         },
-        methods:{
+        methods:{ 
+            helpTriggered(){
+              this.$swal({
+                        title:'Are you sure you want to call for help?',
+                        // icon:'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: "Yes",
+                        icon:'question'
+                    }).then((result) =>{
+                       if (result.isConfirmed) {
+                            axios.post('api/game/store_game_help',{
+                                    game_event_id: codeResponse.id,
+                                    playerTeam: teamSetup.playerTeam,
+                                    player_name: teamSetup.playerName,
+                                    puzzle_number: this.puzzleNumber
+                                }).then(response => {
+                                    this.$swal({
+                                            title:'A facilitator will come for help.',
+                                            icon:'success'}).then(response => {
+                                                
+                                            });
+                                });
+                       }
+
+                    });
+            },
             pauseTime(){
                 this.timeisPaused = true;
             },
@@ -99,21 +140,14 @@
                                 this.timeisPaused = true;
                                 clearInterval(getStatusInterval);
                                 if(response['data'][0].player_number != teamSetup.playerName){
-                                    this.$swal({
-                                            title:'Great! Your team got the correct answer.',
-                                            icon:'success'}).then(response => {
-                                                    if(this.puzzleNumber == 3){
-                                                        this.$router.push({ name: 'MapText.index' })
-                                                    }
-                                                    else if(this.puzzleNumber == 4){
-                                                        this.$router.push({ name: 'MapTextPartThree.index'})
-                                                    }
-                                                    else if(this.puzzleNumber == 5){
-                                                        //
-                                                    }
-                                                    else{
-                                                        this.$router.push({ name: 'archive.index' })
-                                                    } 
+                                   this.$swal({
+                                                    imageUrl: '/images/correct.png',
+                                                    width: 524,
+                                                    height: 277,
+                                                    imageHeight: 267,
+                                                    background: '#ffffff20'
+                                                            }).then(response => {
+                                                         this.$router.push({ name: 'graffiti_completed.index'})
                                                     });
                                     }
                                 }

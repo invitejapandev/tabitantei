@@ -5,7 +5,7 @@
              <div class="videoHolder" >
                  <!-- <div class="video classified">Classified</div> -->
                  <div class="video classified" v-for="(item, index) in vids" :key="index">
-                      <vue3-video-player v-if="item.isShowned==true" @play="your_method" v-bind:src="'./images/'+item.vidName"></vue3-video-player>
+                      <vue3-video-player v-if="item.isShowned==true" v-bind:src="'./images/'+item.vidName"></vue3-video-player>
                       <div v-else>Classified</div>
                 </div>
                  <!-- <div class="video"></div>
@@ -18,9 +18,9 @@
                  <div class="video"></div> -->
              </div>
              <div class="answerHolder">
-                 <div class="security_answer" v-for="(item, index) in questions" :key="index">
+                 <div class="security_answer" v-for="(item, index) in orderedQuestions" :key="index">
                     <div :class="[item.isShowned ? '': 'classified', 'question']">
-                        <div v-if="item.isShowned==true"> {{ item.questionDetails }} </div>
+                        <div v-if="item.isShowned==true"> {{ item.japaneseDetails }}<br/>{{ item.questionDetails }} </div>
                         <div v-else> Classified</div>
                     </div>
                             <form id="answerForm" class="dropAnswer" @submit.prevent="formSubmit">
@@ -36,7 +36,7 @@
                  </div>
              </div>
          </div>
-         <a href="#" class="float">
+         <a @click="helpTriggered()" href="#" class="float">
             <img src="../assets/chloe_version.png" style="width: 120px; height: 120px;"/>
         </a>
     </div>
@@ -47,13 +47,15 @@ name: 'Security'
 import axios from 'axios'
 import Header from './Header.vue';
 
-let teamSetup, codeResponse, playerIndex, player_count, player_matrix, newQuestionShowned_temp;
+let teamSetup, codeResponse, playerIndex, player_count, player_matrix, newQuestionShowned_temp, getStatusInterval;
 var correctSound = new Audio('https://www.freesoundslibrary.com/wp-content/uploads/2018/03/right-answer-ding-ding-sound-effect.mp3');
    
 
 export default {
     beforeCreate(){
         
+            teamSetup = JSON.parse(localStorage.getItem('teamSetup'));
+             codeResponse = JSON.parse(localStorage.getItem('codeResponse'));
     },
     beforeMount(){
         // let test = 'true, false, true, false, false, false, false, true';
@@ -62,8 +64,6 @@ export default {
         
         // let newQuestionShowned_temp = player_matrix.split(',');
 
-            teamSetup = JSON.parse(localStorage.getItem('teamSetup'));
-             codeResponse = JSON.parse(localStorage.getItem('codeResponse'));
                axios.post('api/game/get_player_count',{
                         game_event_id: codeResponse.id,
                         playerTeam: teamSetup.playerTeam,
@@ -114,6 +114,7 @@ export default {
                                         let newQuestions = this.questions.map((item,index) => {
                                             const questiondata = {};
                                             questiondata['questionDetails'] = item.questionDetails;
+                                            questiondata['japaneseDetails'] = item.japaneseDetails;
                                             questiondata['answer'] = item.answer;
                                             questiondata['dummies'] = item.dummies;
                                             questiondata['isShowned'] = newQuestionShowned[index];
@@ -131,6 +132,8 @@ export default {
 
                                         this.questions = newQuestions;
                                         this.vids =newVids; 
+                                        
+             getStatusInterval = setInterval(() => this.getStatus(), 2000);
                                 });
 
                         });
@@ -138,6 +141,33 @@ export default {
    
     },
     methods:{
+         helpTriggered(){
+              this.$swal({
+                        title:'Are you sure you want to call for help?',
+                        // icon:'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: "Yes",
+                        icon:'question'
+                    }).then((result) =>{
+                       if (result.isConfirmed) {
+                            axios.post('api/game/store_game_help',{
+                                    game_event_id: codeResponse.id,
+                                    playerTeam: teamSetup.playerTeam,
+                                    player_name: teamSetup.playerName,
+                                    puzzle_number: this.puzzleNumber
+                                }).then(response => {
+                                    this.$swal({
+                                            title:'A facilitator will come for help.',
+                                            icon:'success'}).then(response => {
+                                                
+                                            });
+                                });
+                       }
+
+                    });
+            },
         formSubmit(submitEvent){
             console.log(this.$refs.input1.value);
             if(this.$refs.input1.value == 'true' && this.$refs.input2.value == 'true'  && this.$refs.input3.value == 'true' && this.$refs.input4.value == 'true' && this.$refs.input5.value == 'true' && this.$refs.input6.value == 'true' && this.$refs.input7.value == 'true' && this.$refs.input8.value == 'true'){
@@ -153,25 +183,14 @@ export default {
 
 
                                     if(response){
-                                        this.$swal({
-                                                    title:'Great! That is the correct answer!',
-                                                    icon:'success'    
+                                       this.$swal({
+                                                    imageUrl: '/images/correct.png',
+                                                    width: 524,
+                                                    height: 277,
+                                                    imageHeight: 267,
+                                                    background: '#ffffff20'
                                                             }).then(response => {
-                                                    if(this.puzzleNumber === 2){
-                                                        this.$router.push({ name: 'main.piano' })
-                                                    }
-                                                    else if(this.puzzleNumber === 3){
-                                                        this.$router.push({ name: 'MapText.index'})
-                                                    }
-                                                    else if(this.puzzleNumber === 6){
-                                                        this.$router.push({name: 'paris.index'})
-                                                    }
-                                                    else if(this.puzzleNumber === 7){
-                                                        this.$router.push({name: 'paris.index'})
-                                                    }
-                                                    else{
-                                                        this.$router.push({ name: 'archive.index' })
-                                                    }
+                                                          this.$router.push({ name: 'security_completed.index'})
                                         });
                                     }
                                     else{
@@ -183,54 +202,185 @@ export default {
             }
             else{
                  this.$swal({
-                                title:`That is not the correct answer. Please try again.`,
-                                icon:'error'    
-                                        });
+                                                    imageUrl: '/images/try_again.png',
+                                                    width: 524,
+                                                    height: 277,
+                                                    imageHeight: 267,
+                                                    background: '#ffffff20'
+                                                            });
             }
             // alert(submitEvent.target.elements.0.value);
             //  let name_test = submitEvent.target.elements.name.value;
             //  console.log(name_test);
-        }
+        },
+            
+            getStatus(){
+                    axios.post('api/game/get_status',{
+                        game_event_id: codeResponse.id,
+                        playerTeam: teamSetup.playerTeam,
+                        puzzleNumber: this.puzzleNumber
+                        }).then(response => {
+                               if(response['data'][0].answered_current == 1){
+                                this.timeisPaused = true;
+                                clearInterval(getStatusInterval);
+                                if(response['data'][0].player_number != teamSetup.playerName){
+                                    
+                            correctSound.play();
+                                   this.$swal({
+                                                    imageUrl: '/images/correct.png',
+                                                    width: 524,
+                                                    height: 277,
+                                                    imageHeight: 267,
+                                                    background: '#ffffff20'
+                                                            }).then(response => {
+                                                          this.$router.push({ name: 'security_completed.index'})
+                                                    });
+                                    }
+                                }
+                        }).catch(error => {
+                           console.log(error);
+                        });
+
+                 
+            }
     },
     props:{
         puzzleNumber: Number
+    },
+    computed:{
+        orderedQuestions: function(){
+            return this.questions.sort((a, b) => parseInt(a['id']) - parseInt(b['id']));
+        }
     },
     data(){
         return{
             timeisPaused: false,
             vids: [
                 {vidName: 'MV_1.mp4', isShowned: false },
-                {vidName: 'MV_2.mp4', isShowned: true },
-                {vidName: 'MV_3.mp4', isShowned: true },
-                {vidName: 'MV_4.mp4', isShowned: true },
-                {vidName: 'MV_5.mp4', isShowned: true },
-                {vidName: 'MV_6.mp4', isShowned: true },
-                {vidName: 'MV_7.mp4', isShowned: true },
-                {vidName: 'MV_8.mp4', isShowned: true },
-                {vidName: 'MV_9.mp4', isShowned: true },
-                {vidName: 'MV_10.mp4', isShowned: true }
+                {vidName: 'MV_2.mp4', isShowned: false },
+                {vidName: 'MV_3.mp4', isShowned: false },
+                {vidName: 'MV_4.mp4', isShowned: false },
+                {vidName: 'MV_5.mp4', isShowned: false },
+                {vidName: 'MV_6.mp4', isShowned: false },
+                {vidName: 'MV_7.mp4', isShowned: false },
+                {vidName: 'MV_8.mp4', isShowned: false },
+                {vidName: 'MV_9.mp4', isShowned: false },
+                {vidName: 'MV_10.mp4', isShowned: false }
             ],
             questions:[
                 {
-                    questionDetails: 'Find a person who knocks 4 times. What are they holding?'
+                    questionDetails: `Find a person who knocks 4 times. What are they holding?`,
+                    japaneseDetails: `4回ノックしている人物を探せ。その人物が持っているのは？`
                     , inputName: 'input5'
-                    ,isShowned: true
+                    ,isShowned: false
                     , answer:'DUCK'
+                    , id: 4
                     , dummies:[
+                        {
+                        text: 'ELEPHANT',
+                        isCorrect: false
+                        },
+                        {
+                        text: 'FISH',
+                        isCorrect: false
+                        },
+                        {
+                        text: 'CROW',
+                        isCorrect: false
+                        },
                         {
                         text: 'DUCK',
                         isCorrect: true
                         },
                         {
-                        text: 'SUIT',
+                        text: 'LION',
+                        isCorrect: false
+                        },
+                    ]
+                },
+                
+                {
+                    questionDetails: 'Find a nanny. How many dots are on the suitcase?',
+                    japaneseDetails: `エプロンを着けた人物を探せ。スーツケースにはいくつの点がある？`
+                    , inputName: 'input8'
+                    ,isShowned: false
+                    , answer:'NINE'
+                    , id: 8
+                    , dummies:[
+                        {
+                        text: 'TWO',
                         isCorrect: false
                         },
                         {
-                        text: 'ANGRY',
+                        text: 'FOUR',
                         isCorrect: false
                         },
                         {
-                        text: 'TIE',
+                        text: 'SIX',
+                        isCorrect: false
+                        },
+                        {
+                        text: 'EIGHT',
+                        isCorrect: false
+                        },
+                        {
+                        text: 'NINE',
+                        isCorrect: true
+                        },
+                    ]
+                },
+                {
+                    questionDetails: 'Find a boxer. What hand gesture are they making?',
+                    japaneseDetails: `ボクサーを探せ。その人物は何のハンドサインをしている？`
+                    , inputName: 'input6'
+                    ,isShowned: false
+                    , answer:'OKAY'
+                    , id: 6
+                    , dummies:[
+                        {
+                        text: 'PEACE',
+                        isCorrect: false
+                        },
+                        {
+                        text: 'OKAY',
+                        isCorrect: true
+                        },
+                        {
+                        text: 'HELLO',
+                        isCorrect: false
+                        },
+                        {
+                        text: 'LOSER',
+                        isCorrect: false
+                        },
+                        {
+                        text: 'LOVE',
+                        isCorrect: false
+                        },
+                    ]
+                },
+                {
+                    questionDetails: `Find a person holding a dictionary. What do they put on their face?`,
+                    japaneseDetails: `辞書を持っている人物を探せ。その人物の顔にあるものは？`
+                    , inputName: 'input2'
+                    ,isShowned: false
+                    , answer:'GLASSES'
+                    , id: 1
+                    , dummies:[
+                        {
+                        text: 'LIPSTICK',
+                        isCorrect: false
+                        },
+                        {
+                        text: 'GLASSES',
+                        isCorrect: true
+                        },
+                        {
+                        text: 'MAKE UP',
+                        isCorrect: false
+                        },
+                        {
+                        text: 'MASK',
                         isCorrect: false
                         },
                         {
@@ -239,163 +389,80 @@ export default {
                         },
                     ]
                 },
-                
                 {
-                    questionDetails: 'Find a nanny. How many dots are on the suitcase?'
-                    , inputName: 'input8'
-                    ,isShowned: true
-                    , answer:'NINE'
-                    , dummies:[
-                        {
-                        text: 'BEAR',
-                        isCorrect: false
-                        },
-                        {
-                        text: 'NINE',
-                        isCorrect: true
-                        },
-                        {
-                        text: 'APRON',
-                        isCorrect: false
-                        },
-                        {
-                        text: 'FOUR',
-                        isCorrect: false
-                        },
-                        {
-                        text: 'TWO',
-                        isCorrect: false
-                        },
-                    ]
-                },
-                {
-                    questionDetails: 'Find a boxer. What hand gesture are they making?'
-                    , inputName: 'input6'
-                    ,isShowned: true
-                    , answer:'OKAY'
-                    , dummies:[
-                        {
-                        text: 'ROCK',
-                        isCorrect: false
-                        },
-                        {
-                        text: 'LOSER',
-                        isCorrect: false
-                        },
-                        {
-                        text: 'SKATEBOARD',
-                        isCorrect: false
-                        },
-                        {
-                        text: 'OKAY',
-                        isCorrect: true
-                        },
-                        {
-                        text: 'PEACE',
-                        isCorrect: false
-                        },
-                    ]
-                },
-                {
-                    questionDetails: 'Find a person holding a dictionary. What do they put on their face?'
-                    , inputName: 'input2'
-                    ,isShowned: true
-                    , answer:'GLASSES'
-                    , dummies:[
-                        {
-                        text: 'GLASSES',
-                        isCorrect: true
-                        },
-                        {
-                        text: 'WHITE',
-                        isCorrect: false
-                        },
-                        {
-                        text: 'WINK',
-                        isCorrect: false
-                        },
-                        {
-                        text: 'SUSPENDER',
-                        isCorrect: false
-                        },
-                        {
-                        text: 'FRENCH',
-                        isCorrect: false
-                        },
-                    ]
-                },
-                {
-                    questionDetails: 'Find a delivery guy. What is the name of the pizza shop?'
+                    questionDetails: 'Find a delivery guy. What is the name of the pizza shop?',
+                    japaneseDetails: `配達人を探せ。その人物が働くピザ屋の名前は？`
                     , inputName: 'input4'
-                    ,isShowned: true
+                    ,isShowned: false
                     , answer:'OLIVER'
+                    , id: 2
                     , dummies:[
                         {
-                        text: 'ALEX',
+                        text: 'EGGERS',
                         isCorrect: false
                         },
                         {
-                        text: 'HEADPHONES',
-                        isCorrect: false
-                        },
-                        {
-                        text: 'CAP',
-                        isCorrect: false
-                        },
-                        {
-                        text: 'NECK',
+                        text: 'IRONWOOD',
                         isCorrect: false
                         },
                         {
                         text: 'OLIVER',
                         isCorrect: true
                         },
+                        {
+                        text: 'ANCHIOVE',
+                        isCorrect: false
+                        },
+                        {
+                        text: 'YELLOWBIRD',
+                        isCorrect: false
+                        },
                     ]
                 },
                 {
-                    questionDetails: 'Find a Ninja. What object is he holding?'
+                    questionDetails: 'Find a Ninja. What object is he holding?',
+                    japaneseDetails: `忍者を探せ。その人物が手に持っているものは？`
                     , inputName: 'input3'
                     ,isShowned: false
                     , answer:'CAMERA'
+                    , id: 5
                     , dummies:[
                         {
                         text: 'ARROWS',
                         isCorrect: false
                         },
                         {
+                        text: 'STAR',
+                        isCorrect: false
+                        },
+                        {
+                        text: 'ROPE',
+                        isCorrect: false
+                        },
+                        {
+                        text: 'BOTTLE',
+                        isCorrect: false
+                        },
+                        {
                         text: 'CAMERA',
                         isCorrect: true
-                        },
-                        {
-                        text: 'FAST',
-                        isCorrect: false
-                        },
-                        {
-                        text: 'BLACK',
-                        isCorrect: false
-                        },
-                        {
-                        text: 'NIGHT',
-                        isCorrect: false
                         },
                     ]
                 },
                 {
-                    questionDetails: 'Find a cleaner. What are they eating?'
+                    questionDetails: 'Find a cleaner. What are they eating?',
+                    japaneseDetails: `清掃員を探せ。その人物が食べているものは？`
                     , inputName: 'input1'
-                    , isShowned: true
+                    , isShowned: false
                     , answer:'ICE CREAM'
+                    , id: 7
                     , dummies:[
                         {
-                        text: 'BANANA',
+                        text: 'ONIGIRI',
                         isCorrect: false
                         },
                         {
-                        text: 'MOP',
-                        isCorrect: false
-                        },
-                        {
-                        text: 'MASK',
+                        text: 'CAKE',
                         isCorrect: false
                         },
                         {
@@ -403,35 +470,41 @@ export default {
                         isCorrect: true
                         },
                         {
-                        text: 'RED',
+                        text: 'BANANA',
+                        isCorrect: false
+                        },
+                        {
+                        text: 'SANDWICH',
                         isCorrect: false
                         },
                     ]
                 },
                 {
-                    questionDetails: 'Find a person with a picnic basket. What fruit do they have?'
+                    questionDetails: 'Find a person with a picnic basket. What fruit do they have?',
+                    japaneseDetails: `ピクニックバスケットを持っている人物を探せ。その人物が持っているフルーツは？`
                     , inputName: 'input7'
-                    ,isShowned: true
+                    ,isShowned: false
                     , answer:'LEMON'
+                    , id: 3
                     , dummies:[
-                        {
-                        text: 'ROSE',
-                        isCorrect: false
-                        },
-                        {
-                        text: 'BAGUETTE',
-                        isCorrect: false
-                        },
-                        {
-                        text: 'SMILE',
-                        isCorrect: false
-                        },
                         {
                         text: 'LEMON',
                         isCorrect: true
                         },
                         {
-                        text: 'WINE',
+                        text: 'APPLE',
+                        isCorrect: false
+                        },
+                        {
+                        text: 'GRAPES',
+                        isCorrect: false
+                        },
+                        {
+                        text: 'PEAR',
+                        isCorrect: false
+                        },
+                        {
+                        text: 'STRAWBERRIES',
                         isCorrect: false
                         },
                     ]
@@ -518,20 +591,21 @@ export default {
     display: flex;
     position: relative;
     width: 90%;
-    height: 50px;
-    gap: 5px;
+    height: auto;
+    gap: 20px;
 }
 
 .question{
     border-radius: 2%;
     position: relative;
     width: 90%;
-    height: 50px;
-    line-height: 50px;
+    height: auto;
+    line-height: auto;
     background-color: black;
     font-family: CA-Geheimagent;
     font-size: 1.5rem;
     text-align: center;
+    padding: 5px;
 }
 
 .dropAnswer{
@@ -561,7 +635,7 @@ export default {
 .submitHolder{
     margin-top: 20px;
     display: flex;
-    justify-content: end;
+    justify-content: center;
 }
 
 .btnSubmit{

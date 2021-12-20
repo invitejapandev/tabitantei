@@ -106,14 +106,18 @@ export default{
         puzzleNumber: Number,
             miroURL: String,
     },
+        watch: {
+            miroURL: function(val){
+                this.mirURL = val;
+            }
+        },
     beforeCreate(){
         teamSetup = JSON.parse(localStorage.getItem('teamSetup'));
     },
     methods: {
             onInput(e){
                     // keystrokeSound.play();
-                    console.log(e.target.value.toLowerCase().value);
-                    if(e.target.value.includes(this.correctAnswer)){
+                    if(e.target.value.toLowerCase().includes(this.correctAnswer)){
                         this.isCorrect = true;
                         correctSound.play();
                         this.$emit('pause-time');
@@ -132,8 +136,11 @@ export default{
 
                                     if(response){
                                         this.$swal({
-                                                    title:'Great! That is the correct answer!',
-                                                    icon:'success'    
+                                                    imageUrl: '/images/correct.png',
+                                                    width: 524,
+                                                    height: 277,
+                                                    imageHeight: 267,
+                                                    background: '#ffffff20'
                                                             }).then(response => {
                                                     if(this.puzzleNumber == 2){
                                                         this.$router.push({ name: 'main.piano' })
@@ -142,7 +149,7 @@ export default{
                                                         this.$router.push({ name: 'MapText.index'})
                                                     }
                                                     else if(this.puzzleNumber == 6){
-                                                        this.$router.push({name: 'paris.index'})
+                                                        this.$router.push({name: 'semaphore_completed.index'})
                                                     }
                                                     else{
                                                         this.$router.push({ name: 'archive.index' })
@@ -161,8 +168,7 @@ export default{
                 },
             onEnter(e){
                  keystrokeSound.play();
-                    console.log(e.target.value);
-                    if(e.target.value.toLowerCase().indexOf(this.correctAnswer) > 0){
+                    if(e.target.value.toLowerCase().includes(this.correctAnswer)){
                         this.isCorrect = true;
                         correctSound.play();
                         this.$emit('pause-time');
@@ -181,14 +187,17 @@ export default{
 
                                     if(response){
                                         this.$swal({
-                                                    title:'Great! That is the correct answer!',
-                                                    icon:'success'    
+                                                    imageUrl: '/images/correct.png',
+                                                    width: 524,
+                                                    height: 277,
+                                                    imageHeight: 267,
+                                                    background: '#ffffff20'
                                                             }).then(response => {
                                                     if(this.puzzleNumber == 2){
                                                         this.$router.push({ name: 'demo.index' })
                                                     }
                                                     else if(this.puzzleNumber == 6){
-                                                        this.$router.push({name: 'paris.index'})
+                                                        this.$router.push({name: 'semaphore_completed.index'})
                                                     }
                                                     else{
                                                         this.$router.push({ name: 'archive.index' })
@@ -207,9 +216,12 @@ export default{
                     }
                     else{
                         this.$swal({
-                                title:`That is not the correct answer. Please try again.`,
-                                icon:'error'    
-                                        });
+                                                    imageUrl: '/images/try_again.png',
+                                                    width: 524,
+                                                    height: 277,
+                                                    imageHeight: 267,
+                                                    background: '#ffffff20'
+                                                            });
                         this.isCorrect = false;
                     }
             },
@@ -254,7 +266,7 @@ export default{
 </script>
 
 
-<style>
+<style scoped>
 
 
     .right_panel{
@@ -275,6 +287,11 @@ export default{
         width: 100%;
     }
 
+.responsive{
+        border-radius: 10px;
+        width: 100%;
+        height: 100%;
+    }
     
     .manual_div{
         display: flex;

@@ -14,7 +14,7 @@
             {{-- <router-link :to="{ name: 'main.index' }" class="text-sm font-medium">Login</router-link> --}}
             <router-view />
         </div>
-        <script src="{{asset('js/app.js')}}"></script>
+        <script src="{{ mix('/js/app.js') }}"></script>
     </body>
 
     <style>
@@ -45,7 +45,8 @@
 
         body{
             margin:0;
-            height: 100%;
+            height: 100vh;
+            width: 100vw;
             background: url({{ URL::asset('images/green_bg.png') }}) no-repeat center center fixed;
             background-size: cover;
             font-family: CA-Geheimagent;

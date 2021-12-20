@@ -30,7 +30,8 @@
         props:{
             miroURL: String,
             isShowned: Boolean,
-            imgCover: String
+            imgCover: String,
+            miroLoaded: Boolean
         },
         data(){
             return{
@@ -42,6 +43,11 @@
                 }
             }
         },
+        watch: {
+            miroURL: function(val){
+                this.iframe.src = val;
+            }
+        },
         methods:{
             hideImage(){
                 this.show = false;
@@ -50,7 +56,7 @@
     }
 </script>
 
-<style>
+<style scoped>
    .miro_board{
         display: flex;
         flex-wrap: wrap;
@@ -67,7 +73,7 @@
         cursor: pointer;
         /* background-color: pink; */
         width: 98%;
-        height: 100%;
+        height: 95%;
 
     }
 

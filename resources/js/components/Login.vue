@@ -26,12 +26,6 @@
         beforeCreate(){
             let codeResponse = JSON.parse(localStorage.getItem('codeResponse'));
             if(codeResponse){
-            let eventDate = codeResponse.event_date;
-            eventDate = new Date(eventDate);
-            let nowDate = new Date();
-            const diffTime = Math.abs(nowDate - eventDate);
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            if(diffDays>1){
                 console.log(codeResponse);
                 axios.post('api/game/validate_key',{
                         code: codeResponse.game_code
@@ -46,10 +40,6 @@
                         }).catch(error => {
                             // alert('something went wrong');
                         });
-                }
-                else{
-                      this.$router.push({ name: 'team.index' });
-                }
             }
         },
         methods: {

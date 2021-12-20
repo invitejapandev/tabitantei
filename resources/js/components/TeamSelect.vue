@@ -23,40 +23,88 @@
     import Team from './Elements/Team.vue'
     import axios from 'axios'
 
+    let codeResponse,teamSetup;
+
 
   export default{
         name: 'TeamSelect',
         data(){
             return {
-                teamCount: 10,
+                teamCount: 5,
                 teamSelected: 0,
                 nickName: ''
             }
         },
         beforeCreate(){
-            let codeResponse = JSON.parse(localStorage.getItem('codeResponse'));
+             codeResponse = JSON.parse(localStorage.getItem('codeResponse'));
            
             if(codeResponse){
                 
-                let teamSetup = JSON.parse(localStorage.getItem('teamSetup'));
+                 teamSetup = JSON.parse(localStorage.getItem('teamSetup'));
                 
                 if(teamSetup){
                     if(teamSetup.game_event_id == codeResponse.id && teamSetup.playerTeam){
-                        let gameProgress = JSON.parse(localStorage.getItem('gameProgress'));
-                        if(gameProgress && gameProgress.game_event_id == codeResponse.id){
+                        // let gameProgress = JSON.parse(localStorage.getItem('gameProgress'));
+                        // if(gameProgress && gameProgress.game_event_id == codeResponse.id){
 
-                            switch(gameProgress.puzzleProgress){
-                                case 1:
-                                    this.$router.push({ name: 'main.index1' });
-                                    break;
-                                case 2: 
-                                    this.$router.push({ name: 'main.computer' });
-                                    break;
-                            }
-                        }
-                        else{
-                            this.$router.push({ name: 'introduction.index' });
-                        }
+                        //     switch(gameProgress.puzzleProgress){
+                        //         case 1:
+                        //             this.$router.push({ name: 'main.index1' });
+                        //             break;
+                        //         case 2: 
+                        //             this.$router.push({ name: 'main.computer' });
+                        //             break;
+                        //         case 3: 
+                        //             this.$router.push({ name: 'main.piano' });
+                        //             break;
+                        //         case 4: 
+                        //             this.$router.push({ name: 'main.map1' });
+                        //             break;
+                        //         case 5: 
+                        //             this.$router.push({ name: 'main.map2' });
+                        //             break;
+                        //         case 6: 
+                        //             this.$router.push({ name: 'main.semaphore' });
+                        //             break;
+                        //         case 7: 
+                        //             this.$router.push({ name: 'security.index' });
+                        //             break;
+                        //         case 8: 
+                        //             this.$router.push({ name: 'cafe.index' });
+                        //             break;
+                        //         case 9: 
+                        //             this.$router.push({ name: 'graffiti.index' });
+                        //             break;
+                        //     }
+                        // }
+                        // else{
+                        //     this.$router.push({ name: 'introduction.index' });
+                        // }
+
+                        axios.post('api/game/get_status_last_specific',{
+                        game_event_id: codeResponse.id,
+                        playerTeam: teamSetup.playerTeam
+                        }).then(response => {
+                            // alert(response.data);
+                                if(response.data == 0){
+                                    this.$router.push({ name: 'intro_video.index' });
+                                }
+                                if(response.data == 1){
+                                    this.$router.push({ name: 'archive.index' });
+                                }
+                                if(response.data == 2){
+                                    this.$router.push({ name: 'main.piano' });
+                                }
+                                if(response.data == 3){
+                                    this.$router.push({ name: 'mayu_palais.index' });
+                                }
+                                if(response.data== 4){
+                                    this.$router.push({ name: 'tour.index' });
+                                }
+                                if(response.data >= 5){
+                                    this.$router.push({ name: 'paris.index' });
+                                }
+                        });
                     }
                 }
 
@@ -100,7 +148,30 @@
 
                                         localStorage.setItem('teamSetup', JSON.stringify(teamSetup));
 
-                                        this.$router.push({ name: 'introduction.index' })
+                                          axios.post('api/game/get_status_last_specific',{
+                                            game_event_id: codeResponse.id,
+                                            playerTeam: this.teamSelected
+                                            }).then(response => {
+                                                // alert(response.data);
+                                                    if(response.data == 0){
+                                                        this.$router.push({ name: 'intro_video.index' });
+                                                    }
+                                                    if(response.data == 1){
+                                                        this.$router.push({ name: 'archive.index' });
+                                                    }
+                                                    if(response.data == 2){
+                                                        this.$router.push({ name: 'main.piano' });
+                                                    }
+                                                    if(response.data == 3){
+                                                        this.$router.push({ name: 'mayu_palais.index' });
+                                                    }
+                                                    if(response.data== 4){
+                                                        this.$router.push({ name: 'tour.index' });
+                                                    }
+                                                    if(response.data >= 5){
+                                                        this.$router.push({ name: 'paris.index' });
+                                                    }
+                                            });
                                     }
                                     else{
                                         alert('something went wrong');

@@ -19,7 +19,7 @@
 
 export default {
     
-        name: 'Mission',
+        name: 'Bubble',
         data(){
             return{
                 text1 : this.headerText,
@@ -56,7 +56,7 @@ export default {
                     this.nextShowned = false;
                 }
 
-                if(this.imgIndex+1 == this.elementImage.length){
+                if(this.imgIndex+1 == this.elementImage.length && this.puzzleNumber != 100){
                     this.enterShowned = true;
                 }
                 else{
@@ -96,8 +96,23 @@ export default {
                 if(val== 6 ){
                     this.$router.push({name: 'sato.index' })
                 }
+                if(val == 98){
+                    this.$router.push({name: 'travel_video.index' })
+                }
                 if(val === 99){
                     this.$router.push({name: 'paris.index' })
+                }
+                if(val === 91){
+                    this.$router.push({name: 'main.semaphore' })
+                }
+                if(val === 92){
+                    this.$router.push({name: 'cafe.index' })
+                }
+                if(val === 93){
+                    this.$router.push({name: 'security.index' })
+                }
+                if(val === 94){
+                    this.$router.push({name: 'graffiti.index' })
                 }
 
                 if(val == null && this.newLink == false){
@@ -165,6 +180,25 @@ export default {
         cursor: pointer;
         font-weight: regular;
         font-family: CA-Geheimagent;
+    }
+
+     @media (min-width: 1252px) { 
+        .desk{
+            max-width: 900px;
+        }
+    }
+
+    @media (min-width: 1370px) { 
+        .desk{
+            max-width: 1100px;
+        }
+    }
+
+
+    @media (min-width: 1500px) { 
+        .desk{
+            max-width: 1400px;
+        }
     }
 
 

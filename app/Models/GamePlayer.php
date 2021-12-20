@@ -15,7 +15,8 @@ class GamePlayer extends Authenticatable
         'game_event_id',
         'teamNumber',
         'nickName',
-        'answeredPuzzle'
+        'answeredPuzzle',
+        'ActiveStatus'
     ];
 
 }

@@ -103,14 +103,17 @@ export default{
 
                                     if(response){
                                         this.$swal({
-                                                    title:'Great! That is the correct answer!',
-                                                    icon:'success'    
+                                                    imageUrl: '/images/correct.png',
+                                                    width: 524,
+                                                    height: 277,
+                                                    imageHeight: 267,
+                                                    background: '#ffffff20'
                                                             }).then(response => {
                                                     if(this.puzzleNumber == 2){
                                                         this.$router.push({ name: 'Piano.index' })
                                                     }
                                                     else if(this.puzzleNumber == 3){
-                                                        this.$router.push({ name: 'MapText.index'})
+                                                        this.$router.push({ name: 'mayu_palais.index'})
                                                     }
                                                     else{
                                                         this.$router.push({ name: 'archive.index' })
@@ -149,8 +152,11 @@ export default{
 
                                     if(response){
                                         this.$swal({
-                                                    title:'Great! That is the correct answer!',
-                                                    icon:'success'    
+                                                    imageUrl: '/images/correct.png',
+                                                    width: 524,
+                                                    height: 277,
+                                                    imageHeight: 267,
+                                                    background: '#ffffff20'
                                                             }).then(response => {
                                                     if(this.puzzleNumber == 2){
                                                         this.$router.push({ name: 'demo.index' })
@@ -220,14 +226,15 @@ export default{
 </script>
 
 
-<style>
+<style scoped>
 
     .right_panel{
         position: relative;
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        width: 60vw;
+        width: 30vw;
+        height: 75vh;
     }
 
     .element_holder{
@@ -235,7 +242,7 @@ export default{
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
-        height: 100%;
+        height: 40vh;
         width: 100%;
     }
 
@@ -255,7 +262,7 @@ export default{
     .desk{
         border-radius: 10px;
         width: 95%;
-        height: 100%;
+        height: 40vh;
         object-fit: cover;
     }
 

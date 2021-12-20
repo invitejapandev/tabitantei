@@ -40,8 +40,6 @@
        
        <div class="btnCard"></div>
      <vue-easy-lightbox
-      scrollDisabled
-      moveDisabled
       :visible="visible"
       :imgs="imgs"
       :index="index"
@@ -112,9 +110,9 @@ const yellow_image = '/images/Yellow.png';
 const green_image = '/images/Green.png';
 const red_image = '/images/Red.png';
 
-const g_1 = '/images/g_1.png';
+const g_3 = '/images/g_1.png';
 const g_2 = '/images/g_2.png';
-const g_3 = '/images/g_3.png';
+const g_1 = '/images/g_3.png';
 const g_4 = '/images/g_4.png';
 
 
@@ -224,12 +222,15 @@ export default{
 
 
                                     if(response){
-                                        this.$swal({
-                                                    title:'Great! That is the correct answer!',
-                                                    icon:'success'    
+                                       this.$swal({
+                                                    imageUrl: '/images/correct.png',
+                                                    width: 524,
+                                                    height: 277,
+                                                    imageHeight: 267,
+                                                    background: '#ffffff20'
                                                             }).then(response => {
                                                     
-                                                         this.$router.push({ name: 'paris.index'})
+                                                         this.$router.push({ name: 'graffiti_completed.index'})
                                         });
                                     }
                                     else{
@@ -239,10 +240,13 @@ export default{
                                 });
                     }
                     else if(arrowIndex == 6){
-                        this.$swal({
-                                title:`That is not the correct answer. Please try again.`,
-                                icon:'error'    
-                                        });
+                       this.$swal({
+                                                    imageUrl: '/images/try_again.png',
+                                                    width: 524,
+                                                    height: 277,
+                                                    imageHeight: 267,
+                                                    background: '#ffffff20'
+                                                            });
                     }
                 }
                 else{
@@ -276,11 +280,14 @@ export default{
 
                                     if(response){
                                         this.$swal({
-                                                    title:'Great! That is the correct answer!',
-                                                    icon:'success'    
+                                                    imageUrl: '/images/correct.png',
+                                                    width: 524,
+                                                    height: 277,
+                                                    imageHeight: 267,
+                                                    background: '#ffffff20'
                                                             }).then(response => {
                                                     
-                                                         this.$router.push({ name: 'paris.index'})
+                                                         this.$router.push({ name: 'graffiti_completed.index'})
                                         });
                                     }
                                     else{
@@ -291,9 +298,12 @@ export default{
                     }
                     else if(arrowIndex == 6){
                         this.$swal({
-                                title:`That is not the correct answer. Please try again.`,
-                                icon:'error'    
-                                        });
+                                                    imageUrl: '/images/try_again.png',
+                                                    width: 524,
+                                                    height: 277,
+                                                    imageHeight: 267,
+                                                    background: '#ffffff20'
+                                                            });
                     }
                     // validate_answer;
                 }
@@ -320,9 +330,12 @@ export default{
 
 
                                     if(response){
-                                        this.$swal({
-                                                    title:'Great! That is the correct answer!',
-                                                    icon:'success'    
+                                       this.$swal({
+                                                    imageUrl: '/images/correct.png',
+                                                    width: 524,
+                                                    height: 277,
+                                                    imageHeight: 267,
+                                                    background: '#ffffff20'
                                                             }).then(response => {
                                                     if(this.puzzleNumber == 2){
                                                         this.$router.push({ name: 'demo.index' })
@@ -332,6 +345,9 @@ export default{
                                                     }
                                                     else if(this.puzzleNumber == 5){
                                                          this.$router.push({ name: 'ParisText.index'})
+                                                    }
+                                                    else if(this.puzzleNumber == 9){
+                                                         this.$router.push({ name: 'graffiti_completed.index'})
                                                     }
                                                     else{
                                                         this.$router.push({ name: 'archive.index' })
@@ -368,8 +384,11 @@ export default{
 
                                     if(response){
                                         this.$swal({
-                                                    title:'Great! That is the correct answer!',
-                                                    icon:'success'    
+                                                    imageUrl: '/images/correct.png',
+                                                    width: 524,
+                                                    height: 277,
+                                                    imageHeight: 267,
+                                                    background: '#ffffff20'
                                                             }).then(response => {
                                                     if(this.puzzleNumber == 2){
                                                         this.$router.push({ name: 'demo.index' })
@@ -379,6 +398,9 @@ export default{
                                                     }
                                                     else if(this.puzzleNumber == 5){
                                                          this.$router.push({ name: 'ParisText.index'})
+                                                    }
+                                                    else if(this.puzzleNumber == 9){
+                                                         this.$router.push({ name: 'graffiti_completed.index'})
                                                     }
                                                     else{
                                                         this.$router.push({ name: 'archive.index' })
@@ -392,10 +414,13 @@ export default{
                                 });
                 }
                 else{
-                        this.$swal({
-                                title:`That is not the correct answer. Please try again.`,
-                                icon:'error'    
-                                        });
+                         this.$swal({
+                                                    imageUrl: '/images/try_again.png',
+                                                    width: 524,
+                                                    height: 277,
+                                                    imageHeight: 267,
+                                                    background: '#ffffff20'
+                                                            });
                         this.isCorrect = false;
                 }
             },
@@ -421,8 +446,11 @@ export default{
 
                                     if(response){
                                         this.$swal({
-                                                    title:'Great! That is the correct answer!',
-                                                    icon:'success'    
+                                                    imageUrl: '/images/correct.png',
+                                                    width: 524,
+                                                    height: 277,
+                                                    imageHeight: 267,
+                                                    background: '#ffffff20'
                                                             }).then(response => {
                                                     if(this.puzzleNumber == 2){
                                                         this.$router.push({ name: 'demo.index' })
@@ -432,6 +460,9 @@ export default{
                                                     }
                                                     else if(this.puzzleNumber == 5){
                                                          this.$router.push({ name: 'ParisText.index'})
+                                                    }
+                                                    else if(this.puzzleNumber == 9){
+                                                         this.$router.push({ name: 'graffiti_completed.index'})
                                                     }
                                                     else{
                                                         this.$router.push({ name: 'archive.index' })
@@ -450,9 +481,12 @@ export default{
                     }
                     else{
                         this.$swal({
-                                title:`That is not the correct answer. Please try again.`,
-                                icon:'error'    
-                                        });
+                                                    imageUrl: '/images/try_again.png',
+                                                    width: 524,
+                                                    height: 277,
+                                                    imageHeight: 267,
+                                                    background: '#ffffff20'
+                                                            });
                         this.isCorrect = false;
                     }
             },
@@ -511,7 +545,7 @@ export default{
 .text_output{
     color: black;
     background-color: white;
-    font-size: 7rem;
+    font-size: 6vw;
     font-weight: bold;
     padding-left: 20px;
     padding-right: 20px;

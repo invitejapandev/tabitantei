@@ -43,6 +43,7 @@
 
                                         let diff = Math.round((today-created_at)/(1000));
                                         
+                                        console.log(diff);
                                         this.currentTime = diff;
 
                                         
@@ -126,7 +127,7 @@
                             let newTime = this.currentTime / 60
                             let newMinute = 0;
                             let newHour = 0;
-                            if(parseInt(newTime)%60 >= 1){
+                            if(parseInt(newTime)/60 >= 1){
                                 newHour = Math.round(parseInt(newTime)/60);
                                 newMinute = Math.round(parseInt(newTime)%60);
                             }
@@ -180,7 +181,7 @@
         background-color: white;
         color: black;
         font-weight: bold !important;
-        font-size: 60px;
+        font-size: 3.5vw;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
         background-color: white;
         color: black;
