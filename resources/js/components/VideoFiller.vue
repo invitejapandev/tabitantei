@@ -5,10 +5,10 @@
          <div class="bubbleBox" @click="playVid()">
                 <video class="treasure_video" @click="playVid()" @global-auto-play="autoPlay" @ended="onEnd()"  ref="videoRef" src="" ></video>
         
-        <!-- <transition name="fade">
+        <transition name="fade">
          <img class="cover_image" src='/images/cover_image.png' @click="hideImage"  v-if="show" />   
         
-         </transition> -->
+         </transition>
          </div>
          <div class="btnHolder">
               <a v-if="prevShowned" class="btnReady" @click="prevImage()" >Prev</a>
@@ -213,16 +213,18 @@ export default {
     }
 
     .cover_image{
-        height: 720px;
-        width: 1280px;
+        height: 540px;
+        width: 960px;
         position: absolute;
         top: 10%;
     }
 
     .treasure_video{
+        height: 540px;
+        width: 960px;
         position: absolute;
         top: 10%;
-        height: 60vh;
+        border-radius: 12px;
     }
 
 

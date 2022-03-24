@@ -3,7 +3,7 @@
         
          <!-- <span class="text_handler"> {{outputText}} </span> -->
          <div class="bubbleBox">
-                <img class="desk" v-bind:src="img[imgIndex]"  />
+                <img class="desk" v-bind:src="img"  />
          </div>
          <div class="btnHolder">
               <a v-if="prevShowned" class="btnReady" @click="prevImage()" >Prev</a>
@@ -25,7 +25,7 @@ export default {
                 text1 : this.headerText,
                 outputText : '',
                 inc:0,
-                img: this.elementImage,
+                img: this.elementImage[0],
                 imgIndex:0,
                 nextShowned: false,
                 prevShowned: false,
@@ -69,6 +69,7 @@ export default {
                 else{
                     this.prevShowned = false;
                 }
+                 this.img = this.elementImage[val]
             }
         },
         methods:{
@@ -80,6 +81,7 @@ export default {
             nextImage(){
                 if(this.imgIndex+1<this.elementImage.length){
                     this.imgIndex = this.imgIndex+1;
+                    // this.img = this.elementImage[this.imgIndex+1];
                     // alert(this.imgIndex)
                 }
             },

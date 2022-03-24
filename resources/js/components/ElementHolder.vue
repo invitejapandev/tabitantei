@@ -27,13 +27,13 @@
     </div>
 
      <div class="language_buttons">
-             <a href="#" :class="[showLanguageButton ? 'appear' : '', 'float3']" @click="showMultiple()">
+             <a href="#" :class="[showLanguageButton ? 'appear' : '', 'float3']" @click="showMultiple2()">
             <img src="../assets/japan.png" style="width: 100%; height: 100%; 
             border-radius:70px;
                 object-fit: cover;"/>
                 </a>
 
-                <a href="#" :class="[showLanguageButton ? 'appear' : '', 'float3']" @click="showMultiple2()">
+                <a href="#" :class="[showLanguageButton ? 'appear' : '', 'float3']" @click="showMultiple()">
                     <img src="../assets/english.png" style="width: 100%; height: 100%; 
             border-radius:70px;
                 object-fit: cover;"/>
@@ -77,6 +77,7 @@ const cafe_imgs = [cafe_img];
 const cafe_img_j ='/images/cafe_japanese.png';
 const cafe_imgs_j = [cafe_img_j];
 
+
 var typingTimer;
 var doneTypingInterval = 1000;
 var presscount = 0;
@@ -113,7 +114,7 @@ export default{
             onInput(e){
                     keystrokeSound.play();
                     console.log(e.target.value);
-                    if(e.target.value.includes(this.correctAnswer)){
+                    if(e.target.value.toLowerCase().indexOf(this.correctAnswer) >= 0){
                         this.isCorrect = true;
                         correctSound.play();
                         this.$emit('pause-time');
@@ -168,7 +169,7 @@ export default{
             onEnter(e){
                  keystrokeSound.play();
                     console.log(e.target.value);
-                    if(e.target.value.toLowerCase().indexOf(this.correctAnswer) > 0){
+                    if(e.target.value.toLowerCase().indexOf(this.correctAnswer) >= 0){
                         this.isCorrect = true;
                         correctSound.play();
                         this.$emit('pause-time');
@@ -246,7 +247,7 @@ export default{
             this.imgs = cafe_imgs;
         }
         else{
-            this.imgs =jp_manual
+            this.imgs =en_manual
         }
 
         this.index = 0 // index of imgList
@@ -261,7 +262,7 @@ export default{
             this.imgs = cafe_imgs_j;
         }
         else{
-            this.imgs =en_manual
+            this.imgs =jp_manual
         }
 
         this.index = 0 // index of imgList
@@ -356,6 +357,7 @@ export default{
 
     .cafe_answer{
         background-image: url('../assets/cafe_answer_box.png');
+        padding-top: 7%;
         padding-left: 50%;
         padding-right: 0%;
         color: black;

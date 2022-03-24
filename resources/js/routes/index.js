@@ -6,6 +6,7 @@ import TeamSelect from '../components/TeamSelect'
 import TextHolder from '../components/TextHolder'
 import Mission from '../components/Mission'
 import Bubble from '../components/Bubble'
+import Finale from '../components/Finale'
 import Video from '../components/Video'
 import VideoFiller from '../components/VideoFiller'
 import MapText from '../components/MapText'
@@ -22,7 +23,13 @@ import FacilitatorIndex from '../components/Facilitator'
 import CanvassIndex from '../components/Canvass'
 import ModalIndex from '../components/Modal'
 import ModalViewIndex from '../components/ModalView'
-
+import PianoNewIndex from '../components/PianoNew'
+import MainFrame from '../components/MainFrame'
+import HelpModal from '../components/HelpModal'
+import GameOver from '../components/GameOver'
+import Welcome from '../components/Welcome'
+import PuzzleCompletion from '../components/PuzzleCompletion'
+import PuzzleIndex from '../components/Puzzle'
 
 const routes = [
     {
@@ -30,13 +37,24 @@ const routes = [
         name: 'main.index',
         component: MainIndex
     },
+    // {
+    //     path: '/floor',
+    //     name: 'main.index1',
+    //     component: MainIndex,
+    //     props: {
+    //         miroCovered: false,
+    //         elementImage: '/images/bulletin_board.png',
+    //         answer: 'archive',
+    //         puzzleNumber: 1
+    //     }
+    // },
     {
         path: '/floor',
         name: 'main.index1',
-        component: MainIndex,
+        component: MainFrame,
         props: {
             miroCovered: false,
-            elementImage: '/images/bulletin_board.png',
+            elementImage: '/images/billboard_772_jp.png',
             answer: 'archive',
             puzzleNumber: 1
         }
@@ -44,10 +62,10 @@ const routes = [
     {
         path: '/computer',
         name: 'main.computer',
-        component: MainIndex,
+        component: MainFrame,
         props: {
             miroCovered: true,
-            elementImage: '/images/desk_new.png',
+            elementImage: '/images/desk_772.png',
             answer: 'premier',
             puzzleNumber: 2
         }
@@ -112,6 +130,11 @@ const routes = [
         component: semtest
     }
     ,
+    {
+        path: '/helpmodal',
+        name:'helpmodal.index',
+        component: HelpModal
+    },
     {
         path: '/introduction',
         name:'introduction.index',
@@ -191,7 +214,7 @@ const routes = [
         props:{
             buttonText:"Enter the Game",
             buttonVisible: true,
-            elementImage: ['/images/msg_norm_1_anim.gif','/images/msg_norm_2.png','/images/msg_norm_3.png','/images/msg_norm_4.png']
+            elementImage: ['/images/msg_norm_1.gif','/images/msg_norm_2.png','/images/msg_norm_3.png','/images/msg_norm_4.png']
         }
     },
     {
@@ -202,7 +225,7 @@ const routes = [
             buttonText:"Enter the Game",
             buttonVisible: true,
             puzzleNumber: 4,
-            elementImage: ['/images/msg_mayu_1.png','/images/msg_mayu_2.png','/images/msg_mayu_3.png','/images/msg_mayu_4.png','/images/msg_mayu_5.png','/images/msg_palais_1.png','/images/msg_palais_2.png','/images/msg_palais_3.png','/images/msg_palais_4.png']
+            elementImage: ['/images/msg_mayu_1.gif','/images/msg_mayu_2.png','/images/msg_mayu_3.png','/images/msg_mayu_4.png','/images/msg_mayu_5.png','/images/msg_palais_1.gif','/images/msg_palais_2.png','/images/msg_palais_3.png','/images/msg_palais_4.png']
         }
     },
     {
@@ -235,7 +258,7 @@ const routes = [
             buttonText:"Enter the Game",
             buttonVisible: true,
             puzzleNumber: 99,
-            elementImage: ['/images/msg_sato_1.png','/images/msg_sato_2.png','/images/msg_sato_3.png','/images/msg_sato_4.png','/images/msg_sato_5.png','/images/msg_sato_6.png','/images/msg_sato_7.png','/images/msg_sato_8.png','/images/msg_sato_9.png']
+            elementImage: ['/images/msg_sato_1.gif','/images/msg_sato_2.png','/images/msg_sato_3.png','/images/msg_sato_4.png','/images/msg_sato_5.png','/images/msg_sato_6.png','/images/msg_sato_7.png','/images/msg_sato_8.png','/images/msg_sato_9.png']
         }
     },
     {
@@ -402,10 +425,10 @@ const routes = [
     {
         path: '/cafe',
         name: 'cafe.index',
-        component: MainIndex,
+        component: MainFrame,
         props: {
             miroCovered: false,
-            elementImage: '/images/cafe_cover.png',
+            elementImage: '/images/cafe_playerside_772.png',
             answer: 'suspicious',
             puzzleNumber: 8
         }
@@ -416,7 +439,7 @@ const routes = [
         component: GraffitiIndex,
         props: {
             miroCovered: false,
-            elementImage: '/images/graffiti_cover.png',
+            elementImage: '/images/graffiti_cover_772.png',
             answer: 'pearls',
             puzzleNumber: 9
         }
@@ -429,11 +452,22 @@ const routes = [
     {
         path: '/finale',
         name:'finale.index',
-        component: Bubble,
+        component: Finale,
         props:{
             buttonText:"Enter the Game",
             buttonVisible: true,
-            elementImage: ['/images/msg_finale_2.png','/images/msg_finale_3.png','/images/msg_finale_4.png'],
+            elementImage: ['/images/msg_finale_2.png','/images/msg_finale_3.png','/images/msg_finale_4.png','/images/finale_image.png'],
+            puzzleNumber: 100
+        }
+    },
+    {
+        path: '/gameover',
+        name:'gameover.index',
+        component: GameOver,
+        props:{
+            buttonText:"Enter the Game",
+            buttonVisible: true,
+            elementImage: ['/images/finale_image.png'],
             puzzleNumber: 100
         }
     },
@@ -452,6 +486,120 @@ const routes = [
         name:'modalview.index',
         component: ModalViewIndex
     },
+    {
+        path: '/pianonew',
+        name:'pianonew.index',
+        component: PianoNewIndex
+    },
+    {
+        path: '/style_secrets',
+        name:'style_secrets.index',
+        component: PuzzleIndex
+    },
+    {
+        path: '/yokohama',
+        name:'yokohama.index',
+        component: PuzzleIndex,
+        props:{
+            maxPuzzle: 3,
+            helpImage: '/images/yokohama_help.png'
+        }
+    }
+    ,{
+        path: '/welcome',
+        name:'welcome.index',
+        component: Welcome,
+        props:{
+            buttonText:"Enter the Game",
+            buttonVisible: true,
+            puzzleNumber: 6,
+            newLink: true,
+            elementImage: ['/images/msg_norm_5.png']
+        }
+    },
+    {
+        path:'/yokohama_completed',
+        name:'yokohama_completed.index',
+        component:PuzzleCompletion,
+        props:{
+            buttonText:"Enter the Game",
+            buttonVisible: true,
+            puzzleNumber: 4,
+            newLink: true,
+            elementImage: ['/images/yokohama_congrats.png'],
+            elementVideo:['/images/karuizawa_intro.mp4'],
+            beginURL: 'karuizawa.index'
+        }
+    },
+    {
+        path: '/karuizawa',
+        name:'karuizawa.index',
+        component: PuzzleIndex,
+        props:{
+            maxPuzzle: 6,
+            helpImage: '/images/karuizawa_help.png'
+        }
+    },
+    {
+        path:'/karuizawa_completed',
+        name:'karuizawa_completed.index',
+        component:PuzzleCompletion,
+        props:{
+            buttonText:"Enter the Game",
+            buttonVisible: true,
+            puzzleNumber: 4,
+            newLink: true,
+            elementImage: ['/images/karuizawa_congrats.png'],
+            elementVideo:['/images/sendai_intro.mp4'],
+            beginURL: 'sendai.index'
+        }
+    },
+    {
+        path: '/sendai',
+        name:'sendai.index',
+        component: PuzzleIndex,
+        props:{
+            maxPuzzle: 9,
+            helpImage: '/images/sendai_help.png'
+        }
+    },
+    {
+        path:'/sendai_completed',
+        name:'sendai_completed.index',
+        component:PuzzleCompletion,
+        props:{
+            buttonText:"Enter the Game",
+            buttonVisible: true,
+            puzzleNumber: 4,
+            newLink: true,
+            elementImage: ['/images/sendai_congrats.png'],
+            elementVideo:['/images/asakusa_intro.mp4'],
+            beginURL: 'asakusa.index'
+        }
+    },
+    {
+        path: '/asakusa',
+        name:'asakusa.index',
+        component: PuzzleIndex,
+        props:{
+            maxPuzzle: 12,
+            helpImage: '/images/asakusa_help.png'
+        }
+    },
+    {
+        path:'/asakusa_completed',
+        name:'asakusa_completed.index',
+        component:PuzzleCompletion,
+        props:{
+            buttonText:"Enter the Game",
+            buttonVisible: true,
+            puzzleNumber: 4,
+            newLink: true,
+            elementImage: ['/images/asakusa_congrats.png'],
+            elementVideo:['/images/congrats_video.mp4'],
+            beginURL: ''
+        }
+    }
 ];
 
 export default createRouter({

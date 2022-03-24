@@ -5,12 +5,16 @@
         <div class="main_body">
             <SemBody @showSemTest="showSemTest" @pauseTime="pause-time" class="miro_holder" :miroURL="miroURLData" :isShowned="isShowned" :imgCover="imgCover"/>
             <SemElement :miroURL="miroURLData" @pauseTime="pause-time" :elementImage="elementImage" class="main_element_holder" :answer="answer" :puzzleNumber="puzzleNumber" />
-            <semtest :imgName="semImage" @hideSemtest="hideSemtest" class=""  :shouldShow="shouldShow"/>
+            
         </div>
-        <a @click="helpTriggered" href="#" class="float">
-            <img src="../assets/chloe_version.png" style="width: 120px; height: 120px;"/>
+        <a @click="helpShowed = !helpShowed" href="#" class="float">
+            <img src="../assets/chloe_version.png" style="width: 80px; height: 80px;"/>
         </a>
 
+        <transition name="slide-fade">
+            <HelpModal   v-if="helpShowed" :puzzleNumber="puzzleNumber" class="help_modal_new" @closeModal="closeModal" @helpTriggered="helpTriggered"/>
+        </transition>
+<semtest :imgName="semImage" @hideSemtest="hideSemtest" class="semtest"  :shouldShow="shouldShow"/>
     </div>
 </template>
 
@@ -20,6 +24,7 @@
     import SemElement from './SemElement.vue';
     import SemBody from './SemBody.vue';
     import semtest from './semtest.vue';
+    import HelpModal from './HelpModal.vue';
 
     let computerMIRO = "https://miro.com/app/live-embed/o9J_ltgInS4=/?embedAutoplay=true&moveToViewport=-2638,-351,2934,3605";
     let  floorMIRO = "https://miro.com/app/live-embed/o9J_ltgIkjg=/?embedAutoplay=true&moveToViewport=2560,-648,1472,1160";
@@ -71,7 +76,7 @@ var correctSound = new Audio('https://www.freesoundslibrary.com/wp-content/uploa
                         });
             }
 
-             getStatusInterval = setInterval(() => this.getStatus(), 2000);
+             getStatusInterval = setInterval(() => this.getStatus(), 3000);
           
         },
         data(){
@@ -83,19 +88,24 @@ var correctSound = new Audio('https://www.freesoundslibrary.com/wp-content/uploa
                 updatedTime: 0,
                 showModal: false,
                 shouldShow: null,
-                semImage: '2f_north'
+                semImage: '2f_north',
+                helpShowed: false
             }
         },
         components: {
             Header,
             SemElement,
             SemBody,
-            semtest
+            semtest,
+            HelpModal
         },
         methods:{
+             closeModal(){
+                 this.helpShowed= false;
+             },
              helpTriggered(){
               this.$swal({
-                        title:'Are you sure you want to call for help?',
+                        title:'ゲームマスターを呼びますか？<br/>Are you sure you want to call a gamemaster?',
                         // icon:'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
@@ -111,7 +121,7 @@ var correctSound = new Audio('https://www.freesoundslibrary.com/wp-content/uploa
                                     puzzle_number: this.puzzleNumber
                                 }).then(response => {
                                     this.$swal({
-                                            title:'A facilitator will come for help.',
+                                            title:'ゲームマスターが参ります。<br/>A gamemaster will come for help.',
                                             icon:'success'}).then(response => {
                                                 
                                             });
@@ -178,8 +188,8 @@ var correctSound = new Audio('https://www.freesoundslibrary.com/wp-content/uploa
         display: flex;
         position: relative;
         flex-direction: column;
-        height: 100%;
         color: white;
+        height: 100%;
     }
 
     .header2{
@@ -187,7 +197,13 @@ var correctSound = new Audio('https://www.freesoundslibrary.com/wp-content/uploa
         justify-content: center;
         width: 100vw;
     }
-
+    
+    .semtest{
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        z-index: 300;
+    }
 
 
 
@@ -198,37 +214,71 @@ var correctSound = new Audio('https://www.freesoundslibrary.com/wp-content/uploa
         justify-content: center;
         flex-wrap: wrap;
         height: 85%;
-        min-height: 800px;
         width: 100%;
+        min-height: 560px;
     }
 
     .miro_holder{
         position: relative;
+        flex-grow: 1;
         /* background-color: white; */
     }
 
 
     .main_element_holder{
         position: relative;
-        flex-basis: 120px;
+        flex-grow: 1;
+        /* flex-basis: 120px; */
     }
 
 
     
 .float{
+	
 	position:fixed;
-	width:120px;
-	height:120px;
+	width:80px;
+	height:80px;
 	border-radius:50px;
 	text-align:center;
-    z-index: 99999999;
-	bottom:15px;
-	right:15px;
+    z-index: 99;
+	bottom:10px;
+	right:10px;
+}
+
+
+.help_modal_new{
+    position: fixed;
+    height: 450px;
+    width: 310px;
+    background: #F6D74D;
+    border-radius: 20px;
+    bottom: 120px;
+    right: 90px;
+    z-index: 100;
+}
+
+
+.slide-fade-enter-active {
+ animation: bounce-in .3s reverse;
+}
+.slide-fade-leave-active {
+   animation: bounce-in .5s;
+}
+
+@keyframes bounce-in {
+    0%{ 
+        transform: translateY(-10px);
+    }
+    100%{
+        transform: translateY(10px);
+    }
 }
 
 .my-float{
 	margin-top:22px;
 }
+
+
 
 @media only screen and (max-width: 1500px) {
 

@@ -2,9 +2,11 @@
 <!-- <div></div> -->
     <div class="right_panel"  >
         <div class="element_holder">
-            <div class="manual_div" @click="showMultiple()">
+            <div class="manual_div" >
                 <!-- <img class="desk" src="../assets/bulletin_board.png"  /> -->
-                <img class="desk" v-bind:src="img"  />
+                <div class="desk">
+                    <iframe class="responsive" style="z-index: -1 !important" :src="iframe.src" frameBorder="0" scrolling="no" allowFullScreen></iframe>
+                </div>
             </div>
             <div :class="[puzzleNumber == 4 ? 'appear' : '' , 'actions2']" >
                 <input :class="[isCorrect ? 'correct' : '' , 'answer']" type="text" placeholder="TYPE HERE" style="z-index: 1" v-on:keyup.enter="onEnter" @input="onInput" />
@@ -19,8 +21,8 @@
 
             </div>
 
-            <div :class="[puzzleNumber == 9 ? 'appear' : '' , 'actions4']" >
-                <div class="arrow_button" >
+            <div class="actions4" >
+                <!-- <div class="arrow_button" >
                     <div class="circle arrow"></div>
                         <div class="crossCenter">
                         <div class="crossTop" @click="updateLetter(1)"><i class="arrow up"></i></div>
@@ -29,11 +31,37 @@
                         <div class="crossRight" @click="updateLetter(3)"><i class="arrow right"></i></div>
                         <div class="crossCircle" @click="updateLetter(5)">C</div>
                     </div>
-                </div>
+                </div> -->
+                    <div class="newcard" >
+                        <svg  class="cover_image"   version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 110 110" preserveAspectRatio="xMinYMin meet" >
+                            <image style="border-radius: 200px;"  :xlink:href="imgCover" >
+                            </image>
+                            
+                            <a class="clickable_image floor" @click="updateLetter(1)">
+                                <polygon fill="#fff" opacity="0" points="32,23,55,1,78,24,56,35"/>
+                            </a>
+                            <a class="clickable_image floor" @click="updateLetter(2)">
+                                <polygon fill="#fff" opacity="0" points="0,55,22,32,34,56,22,76"/>
+                            </a>
+                            <a class="clickable_image floor" @click="updateLetter(3)">
+                                <polygon fill="#fff" opacity="0" points="88,32,110,54,88,77,76,55"/>
+                            </a>
+                            <a class="clickable_image floor" @click="updateLetter(4)">
+                                <polygon fill="#fff" opacity="0" points="34,87,55,109,76,87,55,75"/>
+                            </a>
+                            <a class="clickable_image floor" @click="updateLetter(5)">
+                                <polygon fill="#fff" opacity="0" points="44,43,67,43,67,67,43,67"/>
+                            </a>
+                            
+                        </svg>
+                    
+                    </div>
+
                 <div class="arrow_output">
 
                     <div v-for="n in lettersFinal" :key="n" class="text_output">{{n}}</div>
                 </div>
+                
             </div>
         </div>
        
@@ -49,18 +77,8 @@
 
     </div>
 
-     <div class="language_buttons">
-             <a href="#" :class="[showLanguageButton ? 'appear' : '', 'float3']" @click="showMultiple()">
-            <img src="../assets/japan.png" style="width: 100%; height: 100%; 
-            border-radius:70px;
-                object-fit: cover;"/>
-                </a>
-
-                <a href="#" :class="[showLanguageButton ? 'appear' : '', 'float3']" @click="showMultiple2()">
-                    <img src="../assets/english.png" style="width: 100%; height: 100%; 
-            border-radius:70px;
-                object-fit: cover;"/>
-                </a>
+     <div class="language_buttons2">
+            
         </div>
 </template>
 
@@ -115,6 +133,7 @@ const g_2 = '/images/g_2.png';
 const g_1 = '/images/g_3.png';
 const g_4 = '/images/g_4.png';
 
+// const g_images = [g_1, g_2, g_3, g_4];
 
 let arrowIndex = 0;
 let arrowUp = ['P', 'H', 'A', 'E', 'T', 'T'];
@@ -154,13 +173,25 @@ export default{
             fourthLetter: '',
             fifthLetter: '',
             sixthLetter: '',
+                iframe:{
+                    src: this.miroURL,
+                    style: null,
+                    wrapperStyle: null
+                },
+            imgCover: '/images/directionallock.png'
         }
     },
     props:{
         elementImage: String,
         answer: String,
-        puzzleNumber: Number
+        puzzleNumber: Number,
+        miroURL: String
     },
+        watch: {
+            miroURL: function(val){
+                this.iframe.src = val;
+            }
+        },
     beforeCreate(){
         teamSetup = JSON.parse(localStorage.getItem('teamSetup'));
     },
@@ -191,7 +222,7 @@ export default{
                     }
                     else if(arrowPressed == 5){
                         this.$swal({
-                                title:'Are you sure you want to clear the answers?',
+                                title:'解答を消去しますか？<br/>Are you sure you want to clear the answers?',
                                 // icon:'warning',
                                 showCancelButton: true,
                                 confirmButtonColor: '#3085d6',
@@ -252,7 +283,7 @@ export default{
                 else{
                     if(arrowPressed == 5){
                         this.$swal({
-                                title:'Are you sure you want to clear the answers?',
+                                title:'解答を消去しますか？<br/>Are you sure you want to clear the answers?',
                                 // icon:'warning',
                                 showCancelButton: true,
                                 confirmButtonColor: '#3085d6',
@@ -532,6 +563,16 @@ export default{
 
 
 <style scoped>
+    .clickable_image{
+        cursor: pointer;
+        z-index: 99;
+    }
+
+       .responsive{
+        border-radius: 10px;
+        width: 100%;
+        height: 100%;
+    }
 
 .arrow_output{
     display: flex;
@@ -539,313 +580,23 @@ export default{
     justify-content: center;
     align-content: center;
     width: 80%;
+    height: 100%;
+        background-image: url('../assets/answer_box.png');
+        background-repeat: no-repeat;
+        background-position: center;
     gap: 20px;
 }
 
 .text_output{
-    color: black;
-    background-color: white;
-    font-size: 6vw;
+    color: #f38db6;
+    background-color: none;
+    font-size: 5vw;
     font-weight: bold;
-    padding-left: 20px;
-    padding-right: 20px;
     padding-top: 5px;
     padding-bottom: 5px;
-    margin-top: 20px;
-    margin-left: 30px;
+    margin-top: 0px;
     font-family: CA-Geheimagent;
 }
-
-.arrow {
-  border: solid white;
-  border-width: 0 3px 3px 0;
-  display: inline-block;
-  padding: 3px;
-}
-
-.right {
-  transform: rotate(-45deg);
-  -webkit-transform: rotate(-45deg);
-}
-
-.left {
-  transform: rotate(135deg);
-  -webkit-transform: rotate(135deg);
-}
-
-.up {
-  transform: rotate(-135deg);
-  -webkit-transform: rotate(-135deg);
-}
-
-.down {
-  transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
-}
-
-body{
-  background-color: #FEFEFE;
-}
-
-.controller{
-  margin-top: 100px;
-  height: 200px;
-  width: 400px;
-  background-color: #E6E6E6;
-  position: relative;
-  box-shadow: 15px 15px 15px rgba(0,0,0,0.2);
-}
-
-.controllerLeft{
-  height: 250px;
-  width: 250px;
-  background-color: #E6E6E6;
-  position: absolute;
-  border-radius: 100%;
-  margin-left: -125px;
-  box-shadow: -15px 8px 15px rgba(0,0,0,0.2);
-}
-
-.controllerRight{
-  height: 250px;
-  width: 250px;
-  background-color: #B8B8B8;
-  position: relative;
-  border-radius: 100%;
-  margin-right: -125px;
-  border: solid 15px rgba(230, 230, 230,1);
-  box-shadow: 15px 8px 15px rgba(0,0,0,0.2);
-}
-
-.circle{
-  height: 120px;
-  width: 120px;
-  background-color: #E6E6E6;
-  position: absolute;
-  border-radius: 100%;
-  border: solid 5px rgba(184, 184, 184, 1);
-  margin-left: 42px;
-  margin-top: 0px;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-}
-
-.crossCenter{
-  background-color: #333333;
-  width: 35px;
-  height: 35px;
-  margin-top: 50px;
-  margin-left: 95px;
-  position: relative;
-  text-align: center;
-  line-height: 35px;
-  cursor: pointer;
-pointer-events: auto;
-}
-
-.crossCircle{
-  background-color: #292929;
-  width: 25px;
-  height: 25px;
-  position: absolute;
-  border-radius: 100%;
-  margin-top: 5px;
-  margin-left: 5px;
-  text-align: center;
-  font-weight: bold;
-  line-height: 25px;
-  cursor: pointer;
-pointer-events: auto;
-}
-
-.crossTop{
-  background-color: #333333;
-  width: 35px;
-  line-height: 35px;
-  position: absolute;
-  border-radius: 15%;
-  margin-top: -30px;
-}
-
-.crossBottom{
-  background-color: #333333;
-  width: 35px;
-  height: 35px;
-  position: absolute;
-  border-radius: 15%;
-  margin-top: 30px;
-  cursor: pointer;
-pointer-events: auto;
-  text-align: center;
-  line-height: 35px;
-}
-
-.crossLeft{
-  background-color: #333333;
-  width: 35px;
-  line-height: 35px;
-  position: absolute;
-  border-radius: 15%;
-  margin-left: -30px;
-  cursor: pointer;
-pointer-events: auto;
-  text-align: center;
-  height: 35px;
-}
-
-.crossRight{
-  background-color: #333333;
-  width: 35px;
-  line-height: 35px;
-  position: absolute;
-  border-radius: 15%;
-  margin-left: 30px;
-  text-align: center;
-  height: 35px;
-  cursor: pointer;
-pointer-events: auto;
-}
-
-.centerBlue{
-  position: absolute;
-  width: 50px;
-  height: 20px;
-  margin-left: 175px;
-  cursor: pointer;
-pointer-events: auto;
-  margin-top: 30px;
-  background-color: #0099FF;
-}
-
-.centerLeft{
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  margin-left: -10px;
-  margin-top: 0px;
-  background-color: #0099FF;
-  border-radius: 100%;
-}
-
-.centerRight{
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  margin-left: 40px;
-  margin-top: 0px;
-  background-color: #0099FF;
-  border-radius: 100%;
-}
-
-.backButton1Center{
-  position: absolute;
-  width: 80px;
-  height: 50px;
-  background-color: #E6E6E6;
-  -webkit-transform: rotate(-30deg);
-  margin-top: 60px;
-  margin-left: 45px;
-}
-
-.backButton2Center{
-  position: absolute;
-  width: 80px;
-  height: 50px;
-  background-color: #E6E6E6;
-  -webkit-transform: rotate(-30deg);
-  margin-top: 115px;
-  margin-left: 90px;
-}
-
-.cornerLeft1{
-  position: absolute;
-  width: 50px;
-  height: 50px;
-  background-color: #00B800;
-  border-radius: 100%;
-  margin-left: -20px;
-  border: solid 5px rgba(230, 230, 230, 1)
-}
-
-.cornerRight1{
-  position: absolute;
-  width: 50px;
-  height: 50px;
-  background-color: #6699FF;
-  border-radius: 100%;
-  margin-left: 60px;
-  border: solid 5px rgba(230, 230, 230, 1)
-}
-
-.cornerLeft2{
-  position: absolute;
-  width: 50px;
-  height: 50px;
-  background-color: #CFCF00;
-  border-radius: 100%;
-  margin-left: -20px;
-  border: solid 5px rgba(230, 230, 230, 1)
-}
-
-.cornerRight2{
-  position: absolute;
-  width: 50px;
-  height: 50px;
-  background-color: #7D230D;
-  border-radius: 100%;
-  margin-left: 60px;
-  border: solid 5px rgba(230, 230, 230, 1)
-}
-
-.centerStart{
-  background-color: #B8B8B8;
-  position: absolute;
-  height: 35px;
-  width: 10px;
-  margin-left: 180px;
-  margin-top: 110px;
-  -webkit-transform: rotate(20deg);
-}
-
-.centerSelect{
-  background-color: #B8B8B8;
-  position: absolute;
-  height: 35px;
-  width: 10px;
-  margin-left: 205px;
-  margin-top: 110px;
-  -webkit-transform: rotate(20deg);
-}
-
-.SLeft{
-  background-color: #B8B8B8;
-  position: absolute;
-  border-radius: 100%;
-  height: 10px;
-  width: 10px;
-  margin-top: 30px;
-}
-
-.SRight{
-  background-color: #B8B8B8;
-  position: absolute;
-  border-radius: 100%;
-  height: 10px;
-  width: 10px;
-  margin-top: -5px;
-}
-
-.cable{
-  background-color: black;
-  width: 10px;
-  height: 150px;
-  position: absolute;
-  margin-left: 49.7%;
-  margin-top: -100px;
-  box-shadow: 7px 8px 15px rgba(0,0,0,0.2);
-}
-
 
     .right_panel{
         position: relative;
@@ -873,7 +624,7 @@ pointer-events: auto;
         justify-content: center;
         align-items: center;
         width: 100%;
-        height: 40vh;
+        height: 50vh;
         flex-grow: 2;
         /* border-style: solid; */
     }
@@ -919,7 +670,7 @@ pointer-events: auto;
 
 
 
-    .language_buttons{
+    .language_buttons2{
         display: flex;
         position: fixed;
         overflow: hidden;
@@ -927,9 +678,10 @@ pointer-events: auto;
         transform: translate(-50%);
         bottom: 46px;
         flex-wrap: wrap;
-        z-index: 99999999;
+        z-index: 1;
         padding: 0;
         gap: 10px;
+        display: none;
     }
 
 
@@ -950,13 +702,22 @@ pointer-events: auto;
     .actions4{
         position: relative;
         display: flex;
-        width: 87%;
+        width: 100%;
         flex-grow: 1;
         flex-wrap: wrap;
-        display: none;
         justify-content: start;
         align-items: center;
-        gap: 30px;
+    }
+
+     .newcard{
+        /* position: relative; */
+        /* background-color: pink; */
+        height: 110px;
+        width: 110px;
+        display: flex;
+        position: relative;
+        justify-content: center;
+        margin-left: 30px;
     }
 
     .actions3{
@@ -982,7 +743,7 @@ pointer-events: auto;
         font-weight: bold;
         font-family: CA-Geheimagent;
         cursor: pointer;
-pointer-events: auto;
+        pointer-events: auto;
     }
 
     .btnBoxes.blue{
@@ -1009,9 +770,13 @@ pointer-events: auto;
     }
 
    
+.cover_image{
+    position: absolute;
+    height: 110px;
+    width: 110px;
+}
 
-
-  
+/*   
      @media only screen and (max-width: 1024px) {
          .actions2{
                 width: 50vw;
@@ -1020,7 +785,7 @@ pointer-events: auto;
          .right_panel{
              width: 50vw;
          }
-    }
+    } */
 
 
 

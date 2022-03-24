@@ -1,14 +1,16 @@
 <template>
     <div class="miro_board">
-       <div v-if="floorShowing"  class="pianoHeader">Select which floor <div :class="[selectedColorShown ? 'showing' :'', 'selectedColor']" ></div> </div>
+       <div v-if="floorShowing"  class="pianoHeader">SELECT WHICH FLOOR <div :class="[selectedColorShown ? 'showing' :'', 'selectedColor']" ></div> </div>
+       <div v-if="floorShowing"  class="pianoHeader">フロアを選択してください</div>
        <div v-if="exitFloorShowing"  class="pianoHeader">{{ selectedFloor }}</div>
        <div class="towerFloorHolder">
            <div v-if="floorShowing" class="floor fred" @click="topFlorTriggered()"> TOP FLOOR </div>
            <div v-if="floorShowing" class="floor fgreen" @click="secondFloorTriggered()" > 2ND FLOOR </div>
-           <div v-if="exitFloorShowing" class="floor fblue" @click="exitFloorTriggered()" > EXIT FLOOR </div>
+           <div v-if="exitFloorShowing" class="exit_floor fblue" @click="exitFloorTriggered()" > EXIT FLOOR <br/>フロアを退出 </div>
        </div>
 
         <div class="pianoHeader">Where to point 24SC? <div :class="[selectedColorShown ? 'showing' :'', 'selectedColor']" ></div> </div>
+        <div class="pianoHeader">どの方向のカメラを見ますか?</div>
        <div v-if="exitFloorShowing" class="towerFloorHolder">
            <div   v-for="(item, index) in angles" :key="index" class="angle" @click="showSemTest(item.imageName)"> {{ item.angleName }} </div>
            <!-- <div class="angle" @click="selectColor('green')"> WEST </div>
@@ -77,8 +79,8 @@ var correctSound = new Audio('https://www.freesoundslibrary.com/wp-content/uploa
             secondFloorTriggered(){
                 this.angles =  [
                     {angleName: 'North', imageName: '2f_north' },
-                    {angleName: 'South East', imageName: '2f_south_east' },
-                    {angleName: 'South West', imageName: '2f_south_west' },
+                    {angleName: 'South-East', imageName: '2f_south_east' },
+                    {angleName: 'South-West', imageName: '2f_south_west' },
                     {angleName: 'West', imageName: '2f_west' },
                 ];
                 this.selectedFloor = '2nd Floor';
@@ -87,8 +89,8 @@ var correctSound = new Audio('https://www.freesoundslibrary.com/wp-content/uploa
             },
             topFlorTriggered(){
                  this.angles =  [
-                    {angleName: 'North East', imageName: 'top_north_east' },
-                    {angleName: 'North West', imageName: 'top_north_west' },
+                    {angleName: 'North-East', imageName: 'top_north_east' },
+                    {angleName: 'North-West', imageName: 'top_north_west' },
                     {angleName: 'South', imageName: 'top_south' },
                     {angleName: 'West', imageName: 'top_west' },
                 ];
@@ -99,7 +101,7 @@ var correctSound = new Audio('https://www.freesoundslibrary.com/wp-content/uploa
             },
             exitFloorTriggered(){
                  this.$swal({
-                        title:'Are you sure you want to exit this floor?',
+                        title:'このフロアから退出しますか？<br/>Are you sure you want to exit this floor?',
                         // icon:'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
@@ -303,7 +305,7 @@ input[type='checkbox'] {
         text-align: center;
         align-content: center;
         justify-content: center;
-        font-size: 3rem;
+        font-size: 2.5vw;
         gap: 10px;
         font-weight: bold;
         font-family: CA-Geheimagent;
@@ -358,6 +360,23 @@ input[type='checkbox'] {
         cursor: pointer;
         background-color: white;
         color: black;
+    }
+
+     .exit_floor{
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        border-radius: 3%;
+        /* height: 70px */
+        padding-top: 2%;
+        width: 300px;
+        font-weight: bold;
+        font-size: 3vw;
+        font-family: CA-Geheimagent;
+        cursor: pointer;
+        background-color: white;
+        color: black;
+        text-align: center; 
     }
 
     .fred{

@@ -34,13 +34,14 @@
 <style scoped>
     .playerTeamName{
         display: flex;
+        flex-wrap: wrap;
         justify-content: center;
         align-content: center;
-        margin-left: 5px;
+        margin-left: 20px;
     }
 
     h1{
-        font-size: 3vw;    
+        font-size: 2.5vw;    
        font-weight: bolder;
        align-content: center;
     }

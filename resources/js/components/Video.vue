@@ -5,10 +5,10 @@
          <div class="bubbleBox" @click="playVid()">
                 <video class="treasure_video" @click="playVid()" @global-auto-play="autoPlay" @ended="onEnd()"  ref="videoRef" src="" ></video>
         
-        <!-- <transition name="fade">
+        <transition name="fade">
          <img class="cover_image" src='/images/cover_image.png' @click="hideImage"  v-if="show" />   
         
-         </transition> -->
+         </transition>
          </div>
          <div class="btnHolder">
               <a v-if="prevShowned" class="btnReady" @click="prevImage()" >Prev</a>
@@ -47,6 +47,7 @@ export default {
             }
         },
         beforeCreate(){
+            completedPuzzle = 0;
              codeResponse = JSON.parse(localStorage.getItem('codeResponse'));
             teamSetup = JSON.parse(localStorage.getItem('teamSetup'));
               axios.post('api/game/get_status_last',{
@@ -54,22 +55,22 @@ export default {
                         playerTeam: teamSetup.playerTeam
                         }).then(response => {
                             for(var i =0; i< response.data.length; i++){
-                                if(response.data[i]['puzzle_progress'] == 6){
+                                if(response.data[i]['puzzle_progress'] === 6){
                                     this.semaphore_img= './images/color_semaphore.png';
                                     this.semaphore_solved = true;
                                     completedPuzzle = completedPuzzle+ 1;
                                 }
-                                if(response.data[i]['puzzle_progress'] == 7){
+                                if(response.data[i]['puzzle_progress'] === 7){
                                     this.security_img= './images/color_security.png';
                                     this.security_solved = true;
                                     completedPuzzle = completedPuzzle+ 1;
                                 }
-                                if(response.data[i]['puzzle_progress'] == 8){
+                                if(response.data[i]['puzzle_progress'] === 8){
                                     this.cafe_img= './images/color_cafe.png';
                                     this.cafe_solved = true;
                                     completedPuzzle = completedPuzzle+ 1;
                                 }
-                                if(response.data[i]['puzzle_progress'] == 9){
+                                if(response.data[i]['puzzle_progress'] === 9){
                                     this.graffiti_img= './images/color_graffiti.png';
                                     this.graffiti_solved = true;
                                     completedPuzzle = completedPuzzle+ 1;
@@ -80,12 +81,10 @@ export default {
                                 this.$refs.videoRef.src  = "./images/Vault_1.mp4"; 
                             }
                             else if(completedPuzzle == 2){
-                                this.$refs.videoRef.src  = "./images/Vault_2.mp4"; 
-
+                                this.$refs.videoRef.src  = "./images/Vault_2.mp4";
                             }
                             else if(completedPuzzle == 3){
                                 this.$refs.videoRef.src  = "./images/Vault_3.mp4"; 
-                                
                             }
                             else if(completedPuzzle == 4){
                                 this.$refs.videoRef.src  = "./images/Vault_4.mp4"; 
@@ -223,15 +222,18 @@ export default {
     }
 
     .cover_image{
-        height: 720px;
-        width: 1280px;
+        height: 540px;
+        width: 960px;
         position: absolute;
         top: 10%;
     }
 
     .treasure_video{
+        height: 540px;
+        width: 960px;
         position: absolute;
         top: 10%;
+        border-radius: 12px;
     }
 
 

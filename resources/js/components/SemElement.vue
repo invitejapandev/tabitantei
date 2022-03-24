@@ -6,12 +6,11 @@
                 <!-- <img class="desk" src="../assets/bulletin_board.png"  /> -->
                 <!-- <img class="desk" v-bind:src="img"  /> -->
                  <div class="iframeHolder">
-            <iframe class="responsive" style="z-index: -1 !important" :src="mirURL" frameBorder="0" scrolling="no" allowFullScreen></iframe>
-        </div>
+                    <iframe class="responsive" style="z-index: -1 !important" :src="mirURL" frameBorder="0" scrolling="no" allowFullScreen></iframe>
+                </div>
             </div>
             <div class="actions2">
                 <input maxlength="10" :class="[isCorrect ? 'correct' : '' , 'answer']" type="text" placeholder="TYPE HERE" style="z-index: 1" v-on:keyup.enter="onEnter" @input="onInput" />
-        
             </div>
         </div>
        
@@ -282,17 +281,13 @@ export default{
         position: relative;
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        align-content: center;
         flex-wrap: wrap;
         height: 100%;
         width: 100%;
     }
 
-.responsive{
-        border-radius: 10px;
-        width: 100%;
-        height: 100%;
-    }
-    
     .manual_div{
         display: flex;
         position: relative;
@@ -301,31 +296,25 @@ export default{
         align-items: center;
         width: 100%;
         height: 60vh;
-        flex-grow: 2;
+        flex-grow: 1;
         /* border-style: solid; */
     }
     
     .iframeHolder{
-        position: absolute;
-        padding:0; 
-        margin: 0;
-        z-index: 98;
-        cursor: pointer;
-        /* background-color: pink; */
-        width: 98%;
-        height: 100%;
-
-    }
-
-
-
-    
-    .desk{
-        border-radius: 10px;
+          border-radius: 10px;
         width: 95%;
         height: 100%;
         object-fit: cover;
+
     }
+
+
+    .responsive{
+        border-radius: 10px;
+        width: 100%;
+        height: 100%;
+    }
+    
 
 
     .actions2{
@@ -333,13 +322,14 @@ export default{
         display: flex;
         width: 87%;
         flex-grow: 1;
+        justify-content: center;
     }
 
     .answer{
         font-size: 3vw;
         text-align: center;
         width: 100%;
-        padding: 100px;
+        height: 140px;
         background: transparent;
         background-size: 100%;
         background-repeat: no-repeat;

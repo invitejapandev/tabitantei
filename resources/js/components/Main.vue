@@ -72,8 +72,11 @@
                                 else if(response.data== 4 && this.puzzleNumber != 5){
                                     this.$router.push({ name: 'tour.index' });
                                 }
+                                else if(response.data >= 5 && (this.puzzleNumber != 6 || this.puzzleNumber != 7 || this.puzzleNumber != 8 || this.puzzleNumber != 9)){
+                                    this.$router.push({ name: 'travel_paris.index' });
+                                }
                                 else{
-                                    getStatusInterval = setInterval(() => this.getStatus(), 2000);
+                                    getStatusInterval = setInterval(() => this.getStatus(), 3000);
                                 }
                         });
 
@@ -119,7 +122,7 @@
         methods:{
             helpTriggered(){
               this.$swal({
-                        title:'Are you sure you want to call for help?',
+                        title:'ゲームマスターを呼びますか？<br/>Are you sure you want to call a gamemaster?',
                         // icon:'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
@@ -135,7 +138,7 @@
                                     puzzle_number: this.puzzleNumber
                                 }).then(response => {
                                     this.$swal({
-                                            title:'A facilitator will come for help.',
+                                            title:'ゲームマスターが参ります。<br/>A gamemaster will come for help.',
                                             icon:'success'}).then(response => {
                                                 
                                             });

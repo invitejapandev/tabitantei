@@ -1,0 +1,59 @@
+
+.v-step{
+    /* background-color: white !important; */
+    color: black !important;
+    font-size: 1vw;
+    font-family: toppan-bunkyu-midashi-go-std, sans-serif;
+    background-color: white !important;
+    font-weight: 900;
+    font-style: normal;
+    width: 500px;
+    min-width: 350px !important;
+    border-radius: 20px !important;
+    min-height: 220px !important;
+}
+
+.v-step__arrow{
+    background: white !important;
+}
+
+.v-step__button{
+    color: black !important;
+    font-weight: bold;
+    border-style: solid !important;
+    border-color: black !important;
+}
+
+
+
+.v-step__button:focus{
+    /* color: white !important; */
+    background-color: grey !important;
+}
+
+.v-step[data-popper-placement^="right"] {
+   
+  background-size: 170px 186px !important;
+    background-image: url('/images/doguusensei_leftup.png') !important;
+    background-repeat: no-repeat !important;
+    background-position: 95% 85% !important;
+    padding-right: 200px !important;
+  }
+
+  .v-step[data-popper-placement^="left"] {
+   
+    background-size: 170px 186px !important;
+      background-image: url('/images/doguusensei_rightdown.png') !important;
+      background-repeat: no-repeat !important;
+      background-position: 50% 2% !important;
+      padding-top: 210px !important;
+    }
+
+    .v-step[data-popper-placement^="top"] {
+   
+        background-size: 170px 186px !important;
+          background-image: url('/images/doguusensei_leftdown.png') !important;
+          background-repeat: no-repeat !important;
+          background-position: 90% 5% !important;
+          padding-top: 220px !important;
+        }

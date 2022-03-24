@@ -1,11 +1,18 @@
 <template>
         <div class="login_container">
             <form class="login_form" autocomplete="off" v-on:submit.prevent="onEnter">
-                <input autocomplete="off" id="1" type="text" placeholder="ENTER GAME CODE"  maxlength="5" v-model="item.name" @input="onInput"/>
+                <input autocomplete="off" id="1" type="text" placeholder="ゲームコードを入力
+                
+                
+                
+                
+                
+                Enter Game Code"  maxlength="5" v-model="item.name" @input="onInput"/>
             </form>
-             <img class="login-logo" src="../assets/green_logo.png" />
-            <!-- <a class="go_button" @click="validateGame" :class="[item.name]">Go!</a> -->
-         <span class="welcome_header">WELCOME&nbsp;&nbsp;AGENTS</span>
+             <!-- <img class="login-logo" src="../assets/green_logo.png" /> -->
+            <!-- <a class="go_button" @click="validateGame" :class="[item.name]">Go!</a> -->         
+            <!-- <span class="welcome_header_jap">エージェントのみなさん、ようこそ！</span> -->
+            <span class="welcome_header">TABITANTEI</span>
         </div>
         
          <!-- <iframe src="/mp3/spy_music.mp3" allow="autoplay" id="audio"></iframe> -->
@@ -15,6 +22,7 @@
 
 <script>
     import axios from 'axios'
+     var codeSuccess = 'ゲームコードが認証されました。チーム選択画面に進みます。<br/>Game Code is Valid. You will now be redirected to team selection.';
     export default{
         data: function(){
             return {
@@ -67,26 +75,59 @@
                         
                         console.log(response['data'][0].game_code)
                         if(response['data'][0].id >= 1 && response['data'][0].Status == 1){
-                            this.$swal({
-                                title:'Game Code is Valid. You will now be redirected to team selection.',
-                                icon:'success'    
-                                        }).then((result) =>{
+                           this.$swal({
+                                html:`<strong><h3>`+codeSuccess+`</h3></strong><br/>`,
+                                background: 'url(/images/book_bg_login.png)',
+                                showClass: {
+                                    popup: 'animate__animated animate__fadeInDown'
+                                },
+                                hideClass: {
+                                    popup: 'animate__animated animate__fadeOutDown'
+                                },
+                                width: 497,
+                                customClass: { actions: 'action-class' },
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: "Ok",
+                            }).then((result) =>{
                                             this.$router.push({ name: 'team.index' })
                                             localStorage.setItem('codeResponse', JSON.stringify(response['data'][0]));
                                         });
                            
                         }
                         else{
-                            this.$swal({
-                                title:'Game Code is invalid.  Please try again.',
-                                icon:'warning'    
-                                        });
+                          this.$swal({
+                                html:`<strong><h3>Game code is invalid. Please try again.</h3></strong><br/>`,
+                                background: 'url(/images/book_bg_login.png)',
+                                showClass: {
+                                    popup: 'animate__animated animate__fadeInDown'
+                                },
+                                hideClass: {
+                                    popup: 'animate__animated animate__fadeOutUp'
+                                },
+                                width: 497,
+                                customClass: { actions: 'action-class' },
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: "Ok",
+                            });
                         }
                     }).catch( error => {
                            this.$swal({
-                                title:'Game Code is Invalid. Please try again.',
-                                icon:'warning'    
-                                        });
+                                html:`<strong><h3>Game code is invalid. Please try again.</h3></strong><br/>`,
+                                background: 'url(/images/book_bg_login.png)',
+                                showClass: {
+                                    popup: 'animate__animated animate__fadeInDown'
+                                },
+                                hideClass: {
+                                    popup: 'animate__animated animate__fadeOutUp'
+                                },
+                                width: 497,
+                                customClass: { actions: 'action-class' },
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: "Ok",
+                            });
                     })
                 
             },
@@ -101,25 +142,58 @@
                         console.log(response['data'][0].game_code)
                         if(response['data'][0].id >= 1 && response['data'][0].Status == 1){
                             this.$swal({
-                                title:'Game Code is Valid. You will now be redirected to team selection.',
-                                icon:'success'    
-                                        }).then((result) =>{
+                                html:`<strong><h3>`+codeSuccess+`</h3></strong><br/>`,
+                                background: 'url(/images/book_bg_login.png)',
+                                showClass: {
+                                    popup: 'animate__animated animate__fadeInDown'
+                                },
+                                hideClass: {
+                                    popup: 'animate__animated animate__fadeOutDown'
+                                },
+                                width: 497,
+                                customClass: { actions: 'action-class' },
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: "Ok",
+                            }).then((result) =>{
                                             this.$router.push({ name: 'team.index' })
                                             localStorage.setItem('codeResponse', JSON.stringify(response['data'][0]));
                                         });
                            
                         }
                         else{
-                            this.$swal({
-                                title:'Game Code is invalid.  Please try again.',
-                                icon:'warning'    
-                                        });
+                          this.$swal({
+                                html:`<strong><h3>Game code is invalid. Please try again.</h3></strong><br/>`,
+                                background: 'url(/images/book_bg_login.png)',
+                                showClass: {
+                                    popup: 'animate__animated animate__fadeInDown'
+                                },
+                                hideClass: {
+                                    popup: 'animate__animated animate__fadeOutUp'
+                                },
+                                width: 497,
+                                customClass: { actions: 'action-class' },
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: "Ok",
+                            });
                         }
                     }).catch( error => {
-                           this.$swal({
-                                title:'Game Code is Invalid. Please try again.',
-                                icon:'warning'    
-                                        });
+                         this.$swal({
+                                html:`<strong><h3>Game code is invalid. Please try again.</h3></strong><br/>`,
+                                background: 'url(/images/book_bg_login.png)',
+                                showClass: {
+                                    popup: 'animate__animated animate__fadeInDown'
+                                },
+                                hideClass: {
+                                    popup: 'animate__animated animate__fadeOutUp'
+                                },
+                                width: 497,
+                                customClass: { actions: 'action-class' },
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: "Ok",
+                            });
                     })
                 }
             }
@@ -127,7 +201,32 @@
     }
 </script>
 
+<style>
+
+.title-class{
+    font-size: 1999px;
+}
+
+.testingclass{
+    font-weight: bolder;
+    font-size: 1em;
+}
+
+.swal-height {
+  height: 399px;
+}
+
+.action-class{
+    position: fixed;
+    right: 15px;
+    bottom: 10px;
+}
+
+</style>
+
+
 <style scoped>
+
 
 .login_container{
     position: relative;
@@ -138,24 +237,36 @@
     background-size: cover;
     width: 100%;
     height: 100%;
+        background-image: url('../assets/main_bg.jpg') !important;
 }
 
 .login-logo{
     position: absolute;
-    top: 20%;
+    bottom: 7%;
     width: 100%;
-    max-width: 708px;
+    max-width: 600px;
     z-index: 1;
 }
 
 .welcome_header{
     position: absolute;
     font-size: 7vw;
+    top:  12%;
+    color:black;
+    letter-spacing: 10px;
+    font-family: 'Covered By Your Grace', cursive;
+    z-index: 2;
+}
+
+.welcome_header_jap{
+    position: absolute;
+    font-size: 4vw;
     top:  3%;
-    color: white;
+    color: lightslategray;
     font-weight: regular;
     font-family: CA-Geheimagent;
     letter-spacing: 10px;
+    z-index: 2;
 }
 
 
@@ -173,21 +284,39 @@
 }
 
 input{
-    font-size: 3rem;
+    font-size: 3vw;
     text-align: center;
     padding: 2rem;
     text-transform: uppercase;
-    font-family: CA-Geheimagent;
+    font-family: 'Covered By Your Grace', cursive;
     background-color: rgba(255,255,255,0.75);
     border: none;
     color:black;
     letter-spacing: 9px;
+    height: 120px;
     width: 40%;
     max-width: 100%;
 }
-
-input::placeholder{
-    color:black;
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  white-space:pre-line;  
+  position:relative;
+  top:-35px;
+  
+}
+::-moz-placeholder { /* Firefox 19+ */
+     white-space:pre-line;  
+  position:relative;
+  top:-35px;
+}
+:-ms-input-placeholder { /* IE 10+ */
+    white-space:pre-line;  
+  position:relative;
+  top:-35px;
+}
+:-moz-placeholder { /* Firefox 18- */
+     white-space:pre-line;  
+  position:relative;
+  top:-35px;
 }
 
 .go_button{

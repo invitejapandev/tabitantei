@@ -1,19 +1,19 @@
 <template>
 <!-- <div></div> -->
-    <div class="right_panel"  >
+    <div  :class="[puzzleNumber == 4 ? 'right_panel' : 'right_panel_wider']" >
         <div class="element_holder">
             <div class="manual_div">
                 <!-- <img class="desk" src="../assets/bulletin_board.png"  /> -->
                 <!-- <img class="desk" v-bind:src="img"  /> -->
                 <div  :class="[puzzleNumber == 4 ? 'appear' : '' , 'form_container']">
-                    <div class="form_input">
+                    <!-- <div class="form_input" hidden>
                         <div class="form_label" > <img class="map1_icon_x"  src="../assets/map_icon_circle.png" /> </div>
                         <div class="form_select" style="text-align: center; line-height: 60px; ">A</div>
                         <div class="form_select" style="text-align: center; line-height: 60px;">2</div>
-                    </div>
+                    </div> -->
                     <div class="form_input">
-                        <div class="form_label"> <img class="map1_icon_x"  src="../assets/map_icon_x.png" /> </div>
-                        <select v-model="xSelected" class="form_select" required>
+                        <!-- <div class="form_label"> <img class="map1_icon_x"  src="../assets/map_icon_x.png" /> </div> -->
+                        <select v-model="xSelected" class="form_select" @change="validateAnswer()" required>
                             <option value=""></option>
                             <option value="A">A</option>
                             <option value="B">B</option>
@@ -23,7 +23,7 @@
                             <option value="F">F</option>
                             <option value="G">G</option>
                         </select>
-                         <select  v-model="ySelected" class="form_select" required>
+                         <select  v-model="ySelected" class="form_select" @change="validateAnswer()" required>
                              <option value=""></option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -42,20 +42,28 @@
                             <option value="5">5</option>
                         </select>
                     </div> -->
-                    <div class="form_action">
+                    <!-- <div class="form_action">
                         <button  @click="validateAnswer()" class="form_submit">Submit</button>
-                    </div>
+                    </div> -->
                 </div>
 
                 
                 <div :class="[puzzleNumber == 5 ? 'appear' : '' , 'actions3']" >
-                    <div class="btnBoxes blue" @click="onButtonClicked('blue')"></div>
-                    <div class="btnBoxes green" @click="onButtonClicked('green')"></div>
-                    <div class="btnBoxes yellow" @click="onButtonClicked('yellow')"></div>
-                    <div class="btnBoxes red" @click="onButtonClicked('red')"></div>
-
+                    <div class="btnBoxes blue" @click="selectColor2('blue')"></div>
+                    <div class="btnBoxes green" @click="selectColor2('green')"></div>
+                    <div class="btnBoxes yellow" @click="selectColor2('brown')"></div>
+                    <div class="btnBoxes red" @click="selectColor2('red')"></div>
                 </div>
             </div>
+            
+                <div  :class="[puzzleNumber == 5 ? 'appear' : '' , 'player_selected_colors']">
+                    <div v-for="(item, index) in answerList" :key="index" class="player_color">
+                        {{item.nickName}}
+                        <div :class="[item.selected_color != '' ? item.selected_color+'_bg': '', 'selected_color']" ></div>
+                    </div>
+
+               
+                </div>
             <!-- <div :class="[puzzleNumber == 4 ? 'appear' : '' , 'actions2']" >
                 <input :class="[isCorrect ? 'correct' : '' , 'answer']" type="text" placeholder="TYPE HERE" style="z-index: 1" v-on:keyup.enter="onEnter" @input="onInput" />
         
@@ -96,6 +104,7 @@
 
 import VueEasyLightbox from 'vue-easy-lightbox'
 import axios from 'axios'
+   var getStatusInterval;
 
 var keystrokeSound = new Audio('https://dl.dropboxusercontent.com/s/hjx4xlxyx39uzv7/18660_1464810669.mp3');
 var correctSound = new Audio('https://www.freesoundslibrary.com/wp-content/uploads/2018/03/right-answer-ding-ding-sound-effect.mp3');
@@ -143,6 +152,12 @@ var typingTimer;
 var doneTypingInterval = 1000;
 var presscount = 0;
 let teamSetup;
+let codeResponse;
+let getStatusAttempt = 0;
+
+let playerselectedColor;
+
+
 export default{
     name:'MapElement',
     components:{
@@ -161,20 +176,28 @@ export default{
             showLanguageButton: false,
             img: this.elementImage,
             xSelected: '',
-            ySelected: ''
+            ySelected: '',
+            validatedAnswer: false,
+            answerList: {}
         }
     },
     props:{
         elementImage: String,
         answer: String,
-        puzzleNumber: Number
+        puzzleNumber: Number,
+        SecondMapAnswer: Boolean
     },
     beforeCreate(){
-        teamSetup = JSON.parse(localStorage.getItem('teamSetup'));
+            teamSetup = JSON.parse(localStorage.getItem('teamSetup'));
+            codeResponse = JSON.parse(localStorage.getItem('codeResponse'));
+            if(this.puzzleNumber ==5){
+                getStatusInterval = setInterval(() => this.getStatus(), 3000);
+            }
     },
     methods: {
             validateAnswer(){
                 // alert(this.xSelected+' '+this.ySelected);
+                if(this.xSelected!='' && this.ySelected!=''){
                 let answer = this.xSelected+''+this.ySelected;
                 if(answer.includes(this.correctAnswer)){
                     this.isCorrect = true;
@@ -221,17 +244,436 @@ export default{
                                         //alert('something went wrong');
                                     }
                                 });
+                    }
+                    else{
+                        this.$swal({
+                                                        imageUrl: '/images/try_again.png',
+                                                        width: 524,
+                                                        height: 277,
+                                                        imageHeight: 267,
+                                                        background: '#ffffff20'
+                                                                });
+                            this.isCorrect = false;
+                    }
                 }
-                else{
-                      this.$swal({
-                                                    imageUrl: '/images/try_again.png',
-                                                    width: 524,
-                                                    height: 277,
-                                                    imageHeight: 267,
-                                                    background: '#ffffff20'
+            },
+            getStatus(){
+
+                axios.post('api/game/get_selected_map_answer',{
+                        game_event_id: codeResponse.id,
+                        player_team: teamSetup.playerTeam,
+                        player_name: teamSetup.playerName,
+                        // player_selected_color: playerselectedColor,
+                        puzzle_number: this.puzzleNumber
+                        }).then(response => {
+                            
+                            let data = response['data'];
+                            this.answerList = data.playerAnswerList;
+                            let voted_color = data.voted_color;
+                            let gameProgressNew = data.gameProgress;
+                            if(gameProgressNew == 1){
+                                clearInterval(getStatusInterval);
+                                this.$swal({
+                                                                                        imageUrl: '/images/correct.png',
+                                                                                        width: 524,
+                                                                                        height: 277,
+                                                                                        imageHeight: 267,
+                                                                                        background: '#ffffff20'
+                                                                                    }).then(response => {
+                                                                                            
+                                                                                              
+                                                                                      if(this.puzzleNumber == 4){
+                                                                                                    this.$router.push({ name: 'tour.index'})
+                                                                                                }
+                                                                                                else if(this.puzzleNumber == 5){
+                                                                                                    this.$router.push({ name: 'travel_paris.index'})
+                                                                                                }
+                                                                                    });
+                            }
+
+                            if(voted_color != ""){
+                                clearInterval(getStatusInterval);
+                                let timerInterval;
+                                                this.$swal({
+                                                    title: '全員が選択を完了しました。解答を検証中です。<br/>Validating the answers.',
+                                                    timer: 3000,
+                                                    timerProgressBar: true,
+                                                    allowOutsideClick:false,
+                                                    didOpen: () => {
+                                                        this.$swal.showLoading()
+                                                        const b = this.$swal.getHtmlContainer().querySelector('b')
+                                                        timerInterval = setInterval(() => {
+                                                        b.textContent =  this.$swal.getTimerLeft()
+                                                        }, 100)
+                                                    },
+                                                    willClose: () => {
+                                                        clearInterval(timerInterval)
+                                                    }
+                                                    }).then((result) => {
+
+                                                        axios.post('api/game/update_map_answer',{
+                                                            game_event_id: codeResponse.id,
+                                                            player_team: teamSetup.playerTeam,
+                                                            player_name: teamSetup.playerName,
+                                                            selected_color: voted_color,
+                                                            puzzle_number: this.puzzleNumber
+                                                            }).then(response => {
+                                                            
                                                             });
-                        this.isCorrect = false;
-                }
+                                                    
+                                                        if(voted_color == 'red'){
+                                                            this.validatedAnswer = true;
+                                                                correctSound.play();
+                                                                this.$emit('pause-time');
+                                                                
+                                                                let gameProgress = JSON.parse(localStorage.getItem('gameProgress'));
+
+                                                                axios.post('api/game/store_status',{
+                                                                            game_event_id: teamSetup.game_event_id,
+                                                                            teamNumber: teamSetup.playerTeam,
+                                                                            puzzle_progress: 5,
+                                                                            player_number: teamSetup.playerName
+                                                                        }).then(response => {
+                                                                                if(response){
+                                                                                    this.$swal({
+                                                                                        imageUrl: '/images/correct.png',
+                                                                                        width: 524,
+                                                                                        height: 277,
+                                                                                        imageHeight: 267,
+                                                                                        background: '#ffffff20'
+                                                                                    }).then(response => {
+                                                                                            
+                                                                                              
+                                                                                      if(this.puzzleNumber == 4){
+                                                                                                    this.$router.push({ name: 'tour.index'})
+                                                                                                }
+                                                                                                else if(this.puzzleNumber == 5){
+                                                                                                    this.$router.push({ name: 'travel_paris.index'})
+                                                                                                }
+                                                                                    });
+                                                                                }
+                                                                                else{
+                                                                                    //show db error
+                                                                                    //alert('something went wrong');
+                                                                                }
+                                                                        });
+                                                        }
+                                                        else{
+                                                             this.$swal({
+                                                                    imageUrl: '/images/try_again.png',
+                                                                    width: 524,
+                                                                    height: 277,
+                                                                    imageHeight: 267,
+                                                                    background: '#ffffff20'
+                                                            });
+
+                                                            getStatusInterval = setInterval(() => this.getStatus(), 2000);
+                                                            this.validatedAnswer = true;
+                                                        }
+                                                    
+                                                    });
+
+                            }
+                        });
+
+
+            //         getStatusAttempt = getStatusAttempt+1;
+
+            //         if(getStatusAttempt == 30){
+            //               this.$swal({
+            //                         title:'メンバーの誰かが稼働していないか、別の色を選択しています。<br/>共同作業が鍵です。<br/>Someone is inactive or selected a different color. Coordination is the key.',
+            //                         icon:'info'    
+            //                         }).then(response => {
+            //                 });
+            //             }
+
+                        
+            //     if(playerselectedColor.length > 0){
+
+            //             axios.post('api/game/get_status_map',{
+            //                     game_event_id: codeResponse.id,
+            //                     playerTeam: teamSetup.playerTeam,
+            //                     player_name: teamSetup.playerName,
+            //                     player_selected_color: playerselectedColor,
+            //                     puzzle_number: this.puzzleNumber
+            //                 }).then(response => {
+            //                     if(response['data'].gameStatus){
+            //                     let gameStatus = response['data'].gameStatus;
+            //                     // alert(gameStatus);
+            //                             if(gameStatus[0].answered_current == 1 && [0].player_number != teamSetup.playerName){
+                                            
+            //                                 clearInterval(getStatusInterval);
+            //                                     axios.post('api/game/store_status',{
+            //                                             game_event_id: teamSetup.game_event_id,
+            //                                             teamNumber: teamSetup.playerTeam,
+            //                                             puzzle_progress: 5,
+            //                                             player_number: teamSetup.playerName
+            //                                     }).then(response => {
+            //                                         if(response){
+            //                                             this.$swal({
+            //                                                 imageUrl: '/images/correct.png',
+            //                                                 width: 524,
+            //                                                 height: 277,
+            //                                                 imageHeight: 267,
+            //                                                 background: '#ffffff20'
+            //                                                         }).then(response => {
+            //                                                                           if(this.puzzleNumber == 4){
+            //                                                                                         this.$router.push({ name: 'tour.index'})
+            //                                                                                     }
+            //                                                                                     else if(this.puzzleNumber == 5){
+            //                                                                                         this.$router.push({ name: 'travel_paris.index'})
+            //                                                                                     }
+            //                                                                 });
+            //                                         }
+            //                                     });
+            //                             }
+            //                         }
+                                
+            //                     if(response['data'].answered_player){
+            //                         let answered_player = response['data'].answered_player;
+            //                         let player_count = response['data'].player_count;
+            //                         let selected_color = response['data'].selected_color;
+                                    
+            //                             this.answerList = response['data'].playerAnswerList;
+            //                             // this.playerNoAnswer = response['data'].playerNoAnswer;
+
+
+                                    
+
+            //                             if(getStatusAttempt >= 60 && playerselectedColor.length > 0){
+                                            
+            //                             // alert('everyone did answer');
+            //                                     getStatusAttempt = 0;
+            //                                     clearInterval(getStatusInterval);
+            //                                     let timerInterval;
+            //                                 this.$swal({
+            //                                             title: '全員が選択を完了しました。解答を検証中です。<br/>Validating the answers.',
+            //                                             timer: 3000,
+            //                                             timerProgressBar: true,
+            //                                             allowOutsideClick:false,
+            //                                             didOpen: () => {
+            //                                                 this.$swal.showLoading()
+            //                                                 const b = this.$swal.getHtmlContainer().querySelector('b')
+            //                                                 timerInterval = setInterval(() => {
+            //                                                 b.textContent =  this.$swal.getTimerLeft()
+            //                                                 }, 100)
+            //                                             },
+            //                                             willClose: () => {
+            //                                                 clearInterval(timerInterval)
+            //                                             }
+            //                                             }).then((result) => {
+            //                                                 if(selected_color =='red' && this.validatedAnswer == false){
+            //                                                         this.validatedAnswer = true;
+            //                                                         correctSound.play();
+            //                                                         this.$emit('pause-time');
+                                                                    
+            //                                                         let gameProgress = JSON.parse(localStorage.getItem('gameProgress'));
+
+
+            //                                                         axios.post('api/game/store_status',{
+            //                                                                     game_event_id: teamSetup.game_event_id,
+            //                                                                     teamNumber: teamSetup.playerTeam,
+            //                                                                     puzzle_progress: this.puzzleNumber,
+            //                                                                     player_number: teamSetup.playerName
+            //                                                                 }).then(response => {
+                                                                                
+
+
+            //                                                                     if(response){
+            //                                                                         this.$swal({
+            //                                             imageUrl: '/images/correct.png',
+            //                                             width: 524,
+            //                                             height: 277,
+            //                                             imageHeight: 267,
+            //                                             background: '#ffffff20'
+            //                                                     }).then(response => {
+            //                                                                                   if(this.puzzleNumber == 4){
+            //                                                                                         this.$router.push({ name: 'tour.index'})
+            //                                                                                     }
+            //                                                                                     else if(this.puzzleNumber == 5){
+            //                                                                                         this.$router.push({ name: 'travel_paris.index'})
+            //                                                                                     }
+            //                                                                         });
+            //                                                                     }
+            //                                                                     else{
+            //                                                                         //show db error
+            //                                                                         //alert('something went wrong');
+            //                                                                     }
+            //                                                                 });
+                                                                    
+            //                                                     }
+            //                                                     else{
+            //                                                         this.$swal({
+            //                                                         imageUrl: '/images/try_again.png',
+            //                                                         width: 524,
+            //                                                         height: 277,
+            //                                                         imageHeight: 267,
+            //                                                         background: '#ffffff20'
+            //                                                                 });
+
+            //                                                         getStatusInterval = setInterval(() => this.getStatus(), 2000);
+            //                                                         this.validatedAnswer = true;
+            //                                                     }
+            //                                             });
+
+            //                     }
+            //                     if(answered_player >= player_count && this.validatedAnswer == false )  {
+            //                         // alert('everyone did answer');
+            //                                   clearInterval(getStatusInterval);
+            //                                   getStatusAttempt = 0;
+            //                                   let timerInterval;
+            //                                this.$swal({
+            //                                         title: 'Validating the answers.',
+            //                                         timer: 3000,
+            //                                         timerProgressBar: true,
+            //                                         allowOutsideClick:false,
+            //                                         didOpen: () => {
+            //                                             this.$swal.showLoading()
+            //                                             const b = this.$swal.getHtmlContainer().querySelector('b')
+            //                                             timerInterval = setInterval(() => {
+            //                                             b.textContent =  this.$swal.getTimerLeft()
+            //                                             }, 100)
+            //                                         },
+            //                                         willClose: () => {
+            //                                             clearInterval(timerInterval)
+            //                                         }
+            //                                         }).then((result) => {
+            //                                               if(selected_color =='red' && this.validatedAnswer == false){
+            //                                                     this.validatedAnswer = true;
+            //                                                     correctSound.play();
+            //                                                     this.$emit('pause-time');
+                                                                
+            //                                                     let gameProgress = JSON.parse(localStorage.getItem('gameProgress'));
+
+
+            //                                                     axios.post('api/game/store_status',{
+            //                                                                 game_event_id: teamSetup.game_event_id,
+            //                                                                 teamNumber: teamSetup.playerTeam,
+            //                                                                 puzzle_progress: this.puzzleNumber,
+            //                                                                 player_number: teamSetup.playerName
+            //                                                             }).then(response => {
+                                                                            
+
+
+            //                                                                 if(response){
+            //                                                                     this.$swal({
+            //                                         imageUrl: '/images/correct.png',
+            //                                         width: 524,
+            //                                         height: 277,
+            //                                         imageHeight: 267,
+            //                                         background: '#ffffff20'
+            //                                                 }).then(response => {
+            //                                                                         if(this.puzzleNumber == 4){
+            //                                                                             this.$router.push({ name: 'tour.index'})
+            //                                                                         }
+            //                                                                         else if(this.puzzleNumber == 5){
+            //                                                                             this.$router.push({ name: 'travel_paris.index'})
+            //                                                                         }
+            //                                                                     });
+            //                                                                 }
+            //                                                                 else{
+            //                                                                     //show db error
+            //                                                                     //alert('something went wrong');
+            //                                                                 }
+            //                                                             });
+                                                                
+            //                                                 }
+            //                                                 else if(this.validatedAnswer == false){
+            //                                                      this.$swal({
+            //                                         imageUrl: '/images/try_again.png',
+            //                                         width: 524,
+            //                                         height: 277,
+            //                                         imageHeight: 267,
+            //                                         background: '#ffffff20'
+            //                                                 });
+
+            //                                                                 // getStatusAttempt = 0;
+            //                                                       getStatusInterval = setInterval(() => this.getStatus(), 2000);
+            //                                                     this.validatedAnswer = true;
+
+                                                                            
+
+
+
+            //                                                 }
+            //                                         });
+                                  
+            //                     }
+            //                 }
+            //             }).catch(error => {
+            //                console.log(error);
+            //             });
+            //     }
+                 
+            },
+            selectColor2(color){
+                // console.log(color)
+                getStatusAttempt = 0;
+                let swal_title = '';
+                // clearInterval(getStatusInterval);
+                        playerselectedColor = color;
+                        if(playerselectedColor =='green'){
+                            this.greenSelected = true;
+                            this.orangeSelected = false;
+                            this.redSelected = false;
+                            this.blueSelected = false;
+                            swal_title = '[Street Art Walking Tour] を選択しました。<br/>You selected the Street Art Walking Tour.'
+                            
+                        }
+                        else if(playerselectedColor =='brown'){
+                            this.greenSelected = false;
+                            this.orangeSelected = true;
+                            this.redSelected = false;
+                            this.blueSelected = false;
+                            swal_title = '[Literary Walking Tour] を選択しました。<br/>You selected the Literary Walking Tour.'
+                            
+                        }
+                        else if(playerselectedColor == 'red'){
+                            this.greenSelected = false;
+                            this.orangeSelected = false;
+                            this.redSelected = true;
+                            this.blueSelected = false;
+                            swal_title = '[Photo Spot Tour] を選択しました。<br/>You selected the Photo Spot Tour.'
+                        }
+                        else{
+                            this.greenSelected = false;
+                            this.orangeSelected = false;
+                            this.redSelected = false;
+                            this.blueSelected = true;
+                            swal_title = '[Wine Tasting Tour] を選択しました。<br/>You selected the Wine Tasting Tour.'
+                        }
+
+
+                            axios.post('api/game/submit_color_map',{
+                                            game_event_id: teamSetup.game_event_id,
+                                            team_number: teamSetup.playerTeam,
+                                            selected_color: color,
+                                            player_name: teamSetup.playerName
+                                        }).then(response => {
+                                            console.log(response);
+
+                                            if(response){
+                                                this.$swal({
+                                                        title:swal_title,
+                                                        html: "メンバー全員が同じボタンを選択すると、解答が検証されます。<br/>Once all members of your team enter the same button, your answer will be validated.",
+                                                        
+                                                        // icon:'warning',
+                                                    }).then((result) =>{
+                                                    
+                                                    });
+                                            }
+                                            else{
+                                                //show db error
+                                                //alert('something went wrong');
+                                            }
+                                        });
+
+                        
+                            // document.querySelector(".selectedColor").style.backgroundColor =color;
+                            // this.selectedColorShown= true;
+                            this.validatedAnswer = false;
+                            //  getStatusInterval = setInterval(() => this.getStatus(), 2000);
+                    
             },
             onButtonClicked(e){
                 if(e == this.correctAnswer){
@@ -352,23 +794,25 @@ export default{
 
 <style scoped>
 
+    option{
+        background: black;
+    }
+
     .map1_icon_x{
         height: 30px;
         width: 30px;
     }
     .form_container{
-        height: 220px;
-        width: 200px;
-        background: #FFFFFFB3;
         border-radius: 5%;
+        margin-left: 20px;
+        width: 100%;
         display: none;
         flex-wrap: wrap;
         flex-direction: column;
-        justify-content: center;
+        justify-content: start;
         align-content: center;
         font-size: 1.5rem;
         font-weight: bold;
-        color: black;
         gap: 5px;
         font-family: CA-Geheimagent;
 
@@ -376,10 +820,17 @@ export default{
 
     .form_input{
         display: flex;
+        height: 90%;
+        width: 100%;
         flex-direction: row;
+        background-image: url('../assets/map1_answer_box.png');
         justify-content: center;
         align-content: center;
-        gap: 5px;
+        flex-wrap: wrap;
+        background-repeat: no-repeat;
+        background-position: center;
+        bottom: 10px;
+        min-height: 480px;
     }
 
     .form_action{
@@ -400,18 +851,22 @@ export default{
     }
     
     .form_select{
-        width: 40px;
-        height: 60px;
+        bottom: 10px;
+        background: rgba(255, 255, 255, 0);
+        width: 35px;
+        height: 45px;
         text-align: center;
         font-size: 1.5rem;
         font-weight: bold;
         font-family: CA-Geheimagent;
         text-indent: 1px;
-        background: black;
         -webkit-appearance: none;
         color: white;
+        margin-top: 390px;
         -moz-appearance: none;
         cursor: pointer;
+        margin-left: 2px;
+        border: none;
     }
 
     
@@ -428,10 +883,16 @@ export default{
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        width: 15vw;
-        max-width: 15vw;
+        width: 10vw;
     }
 
+    .right_panel_wider{
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 20vw;
+    }
     .element_holder{
         position: relative;
         display: flex;
@@ -446,7 +907,6 @@ export default{
         display: flex;
         position: relative;
         width: 100%;
-        height: 40vh;
         flex-grow: 1;
         /* border-style: solid; */
     }
@@ -583,12 +1043,52 @@ export default{
         background-color: #3E2723;
     }
 
+    .selected_color{
+        height: 20px; width: 20px; border-radius: 5px; background: lightgray;
+    }
+
+    .red_bg{
+        background:#990000;
+    }
+
+    .blue_bg{
+        background:#29aae1;
+    }
+    .green_bg{
+        background:#39b44a;
+    }
+    .brown_bg{
+        background:#8b6239;
+    }
+
+    .player_selected_colors{
+        flex-grow: 1;
+        /* margin-left: 20px; */
+        margin-top: 30px;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        gap: 5px;
+        justify-content: start;
+        align-content: center;
+        font-family: 'VT323', monospace;
+        font-weight: bold;
+        display: none;
+        font-size: 1vw;
+    }
 
     .appear{
         visibility: visible;
         display: flex;
     }
 
+   
+
+    .player_color{
+        display: flex;
+        align-content: center;
+        gap: 20px;
+    }
    
 
 

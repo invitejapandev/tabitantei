@@ -15,7 +15,8 @@ class PianoAnswer extends Authenticatable
         'game_event_id',
         'player_name',
         'team_number',
-        'selected_color'
+        'selected_color',
+        'is_validated'
     ];
 
 }

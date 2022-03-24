@@ -5,13 +5,14 @@
             <div class="manual_div"  ref="draggableContainer" >
                 <!-- <img class="desk" src="../assets/bulletin_board.png"  /> -->
                 <div id="mask" @mousedown="dragMouseDown" >
-                    <div id="unblurred" v-bind:style="{'background-image': 'url(' + (imgData) + ')'}"><!-- <img class="desk" src="../assets/bulletin_board.png"  /> --></div>
+                    
+                    <div id="unblurred" ref="dragunblurred" v-bind:style="{'background-image': 'url(' + (imgData) + ')'}"><!-- <img class="desk" src="../assets/bulletin_board.png"  /> --></div>
                      <!-- v-bind:style="{ backgroundImage: 'url(' + imgData + ')' }" -->
                 </div>
             </div>
            
         </div>
-       <div class="closebtn" @click="hideSelf()" >X</div>
+       <div class="closebtn" @click="hideSelf()" >Close</div>
        
        <div class="btnCard"></div>
      <vue-easy-lightbox
@@ -111,6 +112,7 @@ export default{
       this.positions.clientY = event.clientY
       document.onmousemove = this.elementDrag
       document.onmouseup = this.closeDragElement
+    //   document.containment = "window";
     },
     elementDrag: function (event) {
       event.preventDefault()
@@ -119,8 +121,18 @@ export default{
       this.positions.clientX = event.clientX
       this.positions.clientY = event.clientY
       // set the element's new position:
-      this.$refs.draggableContainer.style.top = (this.$refs.draggableContainer.offsetTop - this.positions.movementY) + 'px'
-      this.$refs.draggableContainer.style.left = (this.$refs.draggableContainer.offsetLeft - this.positions.movementX) + 'px'
+    
+    //   if((this.$refs.draggableContainer.offsetTop - this.positions.movementY)  > 0){
+            this.$refs.draggableContainer.style.top = (this.$refs.draggableContainer.offsetTop - this.positions.movementY) + 'px'
+            this.$refs.draggableContainer.style.left = (this.$refs.draggableContainer.offsetLeft - this.positions.movementX) + 'px'
+    // }
+    //   if((this.$refs.draggableContainer.offsetTop - this.positions.movementY)  > -150){
+            // this.$refs.draggableContainer.style.top =  '100px'
+            // this.$refs.draggableContainer.style.left = '100px'
+    //   }
+    //   this.$refs.draggableContainer.containment='window';
+      console.log( this.$refs.draggableContainer.offsetTop - this.positions.movementY);
+    //   console.log( this.$refs.dragunblurred.style.height);
     },
     hideSelf(){
         this.shouldShowData = false;
@@ -276,25 +288,35 @@ export default{
 
         body{
             margin:0;
-            height: 100%;
+            padding: 0;
             background-size: cover;
             background-color: black !important;
             font-family: CA-Geheimagent;
         }
 
 #mask {
-	position: relative;
 	width: 400px;
 	height: 400px;
 	overflow: hidden;
 	position: absolute;
-	top: calc(50% - 100px);
-	left: calc(50% - 100px);
+	top: (50%-200px);
+	left: (50%-200px);
 
 }
 
 .closebtn{
-    cursor: pointer; height: 30px; line-height: 30px; width: 30px; background-color: white; position: absolute; right: 0px; color: black; text-align: center; border-radius:50%; font-weight: bolder;
+    z-index: 1000;
+    cursor: pointer;
+    height: 30px; line-height:
+    30px; width: 60px;
+    background-color: white;
+    position: absolute;
+    right: 30px;
+    top: 20px;
+    color: black;
+    text-align: center;
+    border-radius:5px;
+    font-weight: bolder;
 }
 
 #unblurred {
@@ -311,10 +333,15 @@ export default{
 	background-repeat:no-repeat;
     background-position: center;
     background-image:url('../assets/top_west.png');
-	background-size:60%;
+	width: 400px !Important;
+	height: 400px !Important;
+	background-size:100%;
 	border-radius: 50%;
+	position: relative;
 	cursor: move;
 }
+
+
 
 
     .right_panel{
@@ -322,7 +349,7 @@ export default{
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-            background-color: black !important;
+        background-color: black !important;
         width: 100%;
         height: 100%;
         overflow: hidden;

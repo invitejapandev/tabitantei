@@ -3,12 +3,15 @@
     <div class="main">
         <Header  :puzzleNumber="puzzleNumber" class="header2" :timePaused="timeisPaused" />
         <div class="main_body">
-            <Miro class="miro_holder" :miroURL="miroURLData" :isShowned="isShowned" :imgCover="imgCover"/>
-            <GraffitiElement @pauseTime="pause-time" :elementImage="elementImage" class="main_element_holder" :answer="answer" :puzzleNumber="puzzleNumber" />
+            <GraffitiLeft class="miro_holder" :miroURL="miroURLData" :isShowned="isShowned" :imgCover="imgCover" :puzzleNumber="puzzleNumber"/>
+            <GraffitiElement @pauseTime="pause-time" :miroURL="miroURLData" :elementImage="elementImage" class="main_element_holder" :answer="answer" :puzzleNumber="puzzleNumber" />
         </div>
-        <a @click="helpTriggered()" href="#" class="float">
-            <img src="../assets/chloe_version.png" style="width: 120px; height: 120px;"/>
+        <a @click="helpShowed = !helpShowed" href="#" class="float">
+            <img src="../assets/chloe_version.png" style="width: 80px; height: 80px;"/>
         </a>
+           <transition name="slide-fade">
+            <HelpModal   v-if="helpShowed" :puzzleNumber="puzzleNumber" class="help_modal_new" @closeModal="closeModal" @helpTriggered="helpTriggered"/>
+        </transition>
 
     </div>
 </template>
@@ -18,6 +21,8 @@
     import Header from './Header.vue';
     import GraffitiElement from './GraffitiElement.vue'
     import Miro from './Miro.vue';
+    import GraffitiLeft from './GraffitiLeft.vue'
+    import HelpModal from './HelpModal.vue';
 
     let computerMIRO = "https://miro.com/app/live-embed/o9J_ltgInS4=/?embedAutoplay=true&moveToViewport=-2638,-351,2934,3605";
     let  floorMIRO = "https://miro.com/app/live-embed/o9J_ltgIkjg=/?embedAutoplay=true&moveToViewport=2560,-648,1472,1160";
@@ -82,26 +87,32 @@
                            }
                         });
 
-             getStatusInterval = setInterval(() => this.getStatus(), 2000);
+             getStatusInterval = setInterval(() => this.getStatus(), 3000);
         },
         data(){
             return{
                 timeisPaused: false,
                 miroURLData: '',
-                imgCover: '/images/computer.png',
+                imgCover: this.elementImage,
                 isShowned: this.miroCovered,
-                updatedTime: 0
+                updatedTime: 0,
+                helpShowed: false
             }
         },
         components: {
             Header,
             GraffitiElement,
-            Miro
+            GraffitiLeft,
+            Miro,
+            HelpModal
         },
         methods:{ 
+            closeModal(){
+                this.helpShowed = false;
+            },
             helpTriggered(){
               this.$swal({
-                        title:'Are you sure you want to call for help?',
+                        title:'ゲームマスターを呼びますか？<br/>Are you sure you want to call a gamemaster?',
                         // icon:'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
@@ -117,7 +128,7 @@
                                     puzzle_number: this.puzzleNumber
                                 }).then(response => {
                                     this.$swal({
-                                            title:'A facilitator will come for help.',
+                                            title:'ゲームマスターが参ります。<br/>A gamemaster will come for help.',
                                             icon:'success'}).then(response => {
                                                 
                                             });
@@ -167,7 +178,7 @@
     }
 </script>
 
-<style>
+<style scoped>
 
     .main{
         display: flex;
@@ -193,13 +204,14 @@
         justify-content: center;
         flex-wrap: wrap;
         height: 85%;
-        min-height: 800px;
+        min-height: 560px;
         width: 100%;
     }
 
     .miro_holder{
         position: relative;
         flex-grow: 1;
+        max-width: 50vw;
         /* background-color: white; */
     }
 
@@ -207,32 +219,62 @@
     .main_element_holder{
         position: relative;
         flex-grow: 1;
+        max-width: 50vw;
     }
 
 
     
 .float{
 	position:fixed;
-	width:120px;
-	height:120px;
+	width:80px;
+	height:80px;
 	border-radius:50px;
 	text-align:center;
-    z-index: 99999999;
-	bottom:15px;
-	right:15px;
+    z-index: 99;
+	bottom:10px;
+	right:10px;
 }
+
+.help_modal_new{
+    position: fixed;
+    height: 450px;
+    width: 310px;
+    background: #F6D74D;
+    border-radius: 20px;
+    bottom: 120px;
+    right: 90px;
+    z-index: 100;
+}
+
+
+.slide-fade-enter-active {
+ animation: bounce-in .3s reverse;
+}
+.slide-fade-leave-active {
+   animation: bounce-in .5s;
+}
+
+@keyframes bounce-in {
+    0%{ 
+        transform: translateY(-10px);
+    }
+    100%{
+        transform: translateY(10px);
+    }
+}
+
 
 .my-float{
 	margin-top:22px;
 }
-
+/* 
 @media only screen and (max-width: 1500px) {
 
     .miro_holder{
         height: 95%;
     }
 
-}
+} */
 
 
 </style>

@@ -1,10 +1,10 @@
 <template>
     <div class="container">
-        <div class="stats">
-            <Player class="player" playerName="Knight07" teamName="7" />
-            <Timer :puzzleNumber="puzzleNumber"   :timeIsPaused="timePaused" class="timer" time="01:06:30" />
+        <div class="stats v-step-6" >
+            <Player  class="player" playerName="Knight07" teamName="7" />
+            <Timer :puzzleNumber="puzzleNumber"   :timeIsPaused="timePaused" class="timer " time="01:06:30" />
         </div>
-        <Inventory class="inventory_holder" />
+        <Inventory class="inventory_holder v-step-9" />
     </div>
 </template>
 
@@ -24,7 +24,7 @@
     }
 </script>
 
-<style>
+<style scoped>
    .container{
        display: flex;
        flex-direction: row;
@@ -56,6 +56,9 @@
    } */
 
 
+.v-tour__target--highlighted {
+  box-shadow: 0 0 0 99999px rgba(0,0,0,.4);
+}
 
 
 </style>

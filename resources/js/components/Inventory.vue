@@ -3,14 +3,14 @@
     <div class="inventoryContainer">
         <!-- <Item /> -->
         <div class="progressIconContainer">
-            <div  :class="[floor_solved ? 'solved':'', 'progressIcon']"><img :src="floor_img" style="width: 70px; height: 70px; "/></div>
-            <div :class="[computer_solved ? 'solved':'', 'progressIcon']"><img :src="computer_img" style="width: 70px; height: 70px; "/></div>
-            <div :class="[piano_solved ? 'solved':'', 'progressIcon']"><img :src="piano_img" style="width: 70px; height: 70px; "/></div>
-            <div :class="[map_solved ? 'solved':'', 'progressIcon']"><img :src="map_img" style="width: 70px; height: 70px; "/></div>
-            <div :class="[semaphore_solved ? 'solved':'', 'progressIcon']"><img :src="semaphore_img" style="width: 70px; height: 70px; "/></div>
-            <div :class="[cafe_solved ? 'solved':'', 'progressIcon']"><img :src="cafe_img" style="width: 70px; height: 70px; "/></div>
-            <div :class="[security_solved ? 'solved':'', 'progressIcon']"><img :src="security_img" style="width: 70px; height: 70px; "/></div>
-            <div :class="[graffiti_solved ? 'solved':'', 'progressIcon']"><img :src="graffiti_img" style="width: 70px; height: 70px; "/></div>
+            <div  :class="[floor_solved ? 'solved':'', 'progressIcon']"><img :src="floor_img" class="imageIcon"/></div>
+            <div :class="[computer_solved ? 'solved':'', 'progressIcon']"><img :src="computer_img" class="imageIcon"/></div>
+            <div :class="[piano_solved ? 'solved':'', 'progressIcon']"><img :src="piano_img" class="imageIcon"/></div>
+            <div :class="[map_solved ? 'solved':'', 'progressIcon']"><img :src="map_img" class="imageIcon"/></div>
+            <div :class="[semaphore_solved ? 'solved':'', 'progressIcon']"><img :src="semaphore_img" class="imageIcon"/></div>
+            <div :class="[cafe_solved ? 'solved':'', 'progressIcon']"><img :src="cafe_img" class="imageIcon"/></div>
+            <div :class="[security_solved ? 'solved':'', 'progressIcon']"><img :src="security_img" class="imageIcon"/></div>
+            <div :class="[graffiti_solved ? 'solved':'', 'progressIcon']"><img :src="graffiti_img" class="imageIcon"/></div>
         </div>
     </div>
 </template>
@@ -132,13 +132,31 @@ export default{
 
 
     .progressIcon{
-        width: 70px;
-        height: 70px;
+        width: 55px;
+        height: 55px;
         border-radius: 50%;
         background-color: black;
+    }
+
+    .imageIcon{
+        width: 55px; height: 55px; 
     }
 
     .solved{
         background-color: transparent;
     }
+
+    @media (min-width: 1500px) { 
+       .progressIcon{
+           width: 70px;
+           height: 70px;
+       }
+
+       .imageIcon{
+           width: 70px;
+           height: 70px;
+       }
+    }
+
+
 </style>

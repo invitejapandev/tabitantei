@@ -7,7 +7,6 @@
         <transition name="fade">
             <div class="newcard"  v-if="show">
                             <img class="cover_image"  v-bind:src="this.imgCover" @click="hideImage" v-if="show" />
-            
             </div>
          </transition>
     </div>
@@ -72,8 +71,8 @@
         z-index: 98;
         cursor: pointer;
         /* background-color: pink; */
-        width: 98%;
-        height: 95%;
+        width: 98.5%;
+        height: 97%;
 
     }
 

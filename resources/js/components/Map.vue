@@ -4,11 +4,14 @@
         <Header  :puzzleNumber="puzzleNumber" class="header2" :timePaused="timeisPaused" />
         <div class="main_body">
             <Miro class="miro_holder" :miroURL="miroURLData" :isShowned="isShowned" :imgCover="imgCover"/>
-            <MapElement @pauseTime="pause-time" :elementImage="elementImage" class="main_element_holder" :answer="answer" :puzzleNumber="puzzleNumber" />
+            <MapElement :SecondMapAnswer="SecondMapAnswer" @pauseTime="pause-time" :elementImage="elementImage" class="main_element_holder" :answer="answer" :puzzleNumber="puzzleNumber" />
         </div>
-        <a @click="helpTriggered()" href="#" class="float">
-            <img src="../assets/chloe_version.png" style="width: 120px; height: 120px;"/>
+        <a @click="helpShowed = !helpShowed" href="#" class="float">
+            <img src="../assets/chloe_version.png" style="width: 80px; height: 80px;"/>
         </a>
+        <transition name="slide-fade">
+            <HelpModal   v-if="helpShowed" :puzzleNumber="puzzleNumber" class="help_modal_new" @closeModal="closeModal" @helpTriggered="helpTriggered"/>
+        </transition>
 
     </div>
 </template>
@@ -18,6 +21,7 @@
     import Header from './Header.vue';
     import MapElement from './MapElement.vue'
     import Miro from './Miro.vue';
+    import HelpModal from './HelpModal.vue';
 
     let computerMIRO = "https://miro.com/app/live-embed/o9J_ltgInS4=/?embedAutoplay=true&moveToViewport=-2638,-351,2934,3605";
     let  floorMIRO = "https://miro.com/app/live-embed/o9J_ltgIkjg=/?embedAutoplay=true&moveToViewport=2560,-648,1472,1160";
@@ -98,12 +102,16 @@
                                 else if(response.data== 4 && this.puzzleNumber != 5){
                                     this.$router.push({ name: 'tour.index' });
                                 }
-                                else if(response.data >= 5 && (this.puzzleNumber != 6 || this.puzzleNumber != 7 || this.puzzleNumber != 8 || this.puzzleNumber != 9)){
+                                else if(response.data>=6){
                                     this.$router.push({ name: 'paris.index' });
                                 }
+                                else if(response.data >= 5 && (this.puzzleNumber != 6 || this.puzzleNumber != 7 || this.puzzleNumber != 9)  && this.puzzleNumber != 8){
+                                    this.$router.push({ name: 'travel_paris.index' });
+                                }
                                 else{
-                                    
-                                    getStatusInterval = setInterval(() => this.getStatus(), 2000);
+                                    if(this.puzzleNumber == 4){
+                                        getStatusInterval = setInterval(() => this.getStatus(), 3000);
+                                    }
                                 }
                         });
         },
@@ -113,18 +121,24 @@
                 miroURLData: '',
                 imgCover: '/images/computer.png',
                 isShowned: this.miroCovered,
-                updatedTime: 0
+                updatedTime: 0,
+                helpShowed: false,
+                SecondMapAnswer: false
             }
         },
         components: {
             Header,
             MapElement,
-            Miro
+            Miro,
+            HelpModal
         },
         methods:{
+            closeModal(){
+                this.helpShowed = false
+            },
              helpTriggered(){
               this.$swal({
-                        title:'Are you sure you want to call for help?',
+                        title:'ゲームマスターを呼びますか？<br/>Are you sure you want to call a gamemaster?',
                         // icon:'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
@@ -140,7 +154,7 @@
                                     puzzle_number: this.puzzleNumber
                                 }).then(response => {
                                     this.$swal({
-                                            title:'A facilitator will come for help.',
+                                            title:'ゲームマスターが参ります。<br/>A gamemaster will come for help.',
                                             icon:'success'}).then(response => {
                                                 
                                             });
@@ -227,8 +241,7 @@
         flex-direction: row;
         justify-content: center;
         flex-wrap: wrap;
-        height: 85%;
-        min-height: 800px;
+        height: 100%;
         width: 100%;
     }
 
@@ -248,14 +261,44 @@
     
 .float{
 	position:fixed;
-	width:120px;
-	height:120px;
+	width:80px;
+	height:80px;
 	border-radius:50px;
 	text-align:center;
-    z-index: 99999999;
-	bottom:15px;
-	right:15px;
+    z-index: 99;
+	bottom:10px;
+	right:10px;
 }
+
+
+.help_modal_new{
+    position: fixed;
+    height: 450px;
+    width: 310px;
+    background: #F6D74D;
+    border-radius: 20px;
+    bottom: 120px;
+    right: 90px;
+    z-index: 100;
+}
+
+
+.slide-fade-enter-active {
+ animation: bounce-in .3s reverse;
+}
+.slide-fade-leave-active {
+   animation: bounce-in .5s;
+}
+
+@keyframes bounce-in {
+    0%{ 
+        transform: translateY(-10px);
+    }
+    100%{
+        transform: translateY(10px);
+    }
+}
+
 
 .my-float{
 	margin-top:22px;
@@ -264,7 +307,7 @@
 @media only screen and (max-width: 1500px) {
 
     .miro_holder{
-        height: 95%;
+        height: 98%;
     }
 
 }

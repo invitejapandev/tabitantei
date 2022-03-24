@@ -5,7 +5,7 @@
              <div class="videoHolder" >
                  <!-- <div class="video classified">Classified</div> -->
                  <div class="video classified" v-for="(item, index) in vids" :key="index">
-                      <vue3-video-player v-if="item.isShowned==true" v-bind:src="'./images/'+item.vidName"></vue3-video-player>
+                      <vue3-video-player v-if="item.isShowned==true" v-bind:src="'./images/'+item.vidName" class="vue3video"></vue3-video-player>
                       <div v-else>Classified</div>
                 </div>
                  <!-- <div class="video"></div>
@@ -20,7 +20,7 @@
              <div class="answerHolder">
                  <div class="security_answer" v-for="(item, index) in orderedQuestions" :key="index">
                     <div :class="[item.isShowned ? '': 'classified', 'question']">
-                        <div v-if="item.isShowned==true"> {{ item.japaneseDetails }}<br/>{{ item.questionDetails }} </div>
+                        <div v-if="item.isShowned==true"> <pre>{{ item.japaneseDetails }}<br/>{{ item.questionDetails }}</pre></div>
                         <div v-else> Classified</div>
                     </div>
                             <form id="answerForm" class="dropAnswer" @submit.prevent="formSubmit">
@@ -36,9 +36,12 @@
                  </div>
              </div>
          </div>
-         <a @click="helpTriggered()" href="#" class="float">
-            <img src="../assets/chloe_version.png" style="width: 120px; height: 120px;"/>
+         <a @click="helpShowed = !helpShowed" href="#" class="float">
+            <img src="../assets/chloe_version.png" style="width: 80px; height: 80px;"/>
         </a>
+        <transition name="slide-fade">
+            <HelpModal   v-if="helpShowed" :puzzleNumber="puzzleNumber" class="help_modal_new" @closeModal="closeModal" @helpTriggered="helpTriggered"/>
+        </transition>
     </div>
 </template>
 
@@ -46,6 +49,7 @@
 name: 'Security'
 import axios from 'axios'
 import Header from './Header.vue';
+import HelpModal from './HelpModal.vue';
 
 let teamSetup, codeResponse, playerIndex, player_count, player_matrix, newQuestionShowned_temp, getStatusInterval;
 var correctSound = new Audio('https://www.freesoundslibrary.com/wp-content/uploads/2018/03/right-answer-ding-ding-sound-effect.mp3');
@@ -78,12 +82,16 @@ export default {
                                     // alert(playerIndex);
                                 }
                             }
-                             axios.post('api/game/get_player_matrix',{
-                                player_index: playerIndex,
-                                player_count: player_count
-                                }).then(response => {
                                     // console.log(response.data['player_matrix'])
-                                    player_matrix = response.data['player_matrix'];
+                                    if(playerIndex%2 == 1){
+                                        player_matrix = 'false,true,false,true,true,true,false,false,false,false';
+                                    }
+                                    else{
+                                        player_matrix = 'true,false,true,false,false,false,true,true,false,false';
+                                    }
+
+
+                                    // player_matrix = response.data['player_matrix'];
                                     newQuestionShowned_temp = player_matrix.split(',');
                                                          
                                         let newQuestionShowned = newQuestionShowned_temp.map(function (x){
@@ -96,8 +104,15 @@ export default {
                                         });
                                         
                                         console.log(newQuestionShowned);
+                                        
+                                        let video_matrix = '';
+                                        if(playerIndex%2 == 1){
+                                            video_matrix = 'false,true,false,true,true,false,false,true,false,true';
+                                        }
+                                        else{
+                                            video_matrix = 'true,false,true,false,false,true,true,false,true,false';
+                                        }
 
-                                        let video_matrix = response.data['video_matrix'];
                                         let newVideoShowned_temp = video_matrix.split(',');
 
                                         let newVideoShowned = newVideoShowned_temp.map(function (x){
@@ -133,17 +148,20 @@ export default {
                                         this.questions = newQuestions;
                                         this.vids =newVids; 
                                         
-             getStatusInterval = setInterval(() => this.getStatus(), 2000);
-                                });
+             getStatusInterval = setInterval(() => this.getStatus(), 3000);
+                                
 
                         });
 
    
     },
     methods:{
+        closeModal(){
+            this.helpShowed = false;
+        },
          helpTriggered(){
               this.$swal({
-                        title:'Are you sure you want to call for help?',
+                        title:'ゲームマスターを呼びますか？<br/>Are you sure you want to call a gamemaster?',
                         // icon:'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
@@ -159,7 +177,7 @@ export default {
                                     puzzle_number: this.puzzleNumber
                                 }).then(response => {
                                     this.$swal({
-                                            title:'A facilitator will come for help.',
+                                            title:'ゲームマスターが参ります。<br/>A gamemaster will come for help.',
                                             icon:'success'}).then(response => {
                                                 
                                             });
@@ -255,6 +273,7 @@ export default {
     data(){
         return{
             timeisPaused: false,
+            helpShowed: false,
             vids: [
                 {vidName: 'MV_1.mp4', isShowned: false },
                 {vidName: 'MV_2.mp4', isShowned: false },
@@ -270,7 +289,7 @@ export default {
             questions:[
                 {
                     questionDetails: `Find a person who knocks 4 times. What are they holding?`,
-                    japaneseDetails: `4回ノックしている人物を探せ。その人物が持っているのは？`
+                    japaneseDetails: `4回ノックしている人物を探せ。\nその人物が持っているのは？`
                     , inputName: 'input5'
                     ,isShowned: false
                     , answer:'DUCK'
@@ -301,7 +320,7 @@ export default {
                 
                 {
                     questionDetails: 'Find a nanny. How many dots are on the suitcase?',
-                    japaneseDetails: `エプロンを着けた人物を探せ。スーツケースにはいくつの点がある？`
+                    japaneseDetails: `エプロンを着けた人物を探せ。\nスーツケースにはいくつの点がある？`
                     , inputName: 'input8'
                     ,isShowned: false
                     , answer:'NINE'
@@ -331,7 +350,7 @@ export default {
                 },
                 {
                     questionDetails: 'Find a boxer. What hand gesture are they making?',
-                    japaneseDetails: `ボクサーを探せ。その人物は何のハンドサインをしている？`
+                    japaneseDetails: `ボクサーを探せ。\nその人物は何のハンドサインをしている？`
                     , inputName: 'input6'
                     ,isShowned: false
                     , answer:'OKAY'
@@ -361,7 +380,7 @@ export default {
                 },
                 {
                     questionDetails: `Find a person holding a dictionary. What do they put on their face?`,
-                    japaneseDetails: `辞書を持っている人物を探せ。その人物の顔にあるものは？`
+                    japaneseDetails: `辞書を持っている人物を探せ。\nその人物の顔にあるものは？`
                     , inputName: 'input2'
                     ,isShowned: false
                     , answer:'GLASSES'
@@ -391,37 +410,37 @@ export default {
                 },
                 {
                     questionDetails: 'Find a delivery guy. What is the name of the pizza shop?',
-                    japaneseDetails: `配達人を探せ。その人物が働くピザ屋の名前は？`
+                    japaneseDetails: `配達人を探せ。\nその人物が働くピザ屋の名前は？`
                     , inputName: 'input4'
                     ,isShowned: false
                     , answer:'OLIVER'
                     , id: 2
                     , dummies:[
                         {
-                        text: 'EGGERS',
+                        text: 'ANGELO',
                         isCorrect: false
                         },
                         {
-                        text: 'IRONWOOD',
+                        text: 'EMILIO',
+                        isCorrect: false
+                        },
+                        {
+                        text: 'HERVE',
+                        isCorrect: true
+                        },
+                        {
+                        text: 'ISABEL',
                         isCorrect: false
                         },
                         {
                         text: 'OLIVER',
                         isCorrect: true
                         },
-                        {
-                        text: 'ANCHIOVE',
-                        isCorrect: false
-                        },
-                        {
-                        text: 'YELLOWBIRD',
-                        isCorrect: false
-                        },
                     ]
                 },
                 {
                     questionDetails: 'Find a Ninja. What object is he holding?',
-                    japaneseDetails: `忍者を探せ。その人物が手に持っているものは？`
+                    japaneseDetails: `忍者を探せ。\nその人物が手に持っているものは？`
                     , inputName: 'input3'
                     ,isShowned: false
                     , answer:'CAMERA'
@@ -451,7 +470,7 @@ export default {
                 },
                 {
                     questionDetails: 'Find a cleaner. What are they eating?',
-                    japaneseDetails: `清掃員を探せ。その人物が食べているものは？`
+                    japaneseDetails: `清掃員を探せ。\nその人物が食べているものは？`
                     , inputName: 'input1'
                     , isShowned: false
                     , answer:'ICE CREAM'
@@ -460,7 +479,7 @@ export default {
                         {
                         text: 'ONIGIRI',
                         isCorrect: false
-                        },
+                        }, 
                         {
                         text: 'CAKE',
                         isCorrect: false
@@ -481,7 +500,7 @@ export default {
                 },
                 {
                     questionDetails: 'Find a person with a picnic basket. What fruit do they have?',
-                    japaneseDetails: `ピクニックバスケットを持っている人物を探せ。その人物が持っているフルーツは？`
+                    japaneseDetails: `ピクニックバスケットを持っている人物を探せ。\nその人物が持っているフルーツは？`
                     , inputName: 'input7'
                     ,isShowned: false
                     , answer:'LEMON'
@@ -513,22 +532,33 @@ export default {
         }
     },
     components: {
-                Header
+                Header,
+                HelpModal
     }
 }
 </script>
 
 <style scoped>
-.videohidden{
-    display: none !important;
-}
+
+    .vue3video{
+        border-radius: 10px !important;
+    }
+
+    .videohidden{
+        display: none !important;
+    }
+
   .main{
         display: flex;
         position: relative;
         flex-direction: column;
         height: 100%;
-        width: 100%;
         color: white;
+    }
+
+    .header2{
+        display: flex;
+        justify-content: center;
     }
 
 .visitorlogHolder{
@@ -548,8 +578,8 @@ export default {
 .mainContent{
     display: flex;
     flex-wrap: wrap;
-    width: 100%;
-    margin-top: 2%;
+    flex-direction: row;
+        width: 100%;
 }
 
 .videoHolder{
@@ -559,9 +589,9 @@ export default {
     align-content: center;
     justify-content: center;
     gap: 10px;
-    width: 50%;
     margin-bottom: 10px;
-
+    flex-grow: 1;
+    width: 45vw;
 }
 
 .video{
@@ -570,7 +600,7 @@ export default {
     width: 300px;
     background-color: white;
     font-family: CA-Geheimagent;
-    font-size: 1.5rem;
+    font-size: 1.5vw;
     text-align: center;
     cursor: pointer;
 }
@@ -580,32 +610,35 @@ export default {
     flex-wrap: wrap;
     display: flex;
     flex-grow: 1;
-    justify-content: center;
+    justify-content: start;
     align-content: center;
     flex-direction: column;
-    width: 50%;
     gap: 10px;
+    width: 55vw;
+    flex-grow: 1;
 }
 
 .security_answer{
     display: flex;
     position: relative;
-    width: 90%;
+    width: 95%;
     height: auto;
-    gap: 20px;
+    gap: 10px;
 }
 
 .question{
-    border-radius: 2%;
+    border-radius: 5px;
     position: relative;
-    width: 90%;
+    width: 80%;
     height: auto;
     line-height: auto;
     background-color: black;
     font-family: CA-Geheimagent;
-    font-size: 1.5rem;
+    font-size: 1vw;
     text-align: center;
-    padding: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-weight: bold;
 }
 
 .dropAnswer{
@@ -613,7 +646,7 @@ export default {
     justify-content: end;
     align-content: center;
     position: relative;
-    width: 15%;
+    width: 20%;
     height: 50px;
     line-height: 50px;
     border-radius: 2%;
@@ -629,11 +662,12 @@ export default {
 
 .classified{
     background-color: red;
+    font-family: CA-Geheimagent;
     cursor:unset;
+    font-size: 2vw;
 }
 
 .submitHolder{
-    margin-top: 20px;
     display: flex;
     justify-content: center;
 }
@@ -645,19 +679,49 @@ export default {
     text-align: center;
     font-family: CA-Geheimagent;
     font-size: 1.5rem;
+    border-radius: 10px;
 }
 
     
 .float{
 	position:fixed;
-	width:120px;
-	height:120px;
+	width:80px;
+	height:80px;
 	border-radius:50px;
 	text-align:center;
-    z-index: 99999999;
-	bottom:15px;
-	right:15px;
+    z-index: 99;
+	bottom:10px;
+	right:10px;
 }
+
+.help_modal_new{
+    position: fixed;
+    height: 450px;
+    width: 310px;
+    background: #F6D74D;
+    border-radius: 20px;
+    bottom: 120px;
+    right: 90px;
+    z-index: 100;
+}
+
+
+.slide-fade-enter-active {
+ animation: bounce-in .3s reverse;
+}
+.slide-fade-leave-active {
+   animation: bounce-in .5s;
+}
+
+@keyframes bounce-in {
+    0%{ 
+        transform: translateY(-10px);
+    }
+    100%{
+        transform: translateY(10px);
+    }
+}
+
 
 
 </style>

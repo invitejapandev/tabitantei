@@ -145,11 +145,11 @@ let completedPuzzle = 0;
                             puzzle_number: SelectedpuzzleNumber
                         }).then(response => {
                             if(response){
-                                if(response.data['player_count'] == response.data['voted_count']){
-                                    let puz_num = response.data['puzzle_number'];
+                                if(response.data['puzzle_selected'] >0){
+                                    let puz_num = response.data['puzzle_selected'];
                                     clearInterval(getStatusInterval);
                                     this.$swal({
-                                            title:'Your team have comeup with a mission. You will now be redirected.',
+                                            title:'チームがミッションを選択しました。<br/>これから次のミッションエリアに転送されます。<br/>Your team has chosen a mission. You will now be redirected.',
                                             icon:'info'    
                                         }).then((result) =>{
                                             
@@ -182,32 +182,32 @@ let completedPuzzle = 0;
                 //  this.$router.push({ name: 'main.index' })
                 if(gameName == 'Tower View' && this.semaphore_solved == true){
                      this.$swal({
-                                                    title:'Your team cleared the '+gameName+' mission. Please select another mission.',
+                                                    title:'['+gameName+'] のミッションをクリアしました。次のミッションを選択してください。<br/>Your team cleared the '+gameName+' mission. Please select another mission.',
                                                     icon:'info'    
                                                             });
                 }
                 else if(gameName == 'Café la Parisienne' && this.cafe_solved == true){
                      this.$swal({
-                                                    title:'Your team cleared the '+gameName+' mission. Please select another mission.',
+                                                    title:'['+gameName+'] のミッションをクリアしました。次のミッションを選択してください。<br/>Your team cleared the '+gameName+' mission. Please select another mission.',
                                                     icon:'info'    
                                                             });
                 }
                 else if(gameName == 'Maison de Verre' && this.security_solved == true){
                      this.$swal({
-                                                    title:'Your team cleared the '+gameName+' mission. Please select another mission.',
+                                                    title:'['+gameName+'] のミッションをクリアしました。次のミッションを選択してください。<br/>Your team cleared the '+gameName+' mission. Please select another mission.',
                                                     icon:'info'    
                                                             });
                 }
                 else if(gameName == 'Graffiti Mural' && this.graffiti_solved == true){
                      this.$swal({
-                                                    title:'Your team cleared the '+gameName+' mission. Please select another mission.',
+                                                    title:'['+gameName+'] のミッションをクリアしました。次のミッションを選択してください。<br/>Your team cleared the '+gameName+' mission. Please select another mission.',
                                                     icon:'info'    
                                                             });
                 }
                 else{
                     this.$swal({
-                        title:'Are you sure want to select the '+gameName+' mission?',
-                        text: "Everyone will be redirected after confirmation.",
+                        title:'['+gameName+']のミッションを選択しますか？<br/>Are you sure want to select the '+gameName+' mission?',
+                        html: "確定後、全員が次のミッションエリアに転送されます。<br/>Everyone will be redirected after confirmation.",
                         // icon:'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
@@ -239,7 +239,7 @@ let completedPuzzle = 0;
                                     puzzle_number: SelectedpuzzleNumber
                                 }).then(response => {
                                     this.$swal({
-                                            title:'You have voted for a mission. The team should select the same mission to proceed.',
+                                            title:'ミッションを選択しました。（次へ進むには、2名以上が同じミッションを選択する必要があります。）<br/>You have voted for a mission. Minimum of two players should vote for the same mission.',
                                             icon:'info'    
                                         }).then((result) =>{});
                                     // console.log(response);

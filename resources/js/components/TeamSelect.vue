@@ -1,10 +1,10 @@
 <template>
     <div class="teamSelect">
         
-         <span class="choose_header">CHOOSE&nbsp;&nbsp;YOUR&nbsp;&nbsp;TEAM</span>
+         <span class="choose_header">Select team&nbsp;チームを選択してください</span>
         <div class="teamHolder">
-            <div :class="[ teamSelected==n ? 'selected' : '', 'teamButton']" :key="n" v-for="n in teamCount" @click="selectTeam(n)">
-                <Team :teamName="n" :selectedId=1 />
+            <div  :class="[ teamSelected==n ? 'selected' : '', 'teamButton']" :key="n" v-for="n in teamCount" @click="selectTeam(n)">
+                <Team style="color:white" :teamName="n" :selectedId=1 />
             </div>
         </div>
         
@@ -12,8 +12,6 @@
              <input v-model="nickName" autocomplete="off" id="1" type="text" placeholder="Nick Name" size="13" required hidden/>
              <a class="goButton" @click="submitTeam" hidden>GO! </a>
         </form>
-        
-         <img class="login-logo" src="../assets/green_logo.png" />
 
     </div>
     
@@ -86,24 +84,19 @@
                         playerTeam: teamSetup.playerTeam
                         }).then(response => {
                             // alert(response.data);
-                                if(response.data == 0){
-                                    this.$router.push({ name: 'intro_video.index' });
-                                }
-                                if(response.data == 1){
-                                    this.$router.push({ name: 'archive.index' });
-                                }
-                                if(response.data == 2){
-                                    this.$router.push({ name: 'main.piano' });
-                                }
-                                if(response.data == 3){
-                                    this.$router.push({ name: 'mayu_palais.index' });
-                                }
-                                if(response.data== 4){
-                                    this.$router.push({ name: 'tour.index' });
-                                }
-                                if(response.data >= 5){
-                                    this.$router.push({ name: 'paris.index' });
-                                }
+                                 if(response.data <3){
+                                                        this.$router.push({ name: 'welcome.index' });
+                                                    }
+                                 else if(response.data <6){
+                                     this.$router.push({ name: 'karuizawa.index' });
+                                 }
+                                    else if(response.data <9){
+                                     this.$router.push({ name: 'sendai.index' });
+                                 }
+                                    else if(response.data <=12){
+                                     this.$router.push({ name: 'asakusa.index' });
+                                 }
+                            //Create handling to redirect to specific puzzle.
                         });
                     }
                 }
@@ -121,13 +114,24 @@
                 this.teamSelected = n;
                 
                 this.$swal({
-                        title:'Are you sure want to select Team '+n+'?',
-                        text: "You might not be able to change team after this.",
-                        // icon:'warning',
+                        html:`<strong><h3>Select team チームを選択してください</h3></strong>
+                        <p>As you move through the game, it will be necessary to communicate with your teammates. Start now by confirming your team number with everyone.<br/>
+                        ゲームを進めるにあたって、チームメイトとのコミュニケーションが必要になってきます。まずは、ご自身のチーム名とプレイヤー番号をチームの皆さんと一緒に確認するところから始めましょう。</p>`,
                         showCancelButton: true,
+                        showClass: {
+                            popup: 'animate__animated animate__fadeInDown'
+                        },
+                        hideClass: {
+                            popup: 'animate__animated animate__fadeOutUp'
+                        },
+                        background: 'url(/images/book_bg.png)',
+                        width: 497,
+                        customClass: { popup:'swal-height',
+                        actions: 'action-class'},
                         confirmButtonColor: '#3085d6',
                         cancelButtonColor: '#d33',
-                        confirmButtonText: "Yes, let's Go!"
+                        confirmButtonText: "Ok",
+                        cancelButtonText: "Cancel 取り消す",
                     }).then((result) =>{
                        if (result.isConfirmed) {
                            let codeResponse = JSON.parse(localStorage.getItem('codeResponse'));
@@ -153,24 +157,23 @@
                                             playerTeam: this.teamSelected
                                             }).then(response => {
                                                 // alert(response.data);
-                                                    if(response.data == 0){
-                                                        this.$router.push({ name: 'intro_video.index' });
+                                                   if(response.data <3){
+                                                        this.$router.push({ name: 'welcome.index' });
                                                     }
-                                                    if(response.data == 1){
-                                                        this.$router.push({ name: 'archive.index' });
+                                                    else if(response.data <6){
+                                                        this.$router.push({ name: 'karuizawa.index' });
                                                     }
-                                                    if(response.data == 2){
-                                                        this.$router.push({ name: 'main.piano' });
+                                                    else if(response.data <9){
+                                                        this.$router.push({ name: 'sendai.index' });
                                                     }
-                                                    if(response.data == 3){
-                                                        this.$router.push({ name: 'mayu_palais.index' });
+                                                    else if(response.data <=12){
+                                                        this.$router.push({ name: 'asakusa.index' });
                                                     }
-                                                    if(response.data== 4){
-                                                        this.$router.push({ name: 'tour.index' });
+                                                    else{
+                                                        this.$router.push({ name: 'welcome.index' });
                                                     }
-                                                    if(response.data >= 5){
-                                                        this.$router.push({ name: 'paris.index' });
-                                                    }
+
+                                                //Create handling to be redirected to other puzzles.
                                             });
                                     }
                                     else{
@@ -233,9 +236,30 @@
         }
     }
 </script>
-
 <style scoped>
 
+.title-class{
+    font-size: 1999px;
+}
+
+.testingclass{
+    font-weight: bolder;
+    font-size: 1em;
+}
+
+.swal-height {
+  height: 399px;
+}
+
+.action-class{
+    position: fixed;
+    bottom: 8px;
+    right: 15px;
+}
+
+</style>
+
+<style scoped>
 
 
 
@@ -243,53 +267,64 @@
         position: relative;
         display:flex;
         flex-wrap: wrap;
-        flex-direction: row;
+        flex-direction: column;
         align-content: center;
-        justify-content: center;
-        width: 100%;
-        height: 100%;
+        justify-content: start;
+        align-items: center;
+        gap: 20px;
+    width: 100%;
+    height: 100%;
+        background-image: url('../assets/main_bg.jpg') !important;
+        background-size: cover;
+        background-repeat: no-repeat;
     }
 
-    .login-logo{
-        position: absolute;
-        top: 20%;
-        width: 100%;
-        max-width: 708px;
-        z-index: 1;
-    }
 
-    .choose_header{
-        position: absolute;
-        font-size: 7vw;
+     .choose_header{
+         margin-top: 50px;
+        font-size: 3vw;
+        text-align: center;
         top:  3%;
-        color: white;
+        color: black;
         font-weight: regular;
-        font-family: CA-Geheimagent;
-        letter-spacing: 7px;
+    font-family: 'Covered By Your Grace', cursive;
+        /* letter-spacing: 7px; */
+        z-index: 2;
     }
 
 
 
     .teamHolder{
+        width: 80%;
         z-index: 2;
         display:flex;
         flex-wrap: wrap;
-        align-content: center;
+        margin-top: 20px;
+        align-content: start;
         justify-content: center;
-        row-gap: 5rem;
-        column-gap: 4rem;
+        /* row-gap: 1rem;
+        column-gap: 1rem; */
+        flex-grow: 1;
     }
     
+
+    button{
+        color: white !important;
+    }
+
 .teamButton{
+    text-align: center;
+    width: 35%;
     margin-left: 20px;
-    padding: 1.5rem;
+    padding: 1rem;
     padding-right: 3rem;
     padding-left: 3rem;
-    font-size: 2rem;
+    font-size: 1.5vw;
     margin: 10px;
     letter-spacing: 9px;
-    background-color: rgba(255,255,255,0.65);
-    font-family: CA-Geheimagent;
+    font-weight: bold ;
+    color: white !important;
+    background-color:#12cdd4;
      cursor: pointer;
 }
 
@@ -327,24 +362,7 @@ form{
 
 
 
-@media only screen and (max-width: 1200px) {
-    .teamButton{
-        font-size: 1rem;
-    }
-
-    
-    .teamHolder{
-        z-index: 2;
-        display:flex;
-        flex-wrap: wrap;
-        align-content: center;
-        justify-content: center;
-        row-gap: 1rem;
-        column-gap: 4rem;
-        margin-top: 0%
-    }
-}
-
+/* 
 
 @media only screen and (max-width: 600px) {
     .teamButton{
@@ -360,7 +378,7 @@ form{
         justify-content: center;
         row-gap: 1rem;
         column-gap: 4rem;
-        margin-top: -40%
+        margin-top: 300px;
     }
 }
 
@@ -385,7 +403,7 @@ form{
         justify-content: center;
         row-gap: 1rem;
         column-gap: 4rem;
-        margin-top: -70%
+        margin-top: 300px;
     }
-}
+} */
 </style>
