@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::get('/games', [GameController::class, 'index']);
+Route::get('/get_game_event_details', [GameController::class, 'get_game_event_details']);
 Route::prefix('/game')->group(function (){
     Route::post('/validate_key', [GameController::class, 'validate_key']);
     Route::post('/store_player', [GameController::class, 'store_player']);
@@ -50,4 +51,9 @@ Route::prefix('/game')->group(function (){
     Route::post('/get_reveal_log', [GameController::class, 'get_reveal_log']);
     Route::post('/store_reveal_log', [GameController::class, 'store_reveal_log']);
     Route::post('/store_hint_log', [GameController::class, 'store_hint_log']);
+    Route::post('/store_hint_log', [GameController::class, 'store_hint_log']);
+    Route::get('/get_game_events', [GameController::class, 'get_game_events']);
+    Route::get('/get_game_players', [GameController::class, 'get_game_players']);
+    Route::get('/get_current_game_players', [GameController::class, 'get_current_game_players']);
+    Route::get('/get_current_status', [GameController::class, 'get_current_status']);
 });

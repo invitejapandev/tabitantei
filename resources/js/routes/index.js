@@ -30,6 +30,8 @@ import GameOver from '../components/GameOver'
 import Welcome from '../components/Welcome'
 import PuzzleCompletion from '../components/PuzzleCompletion'
 import PuzzleIndex from '../components/Puzzle'
+import Admin from '../components/Admin'
+import Dashboard from '../components/Dashboard'
 
 const routes = [
     {
@@ -599,7 +601,18 @@ const routes = [
             elementVideo:['/images/congrats_video.mp4'],
             beginURL: ''
         }
+    },
+    {
+        path:'/dashboard',
+        name:'dashboard.index',
+        component:Dashboard
+    },
+    {
+        path:'/admin',
+        name:'admin.index',
+        component:Admin
     }
+       
 ];
 
 export default createRouter({

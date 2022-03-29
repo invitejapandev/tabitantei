@@ -8,6 +8,10 @@ import VueEasyLightbox from 'vue-easy-lightbox'
 import Vue3VideoPlayer from '@cloudgeek/vue3-video-player'
 import '@cloudgeek/vue3-video-player/dist/vue3-video-player.css'
 import fabric from 'fabric'
+import BootstrapVue3 from 'bootstrap-vue-3'
+
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue-3/dist/bootstrap-vue-3.css'
 
 import VueTour from 'v3-tour'
 
@@ -40,6 +44,6 @@ createApp({
         MainIndex,
         LoginIndex
     }
-}).use(router).use(VueSweetalert2).use(fabric).use(Vue3VideoPlayer, {
+}).use(BootstrapVue3).use(router).use(VueSweetalert2).use(fabric).use(Vue3VideoPlayer, {
     lang: 'jp'
   }).use(VueEasyLightbox).use(VueTour).directive("click-outside", clickOutside).mount('#app')

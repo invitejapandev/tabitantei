@@ -191,47 +191,17 @@ class GameController extends Controller
 
 
     public function get_status_piano(Request $request){
-        $playerTeam = $request->playerTeam;
-        $event_id = $request->game_event_id;
-        $player_name = $request->player_name;
-        $player_answer = $request->player_selected_color;
-        $puzzle_progress = $request->puzzle_number;
-        // return $player_answer['selected_color'];
-        if($player_answer){
-            $players = GamePlayer::where('teamNumber', $playerTeam)->where('game_event_id', $event_id)->get();
-            $player_count = count($players);
-
-            $pianoAnswer= PianoAnswer::where('game_event_id', $event_id)->where( 'team_number', $playerTeam)->where('selected_color', 'like' ,'%'.$player_answer.'%')->get();
-            // $playerNotAnswer = GamePlayer::where('teamNumber', $playerTeam)->where('game_event_id', $event_id)->whereNotIn('nickName',PianoAnswer::select('player_name')->where('game_event_id', $event_id)->where( 'team_number', $playerTeam)->get() )->get();
-            // $answerList= PianoAnswer::where('game_event_id', $event_id)->where( 'team_number', $playerTeam)->orderBy('player_name')->get();
-
-            $gameStatus= GameProgress::where('game_event_id', $event_id)->where( 'teamNumber', $playerTeam)->where( 'puzzle_progress', $puzzle_progress)->get();
-            $gameStatusData;
-            if(count($gameStatus) > 0){
-                 $gameStatusData = $gameStatus;
-            }
-            else{
-                $gameStatusData = "No game data yet";
-            }
+        $gameStatus= TeamMiro::selectRaw('distinct team_number
+        , (select count(distinct puzzle_progress) from game_progress where game_progress.teamNumber=team_miros.team_number group by game_progress.teamNumber) as GameProgress
+        , ((select TIMESTAMPDIFF( SECOND,(select created_at from game_times where team_number = team_miros.team_number order by id desc limit 1), MAX(created_at) ) as Minutes_played from game_progress where teamNumber =  team_miros.team_number group by teamNumber)+(SELECT count(DISTINCT puzzle_number)*180 FROM hint_logs where hint_logs.team_number =team_miros.team_number)) as TotalSecond
+        ')->orderBy('GameProgress','DESC')->orderBy('TotalSecond','asc')->take(5)->get();
         
-        // return "No game status found.";
-            $playerAnswerList = GamePlayer::leftJoin('piano_answers', 'game_players.nickName', '=', 'piano_answers.player_name')->select('game_players.nickName', 'piano_answers.selected_color')->where( 'game_players.teamNumber', $playerTeam)->orderBy('game_players.nickName')->get();
-            if($pianoAnswer){
-                // return count($pianoAnswer);
-                return $data = array(
-                    'answered_player' => count($pianoAnswer),
-                    'player_count' => $player_count,
-                    'selected_color' => $player_answer,
-                    'pianoanswers' => $pianoAnswer,
-                    'playerAnswerList' => $playerAnswerList,
-                    'gameStatus' =>$gameStatusData
-                );
-            }
-            else{
-                return "No answers yet";
-            }
+
+        if(count($gameStatus) > 0){
+            return $gameStatus;
         }
-        return "No answers yet";
+        
+        return null;
         // return "No game status found.";
     }
 
@@ -503,7 +473,7 @@ class GameController extends Controller
 
     public function update_help(Request $request){
         $id = $request->id;
-        $gameHelp = GameHelp::where('id', $id)->update(['isDone' => 1]);
+        $gameHelp = GameHelp::where('team_number', $id)->update(['isDone' => 1]);
         return true;
     }
 
@@ -588,6 +558,52 @@ class GameController extends Controller
         $newPlayerRevealLog->save();
         return $newPlayerRevealLog;
     }
+
+    public function get_game_event_details(){
+        $currentGameEvent = GameEvent::where('game_events.Status', 1)->join('clients', 'clients.id', '=', 'game_events.client_id')->first();
+        return $currentGameEvent;
+    }
     
+    public function get_game_events(){
+        $gameEventList = GameEvent::get();
+        return $gameEventList;
+    }
+
+    public function get_game_players(){
+        $gamePlayerList = GamePlayer::get();
+        return $gamePlayerList;
+    }
+
+    public function get_current_game_players(){
+        $gamePlayerList = GamePlayer::where('game_event_id',
+        function($query){
+            $query->selectRaw('id')
+            ->from('game_events')
+            ->whereRaw('game_players.game_event_id = game_events.id');
+
+        })->get();
+        return $gamePlayerList;
+    }
+    
+    public function get_current_status(Request $request){
+
+        $gameStatus= TeamMiro::selectRaw('distinct team_number
+        , (select count(id) from game_players where game_players.teamNumber = team_miros.team_number) as player_count
+        , (select puzzle_progress from game_progress where game_progress.teamNumber = team_miros.team_number order by id desc limit 1) as puzzle_progress
+        , (select  puzzle_number from team_missions  where team_missions.team_number = team_miros.team_number and is_commenced=0 group by puzzle_number order by count(id) desc limit 1 ) as select_paris
+        , (select count(id) from game_helps where game_helps.team_number = team_miros.team_number and game_helps.isDone =0) as HelpCount
+        , (select count(id) from game_helps where game_helps.team_number = team_miros.team_number) as HelpCountTotal
+        , (select count(distinct puzzle_progress) from game_progress where game_progress.teamNumber=team_miros.team_number group by game_progress.teamNumber) as GameProgress
+        , (select created_at from game_progress where game_progress.teamNumber=team_miros.team_number order by id desc limit 1) as LatestTime
+        ,(select TIMESTAMPDIFF( SECOND,(select created_at from game_times where team_number = team_miros.team_number order by id desc limit 1), MAX(created_at) ) as Minutes_played from game_progress where teamNumber =  team_miros.team_number group by teamNumber) as TotalSecond
+        ')->get();
+        
+
+        if(count($gameStatus) > 0){
+            return $gameStatus;
+        }
+        
+        return null;
+    }
     
 }

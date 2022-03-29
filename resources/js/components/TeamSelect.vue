@@ -157,6 +157,19 @@
                                             playerTeam: this.teamSelected
                                             }).then(response => {
                                                 // alert(response.data);
+                                                axios.post('api/game/store_game_time',{
+                                                        game_event_id: codeResponse.id,
+                                                        team_number: this.teamSelected,
+                                                        puzzle_number: 1,
+                                                        game_time: 0
+                                                    }).then(response => {
+                                                        if(response){
+                                                            // alert('saved!')
+                                                        }
+                                                        else{
+                                                            // alert('error!');
+                                                        }
+                                                    });
                                                    if(response.data <3){
                                                         this.$router.push({ name: 'welcome.index' });
                                                     }
