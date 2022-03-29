@@ -205,6 +205,21 @@ class GameController extends Controller
         // return "No game status found.";
     }
 
+    public function get_overall_result(Request $request){
+        $gameStatus= TeamMiro::selectRaw('distinct team_number
+        , (select count(distinct puzzle_progress) from game_progress where game_progress.teamNumber=team_miros.team_number group by game_progress.teamNumber) as GameProgress
+        , ((select TIMESTAMPDIFF( SECOND,(select created_at from game_times where team_number = team_miros.team_number order by id desc limit 1), MAX(created_at) ) as Minutes_played from game_progress where teamNumber =  team_miros.team_number group by teamNumber)+(SELECT count(DISTINCT puzzle_number)*180 FROM hint_logs where hint_logs.team_number =team_miros.team_number)) as TotalSecond
+        ')->orderBy('GameProgress','DESC')->orderBy('TotalSecond','asc')->take(12)->get();
+        
+
+        if(count($gameStatus) > 0){
+            return $gameStatus;
+        }
+        
+        return null;
+        // return "No game status found.";
+    }
+
     public function get_status_map(Request $request){
         $playerTeam = $request->playerTeam;
         $event_id = $request->game_event_id;

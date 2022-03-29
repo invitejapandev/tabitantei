@@ -205,7 +205,14 @@
               <div class="card-subtitle" v-if="resultGenerated">Game Result</div>
             </div>
             <div class="p-2 bd-highlight">
-              <a class="btn btn-primary" @click="downloadCSVData" v-if="resultGenerated">Export Overall Result</a>&nbsp;
+              <download-csv
+              class="btn btn-primary"
+              v-if="resultGenerated"
+              :data="winnerListCSV"
+              :name="info.company_name + ' Game Result.csv'">
+              Export Overall Result
+              </download-csv>&nbsp;
+              <!-- <a class="btn btn-primary" @click="downloadCSVData" v-if="resultGenerated">Export Overall Result</a>&nbsp; -->
               <a @click="closeResult" class="btn btn-primary" v-if="resultGenerated">Back</a>
               <a class="btn btn-success" @click="triggerWinnerResult" href="#" role="button" v-if="resultGenerated==false">Generate
                 <svg
@@ -324,6 +331,7 @@
 
 <script>
 import axios from "axios";
+import JsonCSV from 'vue-json-csv';
 
 let getStatusInterval;
 
@@ -342,8 +350,12 @@ export default {
       currentPlayers: null,
       teamList: null,
       resultGenerated: false,
-      winnerList: null
+      winnerList: null,
+      winnerListCSV: null
     };
+  },
+  components:{
+    downloadCsv: JsonCSV
   },
   methods:{
             getStatus(){
@@ -354,9 +366,6 @@ export default {
                                     }
                                 });
             },
-            downloadCSVData(){
-    
-},
             closeResult(){
                 this.resultGenerated = false;
             },
@@ -388,6 +397,28 @@ export default {
                                 }).then(response => {
                                     if(response){
                                         this.winnerList = response.data;
+                                    }
+                                });
+
+                axios.get('api/game/get_overall_result',{
+                                }).then(response => {
+                                    if(response){
+                                      let tempWinnerList = [];
+                                      let i = 1;
+                                       response.data.forEach((item) => {
+                                            // console.log(item.team_number);
+                                            let winnerData = {
+                                              "Ranking": i,
+                                              "Team Number": item.team_number,
+                                              "Time": this.getResultTime(item.TotalSecond),
+                                              "Puzzle/s Solved": item.GameProgress
+                                            }
+                                            tempWinnerList.push(winnerData)
+                                            i = i+1;
+                                          });
+                                        
+                                        
+                                          this.winnerListCSV = tempWinnerList;
                                     }
                                 });
 
