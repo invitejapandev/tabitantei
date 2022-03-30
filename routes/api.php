@@ -57,4 +57,6 @@ Route::prefix('/game')->group(function (){
     Route::get('/get_current_game_players', [GameController::class, 'get_current_game_players']);
     Route::get('/get_current_status', [GameController::class, 'get_current_status']);
     Route::get('/get_overall_result', [GameController::class, 'get_overall_result']);
+    Route::post('/store_event', [GameController::class, 'store_event']);
+    Route::post('/toggle_event', [GameController::class, 'toggle_event']);
 });

@@ -6,6 +6,7 @@
         /></a>
         <div class="navbar-nav ms-auto mb-2 mb-lg-0" id="navbarNavAltMarkup">
           <div class="navbar-nav">
+            <a class="nav-link" aria-current="page" href="#">Dashboard</a>
             <a class="nav-link" aria-current="page" href="#">Events</a>
             <a class="nav-link" aria-current="page" href="#">Settings</a>
             <a class="nav-link" aria-current="page" href="#">Logout</a>
@@ -18,7 +19,7 @@
 <script>
 export default {
     methods:{
-        
+
     }
 }
 </script>

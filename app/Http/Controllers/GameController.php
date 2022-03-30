@@ -620,5 +620,61 @@ class GameController extends Controller
         
         return null;
     }
+
+    public function store_event(Request $request){
+        
+        $gameCodeCount = GameEvent::where('game_code', $request->game_code)->count();
+        if($gameCodeCount>0){
+            return 2;
+        }
+        else{
+            $event = new GameEvent ([
+                'company_name' => $request->company_name,
+                'team_count' => $request->team_count,
+                'player_count' => $request->player_count,
+                'game_code' => $request->game_code,
+                'event_date' => $request->event_date,
+                'Status' => 0,
+                'additional_details' => $request->additional_details,
+                'player_count' => $request->player_count
+            ]);
+            
+            try{
+                $event->save();
+                return 1;
+            }
+            catch(\Exception $e){
+                return $e;
+            }
+        }
+        
+    }
+
+    public function toggle_event(Request $request){
+
+        $event_id = $request->event_id;
+        $Status = $request->Status;
+        if($event_id > 0){
+            $gameEvent = GameEvent::where('id', $event_id)->first();
+
+            $newArray = array(
+                'Status' => $Status
+            );
+
+            try{
+                $gameEvent->update($newArray);
+                return true;
+            }
+            catch(\Exception $e){
+                return $e;
+            }
+        }
+        else{
+            return 0;
+        }
+
+    }
+
+
     
 }
