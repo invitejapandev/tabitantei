@@ -32,6 +32,7 @@ import PuzzleCompletion from '../components/PuzzleCompletion'
 import PuzzleIndex from '../components/Puzzle'
 import Admin from '../components/Admin'
 import Dashboard from '../components/Dashboard'
+import Event from '../components/Event'
 
 const routes = [
     {
@@ -611,6 +612,11 @@ const routes = [
         path:'/admin',
         name:'admin.index',
         component:Admin
+    },
+    {
+        path:'/events',
+        name:'events.index',
+        component:Event
     }
        
 ];

@@ -16,7 +16,9 @@ class GameEvent extends Authenticatable
         'team_count',
         'game_code',
         'Status',
-        'event_date'
+        'event_date',
+        'company_name',
+        'additional_details'
     ];
 
 }

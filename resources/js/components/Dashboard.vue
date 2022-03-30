@@ -1,20 +1,6 @@
 <template>
   <div class="contianer-fluid pt3 mb-3">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container-fluid">
-        <a class="navbar-brand" style="padding-left: 5px" href="#">
-          <img src="/images/tabt_logo.png" height="70" alt=""
-        /></a>
-        <div class="navbar-nav ms-auto mb-2 mb-lg-0" id="navbarNavAltMarkup">
-          <div class="navbar-nav">
-            <a class="nav-link" aria-current="page" href="#">Events</a>
-            <a class="nav-link" aria-current="page" href="#">Clients</a>
-            <a class="nav-link" aria-current="page" href="#">Settings</a>
-            <a class="nav-link" aria-current="page" href="#">Logout</a>
-          </div>
-        </div>
-      </div>
-    </nav>
+    <Navigation />
     <div class="container-fluid px-5 pt-3" style="padding-bottom: 20px;">
       <div class="row justify-content-between align-items-center mb-3">
         <div class="col-12">
@@ -332,6 +318,7 @@
 <script>
 import axios from "axios";
 import JsonCSV from 'vue-json-csv';
+import Navigation from './Nav.vue';
 
 let getStatusInterval;
 
@@ -355,7 +342,8 @@ export default {
     };
   },
   components:{
-    downloadCsv: JsonCSV
+    downloadCsv: JsonCSV,
+    Navigation
   },
   methods:{
             getStatus(){

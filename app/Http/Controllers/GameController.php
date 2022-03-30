@@ -575,7 +575,7 @@ class GameController extends Controller
     }
 
     public function get_game_event_details(){
-        $currentGameEvent = GameEvent::where('game_events.Status', 1)->join('clients', 'clients.id', '=', 'game_events.client_id')->first();
+        $currentGameEvent = GameEvent::where('game_events.Status', 1)->first();
         return $currentGameEvent;
     }
     
