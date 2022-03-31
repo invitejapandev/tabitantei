@@ -82,7 +82,7 @@ export default {
         // this.$router.push({ name: 'dashboard.index' });
         this.$swal({
                 title:
-                  "Username and Password is valid. You will not be redirected.",
+                  "Username and Password is valid. You will now be redirected.",
                 icon: "success",
               }).then((response) => {
                 this.$router.push({ name: 'dashboard.index' });

@@ -8,16 +8,16 @@
                 <!-- <transition name="fade"> -->
                     <div class="cover_image_holder">
                         <video  :class="[show == false? 'appear':'','treasure_video']" @global-auto-play="autoPlay" @ended="onEnd()"  ref="videoRef" src="" ></video>
-                        <img  v-if="show" class="cover_image" src='/images/welcome_banner.jpeg' @click="hideImage" />   
+                        <img  v-if="show" class="cover_image" :src='welcome_image' @click="hideImage" />   
                         <button v-if="beginShow" class="begin_btn" @click="playVid()">Begin 次へ</button>
                     </div>
                 <!-- </transition> -->
          </div>
-         <!-- <div class="btnHolder">
+         <div v-if="btnHolderShow" class="btnHolder">
               <a v-if="prevShowned" class="btnReady" @click="prevImage()" >Prev</a>
               <a v-if="nextShowned" @click="nextImage()" class="btnReady">Next</a>
-              <a v-if="buttonShown" class="btnReady" @click="gameStart(this.puzzleNumber)">Proceed</a>
-         </div> -->
+              <a v-if="enterShowned" class="btnReady" @click="playVid()">Proceed</a>
+         </div>
          
         <!-- <a v-if="buttonVisible" class="btnReady" @click="gameStart">{{ buttonText }}</a> -->
     </div>
@@ -47,7 +47,10 @@ export default {
                 enterShowned: false,
                 currentPuzzle: 1,
                 buttonShown: false,
-                beginShow: true
+                beginShow: false,
+                clicker: 0,
+                btnHolderShow: true,
+                welcome_image: '/images/welcome_1.png'
             }
         },
         beforeCreate(){
@@ -78,9 +81,11 @@ export default {
             else{
                 this.enterShowned = true;
             }
+
         },
         watch: {
             imgIndex: function(val){
+                
                 if(this.imgIndex == 0 || this.imgIndex+1<this.elementImage.length){
                     this.nextShowned = true;
                 }
@@ -101,6 +106,8 @@ export default {
                 else{
                     this.prevShowned = false;
                 }
+
+                this.welcome_image = this.elementImage[val];
             }
         },
         methods:{
@@ -110,12 +117,16 @@ export default {
                 this.beginShow = true;
             },
             hideImage(){
-                if(this.show ==true){
-                    this.show = false;
-                    this.playVid();
+                // if(this.show ==true){
+                //     this.show = false;
+                //     this.playVid();
+                // }
+                if(this.clicker == 0){
+                    this.welcome_image = '/images/welcome_2.png';
                 }
             },
             playVid(){
+                this.btnHolderShow = false;
                 if(this.show == true){
                     this.show=false;
                     this.beginShow=false;
@@ -217,11 +228,13 @@ export default {
     }
 
     .cover_image{
-        height: 85vh;
+        height: 540px;
+        width: 960px;
+        object-fit: cover;
     }
 
     .begin_btn{
-        height: 39px;
+       height: 55px;
         font-family: 'Covered By Your Grace', cursive;
         color: white;
         background-color: #12cdd4;
@@ -229,7 +242,7 @@ export default {
         border-radius: 5px;
         cursor: pointer;
         font-weight: bold;
-        font-size: 1.2em;
+        font-size: 2em;
         padding-left: 5px !important;
         padding-right: 5px;
         padding-top: 5px;
@@ -269,18 +282,24 @@ export default {
         justify-content: space-between;
         gap: 20px;
         position: fixed;
-        bottom: 5%;
+        bottom: 10%;
+        z-index: 100;
     }
 
     .btnReady{
-        color:white;
-        font-size: 3vw;
-        border-style: solid;
-        border-radius: 10px;
-        padding: 10px;
+       height: 55px;
+        font-family: 'Covered By Your Grace', cursive;
+        color: white;
+        background-color: #12cdd4;
+        border: none;
+        border-radius: 5px;
         cursor: pointer;
-        font-weight: regular;
-        font-family: CA-Geheimagent;
+        font-weight: bold;
+        font-size: 2em;
+        padding-left: 5px !important;
+        padding-right: 5px;
+        padding-top: 5px;
+        padding-bottom: 5px;
     }
 
     @media (max-width: 700px) {

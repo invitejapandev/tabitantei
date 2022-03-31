@@ -109,6 +109,11 @@
         components:{
             Team
         },
+        mounted(){
+            axios.get("api/get_game_event_details")
+            .then((response) => (this.teamCount = response.data.team_count))
+            .catch((error) => console.log(error));
+        },
         methods:{
             selectTeam(n){
                 this.teamSelected = n;

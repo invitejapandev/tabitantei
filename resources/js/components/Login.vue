@@ -293,7 +293,7 @@ input{
     border: none;
     color:black;
     letter-spacing: 9px;
-    height: 120px;
+    height: 160px;
     width: 40%;
     max-width: 100%;
 }

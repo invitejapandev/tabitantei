@@ -32,9 +32,10 @@
                   <th style="width: 20%">Client</th>
                   <th style="width: 10%">Game Code</th>
                   <th style="width: 15%" scope="col">Date of Event</th>
-                  <th style="width: 5%">Number of Teams</th>
+                  <th style="width: 10%">Number of Teams</th>
+                  <th style="width: 10%">Number of Players</th>
                   <th style="width: 10%">Status</th>
-                  <th style="width: 20%">Action</th>
+                  <th style="width: 15%">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -43,12 +44,14 @@
                   <td>{{ item.game_code.toUpperCase() }}</td>
                   <td>{{ formatDate(item.event_date) }}</td>
                   <td>{{ item.team_count }}</td>
+                  <td>{{ item.player_count }}</td>
                   <td>{{ identifyStatus(item.event_date, item.Status) }}</td>
                   <td>
-                    <a v-if="item.Status != 2" href="#" @click.prevent="editEvent(item.id)"><span class="badge bg-primary">Edit</span></a>&nbsp;
+                    <a v-if="item.Status != 2" href="#" @click.prevent="editEvent(item.id, item.game_code, item.company_name, item.team_count, item.player_count, item.event_date, item.additional_details)"><span class="badge bg-primary">Edit</span></a>&nbsp;
                     <a v-if="item.Status != 2" href="#" @click.prevent="toggleEvent(item.id, 2)"><span class="badge bg-danger">Cancel</span></a>&nbsp;
+                    <a v-if="item.Status != 2" href="#" @click.prevent="resetEvent(item.id)"><span class="badge bg-warning" style="color:black;">Reset</span></a>&nbsp;
                     <a href="#" @click.prevent="toggleEvent(item.id, 1)"><span class="badge bg-success" v-if="item.Status == 0 && item.Status!= 2">Start</span></a>
-                    <a href="#" @click.prevent="toggleEvent(item.id, 0)"><span class="badge bg-secondary" v-if="item.Status == 1 && item.Status!= 2">Close</span></a>
+                    <a href="#" @click.prevent="toggleEvent(item.id, 0)"><span class="badge bg-secondary" v-if="item.Status == 1 && item.Status!= 2">Stop</span></a>
                   </td>
                 </tr>
               </tbody>
@@ -125,22 +128,92 @@ export default {
       additional_details: null,
       game_code:null,
       player_count: null,
-      events: null
+      events: null,
+      updateId: null,
     }
   },
   methods:{
+    resetEvent(ev_id){
+      axios.post('api/game/reset_event',{
+                                    event_id: ev_id
+                                }).then(response =>{
+                                  if(response.data==1){
+                                    //success
+                                    this.$swal.fire({
+                                          icon: 'success',
+                                          title: 'Success',
+                                          text: 'Reset successfully.'
+                                        }).then(result => {
+                                             axios.get('api/games').then(response => {
+                                            this.events = response.data
+                                          });
+                                        });
+                                  }
+                                  else{
+                                    //error
+                                     this.$swal.fire({
+                                          icon: 'error',
+                                          title: 'Ooops!',
+                                          text: 'Something went wrong. Please try again or contact your admin.'
+                                        });
+                                  }
+                                });
+    },
+    editEvent(event_id, event_game_code, event_company_name, event_team_count, event_player_count, new_event_date, event_additional_details){
+      let temp_date = new Date(new_event_date).toISOString();
+      // let event_date_final = temp_date..toISOString();
+        this.company_name  = event_company_name;
+        this.team_count = event_team_count;
+        this.player_count = event_player_count;
+        this.event_date = temp_date.substring(0,temp_date.length-1);
+        this.additional_details = event_additional_details;
+        this.updateId = event_id;
+        this.game_code = event_game_code;
+
+        this.hideTable = true;
+        setTimeout(() => {
+          this.openForm = true;
+        }, 1000);
+    },
     toggleEvent(ev_id, event_status){
-                  axios.post('api/game/toggle_event',{
+
+       this.$swal.fire({
+          title: 'Are you sure you want update the status of this event?',
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes'
+        }).then((result) => {
+          if (result.isConfirmed) {
+             axios.post('api/game/toggle_event',{
                                     event_id: ev_id,
                                     Status: event_status
                                 }).then(response =>{
                                   if(response.data==1){
                                     //success
+                                    this.$swal.fire({
+                                          icon: 'success',
+                                          title: 'Success',
+                                          text: 'Status successfully updated.'
+                                        }).then(result => {
+                                             axios.get('api/games').then(response => {
+                                            this.events = response.data
+                                          });
+                                        });
                                   }
                                   else{
                                     //error
+                                     this.$swal.fire({
+                                          icon: 'error',
+                                          title: 'Ooops!',
+                                          text: 'Something went wrong. Please try again or contact your admin.'
+                                        });
                                   }
                                 });
+          }
+        })
+                  
     },
     formatDate(event_date){
       let dt = new Date(event_date);
@@ -190,6 +263,13 @@ export default {
       }, 1000);
     },
     submitForm(){
+      let alert_message;
+      if(this.updateId >0){
+        alert_message = 'Event successfully updated.';
+      }
+      else{
+        alert_message = 'Event successfully added.';
+      }
       this.$swal.fire({
           title: 'Are you sure you want to submit this form?',
           icon: 'question',
@@ -205,7 +285,8 @@ export default {
                                     event_date: this.event_date,
                                     additional_details: this.additional_details,
                                     game_code: this.game_code,
-                                    player_count: this.player_count
+                                    player_count: this.player_count,
+                                    event_id: this.updateId
                                 }).then(response => {
                                   if(response){
                                     console.log(response.data)
@@ -213,8 +294,13 @@ export default {
                                       this.$swal.fire({
                                           icon: 'success',
                                           title: 'Success',
-                                          text: 'Event successfully added.'
+                                          text: alert_message
                                         }).then((result)=>{
+
+                                          axios.get('api/games').then(response => {
+                                            this.events = response.data
+                                          });
+
                                             this.openForm = false;
                                             setTimeout(() => {
                                               this.hideTable = false;

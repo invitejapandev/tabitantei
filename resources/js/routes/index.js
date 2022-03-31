@@ -517,7 +517,7 @@ const routes = [
             buttonVisible: true,
             puzzleNumber: 6,
             newLink: true,
-            elementImage: ['/images/msg_norm_5.png']
+            elementImage: ['/images/Welcome_1.png','/images/Welcome_2.png','/images/Welcome_3.png','/images/Welcome_4.png']
         }
     },
     {
