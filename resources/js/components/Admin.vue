@@ -66,8 +66,8 @@ export default {
   data() {
     return {
       username: 'admin',
-      // password: 'T@b!t@nt3!',
-      password: '1',
+      password: 'T@b!t@nt3!',
+      // password: '1',
       usernameInput: null,
       passwordInput: null,
       passwordError: false,

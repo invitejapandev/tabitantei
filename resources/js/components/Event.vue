@@ -134,6 +134,16 @@ export default {
   },
   methods:{
     resetEvent(ev_id){
+       this.$swal.fire({
+          title: 'Are you sure you want to reset this game?',
+          text: 'This cannot be undone.',
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes'
+        }).then((result) => {
+          if (result.isConfirmed) {
       axios.post('api/game/reset_event',{
                                     event_id: ev_id
                                 }).then(response =>{
@@ -158,6 +168,7 @@ export default {
                                         });
                                   }
                                 });
+          }});
     },
     editEvent(event_id, event_game_code, event_company_name, event_team_count, event_player_count, new_event_date, event_additional_details){
       let temp_date = new Date(new_event_date).toISOString();

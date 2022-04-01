@@ -50,7 +50,8 @@
                     />
                   </svg>
                   <div class="caption fw-500 me-2" v-if="events">
-                    {{ ((events.length - 1) / 1) * 100 }}%
+                    <!-- {{ ((events.length - 1) / 1) * 100 }}% -->
+                    0%
                   </div>
                   <div class="caption">from last year</div>
                 </div>
@@ -100,7 +101,8 @@
                     />
                   </svg>
                   <div class="caption fw-500 me-2" v-if="allPlayers">
-                    {{ ((allPlayers.length - 2) / 2) * 100 }}%
+                    <!-- {{ ((allPlayers.length - 2) / 2) * 100 }}% -->
+                    0%
                   </div>
                   <div class="caption">from last year</div>
                 </div>
@@ -197,7 +199,7 @@
           <div class="d-flex justify-content-between align-items-center">
             <div class="p-1">
               <h4 class="card-title text-white" v-if="info">
-                {{ info.company_name }}
+                {{ info.company_name }} - {{ info.game_code }}
               </h4>
               <div class="card-subtitle" v-if="resultGenerated == false">
                 Game Progress
