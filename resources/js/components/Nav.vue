@@ -30,6 +30,8 @@ export default {
                 this.$router.push({ name: "setting.index" });
             }
             else{
+
+                localStorage.setItem('isAuthenticated', JSON.stringify(false));
                 this.$router.push({ name: "admin.index" });
                 }
         }

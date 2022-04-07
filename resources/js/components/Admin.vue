@@ -63,6 +63,12 @@
 
 <script>
 export default {
+  beforeCreate(){
+        let isAuthenticated = JSON.parse(localStorage.getItem('isAuthenticated'));
+            if(isAuthenticated){
+                this.$router.push({ name: 'dashboard.index' });
+            }
+  },
   data() {
     return {
       username: 'admin',
@@ -85,6 +91,7 @@ export default {
                   "Username and Password is valid. You will now be redirected.",
                 icon: "success",
               }).then((response) => {
+                localStorage.setItem('isAuthenticated', JSON.stringify(true));
                 this.$router.push({ name: 'dashboard.index' });
               });
       }

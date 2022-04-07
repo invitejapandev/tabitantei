@@ -394,8 +394,10 @@
                     >
                   </td>
                   <td>
-                    <a v-if="item.HelpCount == 0" href="#" disabled
-                      ><span class="badge bg-secondary">No Action</span></a
+                    <a @click="redirectMIRO(item.team_number, item.puzzle_progress)"><span class="badge bg-primary">MIRO <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16">
+  <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/>
+  <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/>
+</svg></span></a
                     >
                     <a
                       v-if="item.HelpCount > 0"
@@ -450,6 +452,25 @@ export default {
     // }
   },
   methods: {
+    redirectMIRO(teamno, puzzleno){
+
+                let urlData;
+                let puzzno_final = puzzleno+1;
+
+
+                        axios.post('api/game/get_miro_link',{
+                        team_number: teamno,
+                        puzzle_number: puzzno_final
+                        }).then(response => {
+                           if(response.data){
+                               urlData = response.data;
+                                window.open(urlData);
+                           }
+                           else{
+
+                           }
+                        });
+            },
     getStatus() {
       if (this.info.id) {
         axios
@@ -565,7 +586,7 @@ export default {
         });
       } else {
         this.$swal({
-          title: "Data is not ready yet. Please try again.",
+          title: "Data is not ready yet. Please try again later.",
           icon: "info",
         }).then((response) => {});
       }
@@ -624,6 +645,12 @@ export default {
       // this.helpList[objIndex].isDone = 1;
     },
   },
+  beforeCreate(){
+     let isAuthenticated = JSON.parse(localStorage.getItem('isAuthenticated'));
+            if(!isAuthenticated){
+                this.$router.push({ name: 'admin.index' });
+            }
+  },
   mounted() {
     axios
       .get("api/get_game_event_details")
@@ -640,3 +667,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+a {
+  cursor: pointer;
+}
+</style>

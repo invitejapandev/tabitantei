@@ -110,6 +110,12 @@ import Navigation from './Nav.vue';
 let getStatusInterval;
 
 export default {
+  beforeCreate(){
+    let isAuthenticated = JSON.parse(localStorage.getItem('isAuthenticated'));
+            if(!isAuthenticated){
+                this.$router.push({ name: 'admin.index' });
+            }
+  },
   mounted(){
     // this.game_code='test22';
     this.game_code = Math.random().toString(36).slice(2).substring(0,5);
