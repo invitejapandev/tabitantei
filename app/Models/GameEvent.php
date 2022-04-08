@@ -19,7 +19,8 @@ class GameEvent extends Authenticatable
         'event_date',
         'company_name',
         'additional_details',
-        'player_count'
+        'player_count',
+        'time_limit'
     ];
 
 }

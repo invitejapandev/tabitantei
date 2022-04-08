@@ -202,7 +202,8 @@
                 {{ info.company_name }} - {{ info.game_code }}
               </h4>
               <div class="card-subtitle" v-if="resultGenerated == false">
-                Game Progress
+                <span v-if="!info"> No Active Game</span>
+                <span v-else>Game Progress</span>
               </div>
               <div class="card-subtitle" v-if="resultGenerated">
                 Game Result
@@ -229,7 +230,7 @@
                 @click="triggerWinnerResult"
                 href="#"
                 role="button"
-                v-if="resultGenerated == false"
+                v-if="resultGenerated == false && info"
                 >Generate
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -241,8 +242,11 @@
                 >
                   <path
                     d="M2.5.5A.5.5 0 0 1 3 0h10a.5.5 0 0 1 .5.5c0 .538-.012 1.05-.034 1.536a3 3 0 1 1-1.133 5.89c-.79 1.865-1.878 2.777-2.833 3.011v2.173l1.425.356c.194.048.377.135.537.255L13.3 15.1a.5.5 0 0 1-.3.9H3a.5.5 0 0 1-.3-.9l1.838-1.379c.16-.12.343-.207.537-.255L6.5 13.11v-2.173c-.955-.234-2.043-1.146-2.833-3.012a3 3 0 1 1-1.132-5.89A33.076 33.076 0 0 1 2.5.5zm.099 2.54a2 2 0 0 0 .72 3.935c-.333-1.05-.588-2.346-.72-3.935zm10.083 3.935a2 2 0 0 0 .72-3.935c-.133 1.59-.388 2.885-.72 3.935z"
-                  /></svg
-              ></a>
+                  /></svg></a
+              >&nbsp;
+              <a v-if="gameEnded==false" @click.prevent="endGame" class="btn btn-danger" href="#"
+                >End the Game</a
+              >
             </div>
           </div>
         </div>
@@ -394,11 +398,27 @@
                     >
                   </td>
                   <td>
-                    <a @click="redirectMIRO(item.team_number, item.puzzle_progress)"><span class="badge bg-primary">MIRO <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16">
-  <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/>
-  <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/>
-</svg></span></a
-                    >
+                    <a
+                      @click="
+                        redirectMIRO(item.team_number, item.puzzle_progress)
+                      "
+                      ><span class="badge bg-primary"
+                        >MIRO
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          class="bi bi-link-45deg"
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"
+                          />
+                          <path
+                            d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"
+                          /></svg></span
+                    ></a>
                     <a
                       v-if="item.HelpCount > 0"
                       @click="helpStatusTriggered(item.team_number)"
@@ -440,6 +460,7 @@ export default {
       resultGenerated: false,
       winnerList: null,
       winnerListCSV: null,
+      gameEnded: false
     };
   },
   components: {
@@ -447,30 +468,88 @@ export default {
     Navigation,
   },
   watch: {
-    // info: function (val) {
-    //   this.src = val;
-    // }
+    info: function (val) {
+      if(!val.Status){
+        this.gameEnded = true;
+      }
+    }
   },
   methods: {
-    redirectMIRO(teamno, puzzleno){
+    endGame() {
+      this.$swal
+        .fire({
+          title: "Are you sure you want to end this game?",
+          text: "This cannot be undone. Enter the admin password to continue.",
+          icon: "warning",
+          input: "password",
+          inputAttributes: {
+            autocapitalize: "off",
+          },
+          showCancelButton: true,
+          confirmButtonText: "Submit",
+          showLoaderOnConfirm: true,
+          preConfirm: (login) => {
+            if(login == "T@b!t@nt3!"){
+              axios.post('api/game/end_event',{
+                  event_id: this.info.id
+              }).then(response=>{
+                if(response){
+                  this.gameEnded= true;
+                   this.$swal
+                    .fire({
+                      icon: "success",
+                      title: "Success",
+                      text: "Game ended successfully.",
+                    });
+                }
+                else{
+                   this.$swal
+                    .fire({
+                      icon: "error",
+                      title: "error",
+                      text: "Something went wrong. Please try again or contact your admin.",
+                    });
+                }
+              });
+             
+            }
+            else{
+               this.$swal
+                .fire({
+                  icon: "error",
+                  title: "Error",
+                  text: "Password is invalid. Please try again.",
+                });
+            }
+          },
+          // allowOutsideClick: () => !this.$swal.isLoading(),
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            // this.$swal.fire({
+            //   title: `${result.value.login}'s avatar`,
+            //   imageUrl: result.value.avatar_url
+            // })
+          }
+        });
+    },
+    redirectMIRO(teamno, puzzleno) {
+      let urlData;
+      let puzzno_final = puzzleno + 1;
 
-                let urlData;
-                let puzzno_final = puzzleno+1;
-
-
-                        axios.post('api/game/get_miro_link',{
-                        team_number: teamno,
-                        puzzle_number: puzzno_final
-                        }).then(response => {
-                           if(response.data){
-                               urlData = response.data;
-                                window.open(urlData);
-                           }
-                           else{
-
-                           }
-                        });
-            },
+      axios
+        .post("api/game/get_miro_link", {
+          team_number: teamno,
+          puzzle_number: puzzno_final,
+        })
+        .then((response) => {
+          if (response.data) {
+            urlData = response.data;
+            window.open(urlData);
+          } else {
+          }
+        });
+    },
     getStatus() {
       if (this.info.id) {
         axios
@@ -645,11 +724,11 @@ export default {
       // this.helpList[objIndex].isDone = 1;
     },
   },
-  beforeCreate(){
-     let isAuthenticated = JSON.parse(localStorage.getItem('isAuthenticated'));
-            if(!isAuthenticated){
-                this.$router.push({ name: 'admin.index' });
-            }
+  beforeCreate() {
+    let isAuthenticated = JSON.parse(localStorage.getItem("isAuthenticated"));
+    if (!isAuthenticated) {
+      this.$router.push({ name: "admin.index" });
+    }
   },
   mounted() {
     axios

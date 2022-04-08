@@ -59,10 +59,18 @@ class GameController extends Controller
         $playerTeam = $request->playerTeam;
         $event_id = $request->game_event_id;
         $puzzle_progress = $request->puzzleNumber;
+        $eventData = GameEvent::where('id', $event_id)->select('time_limit', 'status')->first();
 
-        $gameStatus= GameProgress::where('game_event_id', $event_id)->where( 'teamNumber', $playerTeam)->where( 'puzzle_progress', $puzzle_progress)->get();
-        if(count($gameStatus) > 0){
-            return $gameStatus;
+        $gameStatus= GameProgress::where('game_event_id', $event_id)->where( 'teamNumber', $playerTeam)->where( 'puzzle_progress', $puzzle_progress)->first();
+        if($gameStatus){
+            return array(
+                'event_data' => $eventData,
+                'game_status' => $gameStatus
+            );
+        }
+        else{
+            return array('event_data' => $eventData,
+            'game_status' => null);
         }
         
         return "No game status found.";
@@ -649,7 +657,8 @@ class GameController extends Controller
                     'event_date' => $request->event_date,
                     'Status' => $gameEventData['Status'],
                     'additional_details' => $request->additional_details,
-                    'player_count' => $request->player_count
+                    'player_count' => $request->player_count,
+                    'time_limit' => $request->time_limit
                 );
                 try{
                     $gameEventData->update($newArray);
@@ -674,7 +683,8 @@ class GameController extends Controller
                     'event_date' => $request->event_date,
                     'Status' => 0,
                     'additional_details' => $request->additional_details,
-                    'player_count' => $request->player_count
+                    'player_count' => $request->player_count,
+                    'time_limit' => $request->time_limit
                 ]);
                 
                 try{
@@ -687,6 +697,29 @@ class GameController extends Controller
             }
         }
         
+    }
+
+    public function end_event(Request $request){
+        $event_id = $request->event_id;
+        if($event_id>0){
+
+            $gameEvent = GameEvent::where('id', $event_id)->first();
+            $newArray = array(
+                'Status' => 0,
+                'time_limit' => 1
+            );
+
+            try{
+                $gameEvent->update($newArray);
+                return true;
+            }
+            catch(\Exception $e){
+                return $e;
+            }
+        }
+        else{
+            return 0;
+        }
     }
 
     public function toggle_event(Request $request){

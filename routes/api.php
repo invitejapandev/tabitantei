@@ -60,4 +60,5 @@ Route::prefix('/game')->group(function (){
     Route::post('/store_event', [GameController::class, 'store_event']);
     Route::post('/toggle_event', [GameController::class, 'toggle_event']);
     Route::post('/reset_event', [GameController::class, 'reset_event']);
+    Route::post('/end_event', [GameController::class, 'end_event']);
 });

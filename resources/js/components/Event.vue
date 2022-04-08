@@ -47,7 +47,7 @@
                   <td>{{ item.player_count }}</td>
                   <td>{{ identifyStatus(item.event_date, item.Status) }}</td>
                   <td>
-                    <a v-if="item.Status != 2" href="#" @click.prevent="editEvent(item.id, item.game_code, item.company_name, item.team_count, item.player_count, item.event_date, item.additional_details)"><span class="badge bg-primary">Edit</span></a>&nbsp;
+                    <a v-if="item.Status != 2" href="#" @click.prevent="editEvent(item.id, item.game_code, item.company_name, item.team_count, item.player_count, item.event_date, item.additional_details, item.time_limit)"><span class="badge bg-primary">Edit</span></a>&nbsp;
                     <a v-if="item.Status != 2" href="#" @click.prevent="toggleEvent(item.id, 2)"><span class="badge bg-danger">Cancel</span></a>&nbsp;
                     <a v-if="item.Status != 2" href="#" @click.prevent="resetEvent(item.id)"><span class="badge bg-warning" style="color:black;">Reset</span></a>&nbsp;
                     <a href="#" @click.prevent="toggleEvent(item.id, 1)"><span class="badge bg-success" v-if="item.Status == 0 && item.Status!= 2">Start</span></a>
@@ -72,6 +72,11 @@
                 <label for="exampleInputPassword1"><strong>Number of Teams</strong></label>
                 <input v-model="team_count" type="number" class="form-control" id="exampleInputPassword1" min="1" max="12" placeholder="Enter the number of teams (Maximum of 12)" required>
               </div>
+
+              <div class="form-group mb-2">
+                <label for="exampleInputPassword1"><strong>Expected Players</strong></label>
+                <input v-model="player_count" type="number" class="form-control" id="exampleInputPassword1" min="1" placeholder="Enter the number of expected players" required>
+              </div>
               <div class="form-group mb-2">
                 <label for="exampleInputPassword1"><strong>Game Code</strong> 
                   &nbsp;<a href="#" @click="refresh"><span class="badge bg-success mb-2">Refresh</span></a>
@@ -80,12 +85,13 @@
                 <input style="text-transform:uppercase"  v-model="game_code"  type="text" class="form-control" id="exampleInputPassword1" minlength="5" maxlength="5" placeholder="Enter alphanumeric code" :disabled="gameCodeDisabled">
               </div>
               <div class="form-group mb-2">
-                <label for="exampleInputPassword1"><strong>Expected Players</strong></label>
-                <input v-model="player_count" type="number" class="form-control" id="exampleInputPassword1" min="1" placeholder="Enter the number of expected players" required>
-              </div>
-              <div class="form-group mb-2">
                 <label for="exampleInputPassword1"><strong>Date of Event</strong></label>
                 <input v-model="event_date" type="datetime-local" class="form-control" id="exampleInputPassword1" placeholder="Enter the number of expected players" required>
+              </div>
+
+              <div class="form-group mb-2">
+                <label for="exampleInputPassword1"><strong>Time Limit (Minutes)</strong></label>
+                <input v-model="time_limit" type="number" class="form-control" min="1" placeholder="Enter the time limit in minutes." required>
               </div>
               <div class="form-group mb-3">
                 <label for="exampleInputPassword1"><strong>Additional Details</strong></label>
@@ -136,6 +142,7 @@ export default {
       player_count: null,
       events: null,
       updateId: null,
+      time_limit: 60
     }
   },
   methods:{
@@ -143,7 +150,7 @@ export default {
        this.$swal.fire({
           title: 'Are you sure you want to reset this game?',
           text: 'This cannot be undone.',
-          icon: 'question',
+          icon: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
           cancelButtonColor: '#d33',
@@ -176,7 +183,7 @@ export default {
                                 });
           }});
     },
-    editEvent(event_id, event_game_code, event_company_name, event_team_count, event_player_count, new_event_date, event_additional_details){
+    editEvent(event_id, event_game_code, event_company_name, event_team_count, event_player_count, new_event_date, event_additional_details, temp_time_limit){
       let temp_date = new Date(new_event_date).toISOString();
       // let event_date_final = temp_date..toISOString();
         this.company_name  = event_company_name;
@@ -186,6 +193,7 @@ export default {
         this.additional_details = event_additional_details;
         this.updateId = event_id;
         this.game_code = event_game_code;
+        this.time_limit = temp_time_limit;
 
         this.hideTable = true;
         setTimeout(() => {
@@ -303,7 +311,8 @@ export default {
                                     additional_details: this.additional_details,
                                     game_code: this.game_code,
                                     player_count: this.player_count,
-                                    event_id: this.updateId
+                                    event_id: this.updateId,
+                                    time_limit: this.time_limit
                                 }).then(response => {
                                   if(response){
                                     console.log(response.data)

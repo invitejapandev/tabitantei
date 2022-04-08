@@ -220,9 +220,28 @@ let getStatusInterval;
 
 export default {
   name: "Puzzle",
-  mounted() {},
+  mounted() {
+    // this.time_limit = codeResponse.time_limit;
+
+      // this.$router.push({ name: "login.index" });
+      if(codeResponse){
+         axios
+        .post("api/game/get_game_time", {
+          puzzle_number: 1,
+          team_number: teamSetup.playerTeam,
+          game_event_id: codeResponse.id
+        })
+        .then((response) => {
+          let game_time = response['data'].game_time;
+          this.game_started = game_time['created_at'];
+        });
+      }
+        // console.log('game started:'+this.game_started)
+    
+  },
   created() {
-    console.log("puzzle number: " + this.puzzleName);
+    
+    // console.log("puzzle number: " + this.puzzleName);
     if (this.puzzleNumber == 1) {
       this.$swal({
         title: `Welcome, Explorers! Before I let you start your exploration, I have to show you around your interface. Here are the most important elements that will help you succeed.`,
@@ -332,9 +351,10 @@ export default {
   beforeCreate() {
     codeResponse = JSON.parse(localStorage.getItem("codeResponse"));
     teamSetup = JSON.parse(localStorage.getItem("teamSetup"));
-    if (codeResponse == null || teamSetup == null) {
+    // console.log('code response'+ codeResponse)
+    if(codeResponse == null || teamSetup == null) {
       this.$router.push({ name: "login.index" });
-    } else {
+    }else {
       // let instance = this/
 
       axios
@@ -349,19 +369,16 @@ export default {
             this.puzzleName = "Style Secrets";
             this.correctAnswer = "talc";
             this.puzzleNumber = 1;
-            this.puzzTemp = 1;
           } else if (response.data == 1) {
             this.$router.push({ name: "yokohama.index" });
             this.puzzleName = "Scout Salute";
             this.correctAnswer = "jade";
             this.puzzleNumber = 2;
-            this.puzzTemp = 0;
           } else if (response.data == 2) {
             this.$router.push({ name: "yokohama.index" });
             this.puzzleName = "Yokohama Goal";
             this.correctAnswer = "ltejc";
             this.puzzleNumber = 3;
-            this.puzzTemp = 0;
           } else if (response.data == 3) {
             this.$router.push({ name: "karuizawa.index" });
             this.puzzleName = "Forest Pool";
@@ -408,6 +425,7 @@ export default {
             this.correctAnswer = "moai";
             this.puzzleNumber = 12;
           } else if (response.data >= 12) {
+              clearInterval(getStatusInterval);
             this.$router.push({ name: "asakusa_completed.index" });
           }
 
@@ -434,6 +452,8 @@ export default {
   },
   data() {
     return {
+      time_limit:null,
+      game_started: null,
       correctMessage: "Correct! Click here to continue 正解! 次の問題に進む",
       tutorialStarted: false,
       puzzleNumber: null,
@@ -667,6 +687,9 @@ export default {
   },
   methods: {
     getStatus() {
+
+      
+ 
       axios
         .post("api/game/get_status", {
           game_event_id: codeResponse.id,
@@ -674,19 +697,77 @@ export default {
           puzzleNumber: this.puzzleNumber,
         })
         .then((response) => {
-          // console.log(response['data'][0].answered_current);
-          if (response["data"][0].answered_current == 1) {
-            this.timeisPaused = true;
-            clearInterval(getStatusInterval);
-            if (response["data"][0].player_number != teamSetup.playerName) {
-              this.correctMessage =
-                "Your teammate got the correct answer! Click here to continue.";
-              this.show_inputs = false;
-              this.show_result_holder = true;
-              this.answer_correct = true;
-              this.puzzleNumber += 1;
-            }
-          }
+          let event_data = null;
+          let game_status = null;
+            if(response['data'].event_data)
+              event_data = response['data'].event_data;
+            if(response['data'].game_status)
+              game_status = response['data'].game_status;
+              console.log(game_status);
+
+            if(this.game_started){
+                // console.log('game_started'+ this.game_started);
+                this.time_limit = event_data['time_limit'];
+                let created_at = new Date(this.game_started);
+                                                    
+                const today = new Date();
+
+                let diff = Math.round(((today-created_at)/(1000)/60));
+
+                if(diff>this.time_limit){
+                    // alert('time is up');
+                    clearInterval(getStatusInterval);
+                    this.$swal({
+                                         imageUrl: '/images/game_over.png',
+                                                    width: 1048,
+                                                    height: 544,
+                                                    imageHeight: 524,
+                                                    background: '#ffffff20',
+                                        timer: 180000,
+                                        timerProgressBar: true,
+                                        allowOutsideClick: false,
+                                        didOpen: () => {
+                                            this.$swal.showLoading()
+                                            const b = this.$swal.getHtmlContainer().querySelector('b')
+                                            timerInterval = setInterval(() => {
+                                            b.textContent = this.$swal.getTimerLeft()
+                                            }, 60000)
+                                        },
+                                        willClose: () => {
+                                            // clearInterval(timerInterval)
+                                        }
+                                        }).then((result) => {
+                                        /* Read more about handling dismissals below */
+                                        
+                                        localStorage.removeItem('codeResponse');
+                                        localStorage.removeItem('gameProgress');
+                                        localStorage.removeItem('teamSetup');
+
+                                                                                this.$router.push({ name: 'login.index' });
+
+                                        if (result.dismiss === this.$swal.DismissReason.timer) {
+                                            
+
+                                        }
+                                    })
+                }
+                else if(game_status){
+                    if (game_status["answered_current"] == 1) {
+                        this.timeisPaused = true;
+                        clearInterval(getStatusInterval);
+                        if (game_status["player_number"] != teamSetup.playerName) {
+                          this.correctMessage =
+                            "Your teammate got the correct answer! Click here to continue.";
+                          this.show_inputs = false;
+                          this.show_result_holder = true;
+                          this.answer_correct = true;
+                          this.puzzleNumber += 1;
+                        }
+                      }
+                }
+                
+              }
+          
         })
         .catch((error) => {
           console.log(error);
@@ -770,6 +851,7 @@ export default {
         } else if (this.puzzleNumber == 10) {
           this.$router.push({ name: "sendai_completed.index" });
         } else if (this.puzzleNumber == 13) {
+          clearInterval(getStatusInterval);
           this.$router.push({ name: "asakusa_completed.index" });
         }
       }
@@ -974,8 +1056,7 @@ export default {
   },
   props: {
     maxPuzzle: Number,
-    helpImage: String,
-    puzzTemp: Number,
+    helpImage: String
   },
 };
 </script>
@@ -1098,14 +1179,14 @@ export default {
 
 .wrong_answer {
   color: #721c24;
-  height: 30px;
+  height: 45px;
   width: 100%;
-  padding: 5px;
+  /* padding: 5px; */
   padding-left: 10px;
   padding-right: 10px;
   background-color: #f5c6cb;
   text-align: center;
-  line-height: 30px;
+  line-height: 45px;
   border-radius: 5px;
   cursor: pointer;
   font-weight: 400;
@@ -1115,13 +1196,13 @@ export default {
 
 .correct_answer {
   color: #fff;
-  height: 30px;
-  padding: 5px;
+  height: 45px;
+  /* padding: 5px; */
   padding-left: 10px;
   padding-right: 10px;
   background-color: #12cdd4;
   text-align: center;
-  line-height: 30px;
+  line-height: 45px;
   border-radius: 5px;
   cursor: pointer;
   font-weight: 400;
