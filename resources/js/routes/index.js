@@ -33,6 +33,7 @@ import PuzzleIndex from '../components/Puzzle'
 import Admin from '../components/Admin'
 import Dashboard from '../components/Dashboard'
 import Event from '../components/Event'
+import Logistics from '../components/Logistics'
 
 const routes = [
     {
@@ -617,6 +618,11 @@ const routes = [
         path:'/events',
         name:'events.index',
         component:Event
+    },
+    {
+        path:'/logistics',
+        name:'logistics.index',
+        component: Logistics
     }
        
 ];
