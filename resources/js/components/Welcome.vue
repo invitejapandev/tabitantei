@@ -50,7 +50,7 @@ export default {
                 beginShow: false,
                 clicker: 0,
                 btnHolderShow: true,
-                welcome_image: '/images/welcome_1.png'
+                welcome_image: '/images/Welcome_1.png'
             }
         },
         beforeCreate(){

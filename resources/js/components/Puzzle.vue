@@ -244,7 +244,7 @@ export default {
     // console.log("puzzle number: " + this.puzzleName);
     if (this.puzzleNumber == 1) {
       this.$swal({
-        title: `Welcome, Explorers! Before I let you start your exploration, I have to show you around your interface. Here are the most important elements that will help you succeed.`,
+        title: `Welcome, Explorers! Before I let you start your exploration, I have to show you around your interface. Here are the most important elements that will help you succeed.<br/>探検家の皆さん、ようこそ！旅に出発する前に、インターフェースについてご案内します。あなたの旅に役立つ機能を確認しましょう。`,
       }).then((result) => {
         this.$tours["myTour"].start();
       });
@@ -540,7 +540,7 @@ export default {
       steps: [
         {
           target: ".v-step-0", // We're using document.querySelector() under the hood
-          content: `これはMiroボードと呼ばれるものです。<br/>このボード上では、アイテムを動かしたり、メモを取ったりすることができます。<br/>Here is your Miro board.<br/>This is where you can move<br/>things around and take notes!`,
+          content: `Here is your Miro board.<br/>This is where you can move<br/>things around and take notes!<br/>これはMiroボードと呼ばれるものです。<br/>このボード上では、アイテムを動かしたり、メモを取ったりすることができます。`,
           params: {
             placement: "left",
             modifiers: {
@@ -552,7 +552,7 @@ export default {
         },
         {
           target: ".v-step-1", // We're using document.querySelector() under the hood
-          content: `左端にあるツールバーには、Miroボードを操作するためのツールが用意されています。<br/>主に使用するのはペンツールです。これを使ってメモを取ったり、アイテムに印を付けることができます。<br/>The toolbar on the left provides you with tools to interact with the Miro board.<br/>You will mostly use the Pen tool to take notes and highlight items for your team`,
+          content: `The toolbar on the left provides you with tools to interact with the Miro board.<br/>You will mostly use the Pen tool to take notes and highlight items for your team. <br/>左端にあるツールバーには、Miroボードを操作するためのツールが用意されています。<br/>主に使用するのはペンツールです。これを使ってメモを取ったり、アイテムに印を付けることができます。`,
           params: {
             placement: "left",
             modifiers: {
@@ -564,7 +564,7 @@ export default {
         },
         {
           target: ".v-step-2",
-          content: `ヒントが必要な時やMiroの使い方を知りたい時、またゲームマスターを呼びたい場合は、このボタンをクリックしてください。<br/>If you need a hint, check previous answers, want to know how to use MIRO, or would like to call gamemasters, click on this button.`,
+          content: `If you need a hint, check previous answers, want to know how to use MIRO, or would like to call gamemasters, click on this button.<br/>ヒントが必要な時やMiroの使い方を知りたい時、またゲームマスターを呼びたい場合は、このボタンをクリックしてください。`,
           params: {
             placement: "left",
             modifiers: {
@@ -576,7 +576,7 @@ export default {
         },
         {
           target: ".v-step-3", // We're using document.querySelector() under the hood
-          content: `ヒントを見るには、こちらのヒントボタンを押してください。<br/>To get some hints, press this button.`,
+          content: `To get some hints, press this button.<br/>ヒントを見るには、こちらのヒントボタンを押してください。`,
           params: {
             placement: "left",
             modifiers: {
@@ -588,7 +588,7 @@ export default {
         },
         {
           target: ".v-step-4", // We're using document.querySelector() under the hood
-          content: `To check previous answers, press this.`,
+          content: `To check previous answers, press this.<br/>前のパズルの解答を確認するには、ここをクリックしてください。`,
           params: {
             placement: "left",
             modifiers: {
@@ -600,7 +600,7 @@ export default {
         },
         {
           target: ".v-step-5", // We're using document.querySelector() under the hood
-          content: `Miroの操作についてのサポートが必要な場合は、こちらのボタンを押してください。<br/>If you need more help on using Miro,<br/>press this button here.`,
+          content: `If you need more help on using Miro,<br/>press this button here.<br/>Miroの操作についてのサポートが必要な場合は、こちらのボタンを押してください。`,
           params: {
             placement: "left",
             modifiers: {
@@ -612,7 +612,7 @@ export default {
         },
         {
           target: ".v-step-6", // We're using document.querySelector() under the hood
-          content: `ゲームマスターのヘルプが必要な場合は、こちらのヘルプボタンを押してください。<br/>To call a GameMaster for help at ANYTIME, press this help button.`,
+          content: `To call a GameMaster for help at ANYTIME, press this help button.<br/>ゲームマスターのヘルプが必要な場合は、こちらのヘルプボタンを押してください。To call a GameMaster for help at ANYTIME, press this help button.`,
           params: {
             placement: "left",
             modifiers: {
@@ -624,7 +624,7 @@ export default {
         },
         {
           target: ".v-step-7", // We're using document.querySelector() under the hood
-          content: `Here you can see your team number and the puzzle title.`,
+          content: `Here you can see your team number and the puzzle title.<br/>ここでチーム番号とパズルのタイトルが確認できます。`,
           params: {
             placement: "left",
             modifiers: {
@@ -636,7 +636,7 @@ export default {
         },
         {
           target: ".v-step-8", // We're using document.querySelector() under the hood
-          content: `In this zone you will find the photo album needed to solve the puzzle.<br/>Photos from it are clickable, so you can see them more closely.`,
+          content: `In this zone you will find the photo album needed to solve the puzzle.<br/>Photos from it are clickable, so you can see them more closely.<br/>ここにパズルを解くために必要なフォトアルバムがあります。`,
           params: {
             placement: "left",
             modifiers: {
@@ -648,7 +648,7 @@ export default {
         },
         {
           target: ".v-step-9", // We're using document.querySelector() under the hood
-          content: `答えを突き止めたら、Miroボードの下にあるアンサーボックスにその答えを入力してください。<br/>When you think you have the answer,<br/>find the answer box below the Miro board here and type it in!`,
+          content: `When you think you have the answer,<br/>find the answer box below the Miro board here and type it in.<br/>答えを突き止めたら、Miroボードの下にあるアンサーボックスにその答えを入力してください。`,
           params: {
             placement: "top",
             modifiers: {
@@ -678,7 +678,7 @@ export default {
       // alert(val);
       if (val == 1) {
         this.$swal({
-          title: `Welcome, Explorers! Before I let you start your exploration, I have to show you around your interface. Here are the most important elements that will help you succeed.`,
+          title: `Welcome, Explorers! Before I let you start your exploration, I have to show you around your interface. Here are the most important elements that will help you succeed.<br/>探検家の皆さん、ようこそ！旅に出発する前に、インターフェースについてご案内します。あなたの旅に役立つ機能を確認しましょう。`,
         }).then((result) => {
           this.$tours["myTour"].start();
         });
@@ -703,7 +703,7 @@ export default {
               event_data = response['data'].event_data;
             if(response['data'].game_status)
               game_status = response['data'].game_status;
-              console.log(game_status);
+              // console.log(game_status);
 
             if(this.game_started){
                 // console.log('game_started'+ this.game_started);
@@ -757,7 +757,7 @@ export default {
                         clearInterval(getStatusInterval);
                         if (game_status["player_number"] != teamSetup.playerName) {
                           this.correctMessage =
-                            "Your teammate got the correct answer! Click here to continue.";
+                            "Your teammate got the correct answer! Click here to continue. 正解! 次の問題に進む";
                           this.show_inputs = false;
                           this.show_result_holder = true;
                           this.answer_correct = true;
@@ -794,9 +794,7 @@ export default {
         currentStep === 5 ||
         currentStep === 4
       ) {
-        console.log(
-          "[Vue Tour] A custom nextStep callback has been called from step 2 to step 3"
-        );
+      
         this.helpShowed = true;
       } else {
         this.helpShowed = false;
@@ -841,8 +839,8 @@ export default {
       }
     },
     reactivate() {
-      console.log("puzz num:" + this.puzzleNumber);
-      console.log("max puzz:" + this.maxPuzzle);
+      // console.log("puzz num:" + this.puzzleNumber);
+      // console.log("max puzz:" + this.maxPuzzle);
       if (this.puzzleNumber > this.maxPuzzle) {
         if (this.puzzleNumber == 4) {
           this.$router.push({ name: "yokohama_completed.index" });
@@ -920,7 +918,8 @@ export default {
     validateAnswer() {
       this.helpShowed = false;
       //Create checking if which puzzle user is
-      if (this.userAnswer.toLowerCase().indexOf(this.correctAnswer) >= 0) {
+      // alert(this.userAnswer.toLowerCase().split(" ").join(""))
+      if (this.userAnswer.toLowerCase().split(" ").join("").indexOf(this.correctAnswer) >= 0) {
         // alert('answer is correct');
         // this.reactivate();
 
@@ -1024,7 +1023,7 @@ export default {
     helpTriggered() {
       this.$swal({
         title:
-          "ゲームマスターを呼びますか？<br/>Are you sure you want to call a gamemaster?",
+          "Are you sure you want to call a gamemaster?<br/>ゲームマスターを呼びますか？",
         // icon:'warning',
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -1084,7 +1083,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: start;
+  justify-content: flex-start;
   height: 20%;
   color: white;
   gap: 2px;

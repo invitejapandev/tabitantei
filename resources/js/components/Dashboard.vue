@@ -388,7 +388,7 @@
                     <span v-if="item.HelpCount > 0" class="badge bg-warning"
                       >Asking for help</span
                     >
-                    <span v-if="item.HelpCount == 0" class="badge bg-primary"
+                    <span v-if="item.HelpCount == 0 && item.puzzle_progress<12" class="badge bg-primary"
                       >Ongoing</span
                     >
                     <span

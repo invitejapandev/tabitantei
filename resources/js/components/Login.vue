@@ -22,7 +22,7 @@
 
 <script>
     import axios from 'axios'
-     var codeSuccess = 'ゲームコードが認証されました。チーム選択画面に進みます。<br/>Game Code is Valid. You will now be redirected to team selection.';
+     var codeSuccess = 'Game Code is Valid. You will now be redirected to team selection.<br/>ゲームコードが認証されました。チーム選択画面に進みます。';
     export default{
         data: function(){
             return {
@@ -97,7 +97,7 @@
                         }
                         else{
                           this.$swal({
-                                html:`<strong><h3>Game code is invalid. Please try again.</h3></strong><br/>`,
+                                html:`<strong><h3>Game code is invalid. Please try again. <br/>入力したコードは無効です。もう一度お試しください。</h3></strong><br/>`,
                                 background: 'url(/images/book_bg_login.png)',
                                 showClass: {
                                     popup: 'animate__animated animate__fadeInDown'
@@ -114,7 +114,7 @@
                         }
                     }).catch( error => {
                            this.$swal({
-                                html:`<strong><h3>Game code is invalid. Please try again.</h3></strong><br/>`,
+                                html:`<strong><h3>Game code is invalid. Please try again.<br/>入力したコードは無効です。もう一度お試しください。</h3></strong><br/>`,
                                 background: 'url(/images/book_bg_login.png)',
                                 showClass: {
                                     popup: 'animate__animated animate__fadeInDown'
@@ -163,7 +163,7 @@
                         }
                         else{
                           this.$swal({
-                                html:`<strong><h3>Game code is invalid. Please try again.</h3></strong><br/>`,
+                                html:`<strong><h3>Game code is invalid. Please try again.<br/>入力したコードは無効です。もう一度お試しください。</h3></strong><br/>`,
                                 background: 'url(/images/book_bg_login.png)',
                                 showClass: {
                                     popup: 'animate__animated animate__fadeInDown'
@@ -180,7 +180,7 @@
                         }
                     }).catch( error => {
                          this.$swal({
-                                html:`<strong><h3>Game code is invalid. Please try again.</h3></strong><br/>`,
+                                html:`<strong><h3>Game code is invalid. Please try again.<br/>入力したコードは無効です。もう一度お試しください。</h3></strong><br/>`,
                                 background: 'url(/images/book_bg_login.png)',
                                 showClass: {
                                     popup: 'animate__animated animate__fadeInDown'

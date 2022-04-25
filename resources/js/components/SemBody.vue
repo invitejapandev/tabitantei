@@ -292,7 +292,7 @@ input[type='checkbox'] {
 
    .miro_board{
         display: flex;
-        justify-content: start;
+        justify-content: flex-start;
         align-content: center;
         flex-wrap: wrap;
         width: 50px;

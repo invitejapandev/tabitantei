@@ -610,7 +610,7 @@ export default {
     flex-wrap: wrap;
     display: flex;
     flex-grow: 1;
-    justify-content: start;
+    justify-content: flex-start;
     align-content: center;
     flex-direction: column;
     gap: 10px;
@@ -643,7 +643,7 @@ export default {
 
 .dropAnswer{
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     align-content: center;
     position: relative;
     width: 20%;

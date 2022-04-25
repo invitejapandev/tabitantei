@@ -322,7 +322,7 @@ const g_images = [g_1, g_2, g_3, g_4];
         flex-wrap: wrap;
         position: relative;
         border-radius: 11px;
-        justify-content: end;
+        justify-content: flex-end;
     }
 
     .iframeHolder{

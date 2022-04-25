@@ -61,7 +61,7 @@
         flex-wrap: wrap;
         position: relative;
         border-radius: 11px;
-        justify-content: end;
+        justify-content: flex-end;
     }
 
     .iframeHolder{

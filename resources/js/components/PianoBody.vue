@@ -551,8 +551,8 @@ var correctSound = new Audio('https://www.freesoundslibrary.com/wp-content/uploa
     .main_bod{
         display: flex;
         flex-wrap: wrap;
-        justify-content: start;
-        align-content: start;
+        justify-content: flex-start;
+        align-content: flex-start;
         flex-direction: column;
         width: 100%;
         gap: 20px;
@@ -578,7 +578,7 @@ var correctSound = new Audio('https://www.freesoundslibrary.com/wp-content/uploa
    .miro_board{
         display: flex;
         position: relative;
-        justify-content: start;
+        justify-content: flex-start;
         align-content: center;
         flex-wrap: wrap;
         flex-direction: column;

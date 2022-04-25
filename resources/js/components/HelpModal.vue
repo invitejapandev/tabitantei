@@ -4,17 +4,26 @@
                     <div :class="helpModalMantle()">
                         <div :class="helpModalCore()">
                             <div class="help_modal_title">
-                                <div class="help_jap">どのようなことでお困りですか？</div><div class="help_english">WHAT DO YOU NEED HELP FOR?</div>
+                                <div class="help_english">WHAT DO YOU NEED HELP FOR?</div>
+                                <div class="help_jap">どのようなことでお困りですか？</div>
                             </div>
                             <div class="help_modal_option">
-                                <button  :class="helpButton()+' v-step-3'" @click="boardClicked(puzzleNumber, 1)"><div class="help_jap">ヒントが必要</div>
-                                <div class="help_english">NEED A HINT</div></button>
-                                <button :class="helpButton()+' v-step-4'" @click="boardClicked(80+puzzleNumber, 1)"><div class="help_jap">ヒントが必要</div>
-                                <div class="help_english">PREVIOUS ANSWER</div></button>
-                                <button :class="helpButton()+' v-step-5'" @click="boardClicked(99, activeLanguage)"><div class="help_jap">MIROボードの使い方</div>
-                                <div class="help_english">MIRO BOARD QUICK TIPS</div></button>
-                                <button :class="helpButton()+' v-step-6'" @click="helpTriggered()"><div class="help_jap">ゲームマスターを呼ぶ</div>
-                                <div class="help_english">CALL A GAMEMASTER</div></button>
+                                <button  :class="helpButton()+' v-step-3'" @click="boardClicked(puzzleNumber, 1)">
+                                    <div class="help_english">NEED A HINT</div>
+                                    <div class="help_jap">ヒントが必要</div>
+                                </button>
+                                <button :class="helpButton()+' v-step-4'" @click="boardClicked(80+puzzleNumber, 1)">
+                                    <div class="help_english">PREVIOUS ANSWER</div>
+                                    <div class="help_jap">ヒントが必要</div>
+                                </button>
+                                <button :class="helpButton()+' v-step-5'" @click="boardClicked(99, activeLanguage)">
+                                    <div class="help_english">MIRO BOARD QUICK TIPS</div>
+                                    <div class="help_jap">MIROボードの使い方</div>
+                                </button>
+                                <button :class="helpButton()+' v-step-6'" @click="helpTriggered()">
+                                    <div class="help_english">CALL A GAMEMASTER</div>
+                                    <div class="help_jap">ゲームマスターを呼ぶ</div>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -37,16 +46,15 @@
     <button :disabled="nextDisabled" class="lightbox_next" @click="next">Next<img  class="close_btn_img" src="../assets/next_page.png"/></button>
   </template>
 
-  <template v-slot:close-btn="{ close }">
+ <template v-slot:close-btn="{ close }">
     <button  @click="close" class="lightbox_close">Close</button>
      <div v-if="isOpen == false" class="unlocker">
-        <a @click="openClicked" class="unlock_btn">Open</a>
+        <a @click="openClicked" class="unlock_btn" style="text-align:center;">Open<br/>開く</a>
     </div>
      <div v-if="isRevealed" class="unlocker">
-        <a @click="revealClicked" class="unlock_btn">Reveal</a>
+        <a @click="revealClicked" class="unlock_btn" style="text-align:center;">Reveal<br/>ヒントを表示する</a>
     </div>
   </template>
-
   
   </vue-easy-lightbox>
 
@@ -74,29 +82,29 @@ import axios from 'axios';
 import VueEasyLightbox from 'vue-easy-lightbox';
 
 // const style_secrets_hints = ['images/']
-const style_secrets_hints = ['/images/_Style Secrets Hint A.png', '/images/_Style Secrets Hint B.png', '/images/_Style Secrets Hint C.png'];
-const style_secrets_hints_open = ['/images/_Style Secrets Hint A.png', '/images/_Style Secrets Hint B.png', '/images/_Style Secrets Hint C.png'];
+const style_secrets_hints = ['/images/_Style Secrets Hint A.png', '/images/_Style Secrets Hint B.png'];
+const style_secrets_hints_open = ['/images/_Style Secrets Hint A.png', '/images/open_generic.png'];
 
 const scout_salute_hints = ['/images/_Scout Salute Hint A.png', '/images/_Scout Salute Hint B.png'];
-const scout_salute_hints_open = ['/images/_Scout Salute Hint A.png', '/images/_Scout Salute Hint B.png'];
+const scout_salute_hints_open = ['/images/_Scout Salute Hint A.png', '/images/open_generic.png'];
 
 const forest_pool_hints = ['/images/_Forest Pool Hint A.png', '/images/_Forest Pool Hint B.png', '/images/_Forest Pool Hint C.png', '/images/_Forest Pool Hint D.png', '/images/_Forest Pool Hint E.png', '/images/_Forest Pool Hint F.png', '/images/_Forest Pool Hint G.png'];
-const forest_pool_hints_open = ['/images/_Forest Pool Hint A.png', '/images/_Forest Pool Hint B.png', '/images/_Forest Pool Hint C.png', '/images/_Forest Pool Hint D.png', '/images/_Forest Pool Hint E.png', '/images/_Forest Pool Hint F.png', '/images/_Forest Pool Hint G.png'];
+const forest_pool_hints_open = ['/images/_Forest Pool Hint A.png', '/images/open_generic.png', '/images/open_generic.png', '/images/open_generic.png', '/images/open_generic.png', '/images/open_generic.png', '/images/open_generic.png'];
 
-const wardrobe_wisdome_hints = ['/images/_Wardrobe Wisdom Hint A.png', '/images/_Wardrobe Wisdom Hint B.png'];
-const wardrobe_wisdome_hints_open = ['/images/_Wardrobe Wisdom Hint A.png', '/images/_Wardrobe Wisdom Hint B.png'];
+const wardrobe_wisdome_hints = ['/images/_Wardrobe Wisdom Hint A.png'];
+const wardrobe_wisdome_hints_open = ['/images/_Wardrobe Wisdom Hint A.png'];
 
 const glass_fragment_hints = ['/images/_Glass Fragment Hint A.png', '/images/_Glass Fragment Hint B.png'];
-const glass_fragment_hints_open = ['/images/_Glass Fragment Hint A.png', '/images/_Glass Fragment Hint B.png'];
+const glass_fragment_hints_open = ['/images/_Glass Fragment Hint A.png', '/images/open_generic.png'];
 
 const history_horsement_hints = ['/images/_Historic Horsemen Hint A.png', '/images/_Historic Horsemen Hint B.png', '/images/_Historic Horsemen Hint C.png', '/images/_Historic Horsemen Hint D.png'];
-const history_horsement_hints_open = ['/images/_Historic Horsemen Hint A.png', '/images/_Historic Horsemen Hint B.png', '/images/_Historic Horsemen Hint C.png', '/images/_Historic Horsemen Hint D.png'];
+const history_horsement_hints_open = ['/images/_Historic Horsemen Hint A.png', '/images/open_generic.png', '/images/open_generic.png', '/images/open_generic.png'];
 
 const dark_tower_hints = ['/images/_Dark Tower Hint A.png', '/images/_Dark Tower Hint B.png', '/images/_Dark Tower Hint C.png'];
-const dark_tower_hints_open = ['/images/_Dark Tower Hint A.png', '/images/_Dark Tower Hint B.png', '/images/_Dark Tower Hint C.png'];
+const dark_tower_hints_open = ['/images/_Dark Tower Hint A.png', '/images/open_generic.png', '/images/open_generic.png'];
 
 const sacred_signs_hints = ['/images/_Sacred Signs Hint A.png', '/images/_Sacred Signs Hint B.png'];
-const sacred_signs_hints_open = ['/images/_Sacred Signs Hint A.png', '/images/_Sacred Signs Hint B.png'];
+const sacred_signs_hints_open = ['/images/_Sacred Signs Hint A.png', '/images/open_generic.png'];
 
 const floor_hints_open = ['/images/floor_directory_hint_a.png', '/images/floor_directory_hint_b_op.png'];
 const computer_hints = ['/images/comp_hint_a.png', '/images/comp_hint_b.png', '/images/comp_hint_c.png', '/images/comp_hint_d.png'];
@@ -241,7 +249,7 @@ export default {
                 isRevealed: false,
                 unlockedHints: [],
                 computer_hints_blurred: ['/images/comp_hint_a.jpg', '/images/comp_hint_b.jpg', '/images/comp_hint_c.jpg', '/images/comp_hint_d.jpg'],
-                closed_hints: ['/images/hint.png'],
+                closed_hints: ['/images/closed_generic.png'],
                 open_hints: ['/images/hint_a_op.png','/images/hint_b_op.png','/images/hint_c_op.png','/images/hint_d_op.png']
             }
         },
@@ -371,7 +379,7 @@ export default {
         },
         hintClicked(){
             this.$swal({
-                        title:'ゲームマスターを呼びますか？<br/>Are you sure you want to call a gamemaster?',
+                        title:'Are you sure you want to call a gamemaster?<br/>ゲームマスターを呼びますか？',
                         // icon:'warning',
                         html:'<button type="button" role="button" class="swalBtn">Test</button>',
                         icon:'question',
@@ -417,7 +425,7 @@ export default {
             // this.closed_hints = temp_open;
 
             this.$swal({
-                        title:`Are you sure you want to open hints? It will add 3 minutes on your final time tally.`,
+                        title:`Are you sure you want to open hints? It will add 3 minutes on your final time tally.<br/>本当にヒントを見ますか？ヒントを使うと、最終タイムの記録に3分加算されます。`,
                         // icon:'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',

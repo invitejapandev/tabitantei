@@ -287,7 +287,7 @@
         flex-wrap: wrap;
         flex-direction: column;
         align-content: center;
-        justify-content: start;
+        justify-content: flex-start;
         align-items: center;
         gap: 20px;
     width: 100%;
@@ -318,7 +318,7 @@
         display:flex;
         flex-wrap: wrap;
         margin-top: 20px;
-        align-content: start;
+        align-content: flex-start;
         justify-content: center;
         /* row-gap: 1rem;
         column-gap: 1rem; */

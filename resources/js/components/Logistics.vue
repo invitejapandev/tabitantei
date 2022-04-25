@@ -86,10 +86,10 @@ export default {
         maximum_concurrent: null,
       },
       teams: [],
-      teams_count: 12,
+      teams_count: 0,
       team_puzzles: [],
       final_puzzles: [],
-      stage_number: 12,
+      stage_number: 0,
       origin_location: {
         location_name: "Asakusa Station",
         long: 139.79759,

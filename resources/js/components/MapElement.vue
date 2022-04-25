@@ -809,7 +809,7 @@ export default{
         display: none;
         flex-wrap: wrap;
         flex-direction: column;
-        justify-content: start;
+        justify-content: flex-start;
         align-content: center;
         font-size: 1.5rem;
         font-weight: bold;
@@ -1069,7 +1069,7 @@ export default{
         flex-wrap: wrap;
         flex-direction: column;
         gap: 5px;
-        justify-content: start;
+        justify-content: flex-start;
         align-content: center;
         font-family: 'VT323', monospace;
         font-weight: bold;
