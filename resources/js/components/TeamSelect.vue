@@ -42,61 +42,17 @@
                 
                 if(teamSetup){
                     if(teamSetup.game_event_id == codeResponse.id && teamSetup.playerTeam){
-                        // let gameProgress = JSON.parse(localStorage.getItem('gameProgress'));
-                        // if(gameProgress && gameProgress.game_event_id == codeResponse.id){
-
-                        //     switch(gameProgress.puzzleProgress){
-                        //         case 1:
-                        //             this.$router.push({ name: 'main.index1' });
-                        //             break;
-                        //         case 2: 
-                        //             this.$router.push({ name: 'main.computer' });
-                        //             break;
-                        //         case 3: 
-                        //             this.$router.push({ name: 'main.piano' });
-                        //             break;
-                        //         case 4: 
-                        //             this.$router.push({ name: 'main.map1' });
-                        //             break;
-                        //         case 5: 
-                        //             this.$router.push({ name: 'main.map2' });
-                        //             break;
-                        //         case 6: 
-                        //             this.$router.push({ name: 'main.semaphore' });
-                        //             break;
-                        //         case 7: 
-                        //             this.$router.push({ name: 'security.index' });
-                        //             break;
-                        //         case 8: 
-                        //             this.$router.push({ name: 'cafe.index' });
-                        //             break;
-                        //         case 9: 
-                        //             this.$router.push({ name: 'graffiti.index' });
-                        //             break;
-                        //     }
-                        // }
-                        // else{
-                        //     this.$router.push({ name: 'introduction.index' });
-                        // }
 
                         axios.post('api/game/get_status_last_specific',{
                         game_event_id: codeResponse.id,
                         playerTeam: teamSetup.playerTeam
                         }).then(response => {
-                            // alert(response.data);
-                                 if(response.data <3){
+                                if(response.data <3){
                                                         this.$router.push({ name: 'welcome.index' });
-                                                    }
-                                 else if(response.data <6){
-                                     this.$router.push({ name: 'karuizawa.index' });
                                  }
-                                    else if(response.data <9){
-                                     this.$router.push({ name: 'sendai.index' });
+                                else if(response.data <=12){
+                                     this.$router.push({ name: 'mission.index' });
                                  }
-                                    else if(response.data <=12){
-                                     this.$router.push({ name: 'asakusa.index' });
-                                 }
-                            //Create handling to redirect to specific puzzle.
                         });
                     }
                 }
@@ -178,14 +134,8 @@
                                                    if(response.data <3){
                                                         this.$router.push({ name: 'welcome.index' });
                                                     }
-                                                    else if(response.data <6){
-                                                        this.$router.push({ name: 'karuizawa.index' });
-                                                    }
-                                                    else if(response.data <9){
-                                                        this.$router.push({ name: 'sendai.index' });
-                                                    }
                                                     else if(response.data <=12){
-                                                        this.$router.push({ name: 'asakusa.index' });
+                                                        this.$router.push({ name: 'mission.index' });
                                                     }
                                                     else{
                                                         this.$router.push({ name: 'welcome.index' });

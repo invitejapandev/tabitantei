@@ -2,7 +2,6 @@ import { createApp } from 'vue';
 import Vue from 'vue';
 import App from './components/App.vue'
 import router from './routes'
-import MainIndex from './components/Main.vue'
 import LoginIndex from './components/Login.vue'
 import VueEasyLightbox from 'vue-easy-lightbox'
 import Vue3VideoPlayer from '@cloudgeek/vue3-video-player'
@@ -41,7 +40,6 @@ require('v3-tour/dist/vue-tour.css')
 
 createApp({
     components: {
-        MainIndex,
         LoginIndex
     }
 }).use(BootstrapVue3).use(router).use(VueSweetalert2).use(fabric).use(Vue3VideoPlayer, {

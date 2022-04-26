@@ -19,7 +19,6 @@
               <a v-if="enterShowned" class="btnReady" @click="playVid()">Proceed</a>
          </div>
          
-        <!-- <a v-if="buttonVisible" class="btnReady" @click="gameStart">{{ buttonText }}</a> -->
     </div>
 </template>
 
@@ -55,19 +54,32 @@ export default {
         },
         beforeCreate(){
             codeResponse = JSON.parse(localStorage.getItem('codeResponse'));
-            teamSetup = JSON.parse(localStorage.getItem('teamSetup'));
-            this.currentPuzzle = this.puzzleNumber;
+           
+            if(codeResponse){
+                
+                 teamSetup = JSON.parse(localStorage.getItem('teamSetup'));
+                
+                if(teamSetup){
+                    if(teamSetup.game_event_id == codeResponse.id && teamSetup.playerTeam){
 
-            //  axios.post('api/game/get_status_last_specific',{
-            //             game_event_id: codeResponse.id,
-            //             playerTeam: teamSetup.playerTeam
-            //             }).then(response => {
-            //                     //
-            //                     if(response.data == 0 && this.puzzleNumber != 1){
-            //                         this.$router.push({ name: 'style_secrets.index' });
-            //                     }
-            //                     //Create Statements to handle redirect to other puzzles.
-            //             });
+                        axios.post('api/game/get_status_last_specific',{
+                        game_event_id: codeResponse.id,
+                        playerTeam: teamSetup.playerTeam
+                        }).then(response => {
+                                if(response.data <3){
+                                                        this.$router.push({ name: 'welcome.index' });
+                                 }
+                                else if(response.data <=12){
+                                     this.$router.push({ name: 'mission.index' });
+                                 }
+                        });
+                    }
+                }
+
+            }
+            else{
+                 this.$router.push({ name: 'login.index' });
+            }
         },
         beforeMount(){
            
@@ -133,7 +145,7 @@ export default {
                     this.$refs.videoRef.play();
                 }
                 else{
-                    this.$router.push({name: 'yokohama.index' })
+                    this.$router.push({name: 'mission.index' })
                 }
             },
             prevImage(){
@@ -146,19 +158,6 @@ export default {
                     this.imgIndex = this.imgIndex+1;
                     // alert(this.imgIndex)
                 }
-            },
-            gameStart(val){
-                if(val == 1){
-                    this.$router.push({name: 'introduction.index' })
-                }
-                else if(val == 2){
-                    this.$router.push({name: 'main.piano' })
-                }
-                else if(val === 3){
-                    this.$router.push({name: 'sato.index' })
-                }
-
-                
             },
             outText() {
 

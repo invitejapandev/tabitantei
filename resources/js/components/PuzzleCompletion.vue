@@ -133,7 +133,7 @@ export default {
                 }
                 else{
                     
-                        this.$router.push({name: this.beginURL })
+                        this.$router.push({name: 'mission.index' })
                     
                     
                 }
@@ -246,7 +246,7 @@ export default {
     }
 
     .begin_btn{
-        height: 39px;
+       height: 55px;
         font-family: 'Covered By Your Grace', cursive;
         color: white;
         background-color: #12cdd4;
@@ -254,7 +254,7 @@ export default {
         border-radius: 5px;
         cursor: pointer;
         font-weight: bold;
-        font-size: 1.2em;
+        font-size: 2em;
         padding-left: 5px !important;
         padding-right: 5px;
         padding-top: 5px;
