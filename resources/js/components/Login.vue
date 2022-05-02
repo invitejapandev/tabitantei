@@ -2,21 +2,10 @@
         <div class="login_container">
             <form class="login_form" autocomplete="off" v-on:submit.prevent="onEnter">
                 <input autocomplete="off" id="1" type="text" placeholder="ゲームコードを入力
-                
-                
-                
-                
-                
                 Enter Game Code"  maxlength="5" v-model="item.name" @input="onInput"/>
             </form>
-             <!-- <img class="login-logo" src="../assets/green_logo.png" /> -->
-            <!-- <a class="go_button" @click="validateGame" :class="[item.name]">Go!</a> -->         
-            <!-- <span class="welcome_header_jap">エージェントのみなさん、ようこそ！</span> -->
             <span class="welcome_header">TABITANTEI</span>
         </div>
-        
-         <!-- <iframe src="/mp3/spy_music.mp3" allow="autoplay" id="audio"></iframe> -->
-         <!-- <audio id="player" autoplay controls><source src="/mp3/spy_music.mp3" type="audio/mp3"></audio> -->
 </template>
 
 
@@ -44,9 +33,17 @@
                                     localStorage.setItem('codeResponse', JSON.stringify(response['data'][0]));
                                     this.$router.push({ name: 'team.index' });
                                 }
+                                else{
+                                    // alert('test');
+                                    localStorage.removeItem('teamSetup');
+                                }
+                            }
+                            else{
+                                localStorage.removeItem('teamSetup');
                             }
                         }).catch(error => {
                             // alert('something went wrong');
+                            localStorage.removeItem('teamSetup');
                         });
             }
         },

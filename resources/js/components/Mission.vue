@@ -908,7 +908,7 @@ export default {
         this.puzzleName = "Dark Tower";
         this.correctAnswer = "yamato";
       } else if (this.puzzleNumber == 11) {
-        this.puzzleName = "Scared Signs";
+        this.puzzleName = "Sacred Signs";
         this.correctAnswer = "sadoiyo";
       } else if (this.puzzleNumber == 12) {
         this.puzzleName = "Asakusa Goal";
