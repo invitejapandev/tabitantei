@@ -2,7 +2,12 @@
   <div class="main">
     <transition name="fade">
       <div class="main_content" v-if="reactivated">
-        <div :class="[tutorialStarted ? 'tutorial' : 'normal','puzzle_title v-step-7',]" >
+        <div
+          :class="[
+            tutorialStarted ? 'tutorial' : 'normal',
+            'puzzle_title v-step-7',
+          ]"
+        >
           <div class="puzzle_name">{{ puzzleName }}</div>
           <div class="team_name">Team {{ teamNumber }}</div>
         </div>
@@ -217,24 +222,22 @@ export default {
   mounted() {
     // this.time_limit = codeResponse.time_limit;
 
-      // this.$router.push({ name: "login.index" });
-      if(codeResponse){
-         axios
+    // this.$router.push({ name: "login.index" });
+    if (codeResponse) {
+      axios
         .post("api/game/get_game_time", {
           puzzle_number: 1,
           team_number: teamSetup.playerTeam,
-          game_event_id: codeResponse.id
+          game_event_id: codeResponse.id,
         })
         .then((response) => {
-          let game_time = response['data'].game_time;
-          this.game_started = game_time['created_at'];
+          let game_time = response["data"].game_time;
+          this.game_started = game_time["created_at"];
         });
-      }
-        // console.log('game started:'+this.game_started)
-    
+    }
+    // console.log('game started:'+this.game_started)
   },
   created() {
-    
     // console.log("puzzle number: " + this.puzzleName);
     if (this.puzzleNumber == 1) {
       this.$swal({
@@ -246,15 +249,14 @@ export default {
   },
   beforeMount() {
     let routename = this.$route.name;
-    
   },
   beforeCreate() {
     codeResponse = JSON.parse(localStorage.getItem("codeResponse"));
     teamSetup = JSON.parse(localStorage.getItem("teamSetup"));
     // console.log('code response'+ codeResponse)
-    if(codeResponse == null || teamSetup == null) {
+    if (codeResponse == null || teamSetup == null) {
       this.$router.push({ name: "login.index" });
-    }else {
+    } else {
       // let instance = this/
 
       axios
@@ -269,75 +271,75 @@ export default {
             this.puzzleName = "Style Secrets";
             this.correctAnswer = "talc";
             this.puzzleNumber = 1;
-            this.helpImage = '/images/yokohama_help.png';
+            this.helpImage = "/images/yokohama_help.png";
           } else if (response.data == 1) {
             // this.$router.push({ name: "yokohama.index" });
             this.puzzleName = "Scout Salute";
             this.correctAnswer = "jade";
             this.puzzleNumber = 2;
-            this.helpImage = '/images/yokohama_help.png';
+            this.helpImage = "/images/yokohama_help.png";
           } else if (response.data == 2) {
             // this.$router.push({ name: "yokohama.index" });
             this.puzzleName = "Yokohama Goal";
             this.correctAnswer = "ltejc";
             this.puzzleNumber = 3;
-            this.helpImage = '/images/yokohama_help.png';
+            this.helpImage = "/images/yokohama_help.png";
           } else if (response.data == 3) {
             // this.$router.push({ name: "karuizawa.index" });
             this.puzzleName = "Forest Pool";
             this.correctAnswer = "amenouzume";
             this.puzzleNumber = 4;
-            this.helpImage = '/images/karuizawa_help.png';
+            this.helpImage = "/images/karuizawa_help.png";
           } else if (response.data == 4) {
             // this.$router.push({ name: "karuizawa.index" });
             this.puzzleName = "Wardrobe Wisdom";
             this.correctAnswer = "susanoo";
             this.puzzleNumber = 5;
-            this.helpImage = '/images/karuizawa_help.png';
+            this.helpImage = "/images/karuizawa_help.png";
           } else if (response.data == 5) {
             // this.$router.push({ name: "karuizawa.index" });
             this.puzzleName = "Karuizawa Goal";
             this.correctAnswer = "nzasm";
             this.puzzleNumber = 6;
-            this.helpImage = '/images/karuizawa_help.png';
+            this.helpImage = "/images/karuizawa_help.png";
           } else if (response.data == 6) {
             // this.$router.push({ name: "sendai.index" });
             this.puzzleName = "Glass Fragments";
             this.correctAnswer = "benevolence";
             this.puzzleNumber = 7;
-            this.helpImage = '/images/sendai_help.png';
+            this.helpImage = "/images/sendai_help.png";
           } else if (response.data == 7) {
             // this.$router.push({ name: "sendai.index" });
             this.puzzleName = "Historic Horsemen";
             this.correctAnswer = "wisdom";
             this.puzzleNumber = 8;
-            this.helpImage = '/images/sendai_help.png';
+            this.helpImage = "/images/sendai_help.png";
           } else if (response.data == 8) {
             // this.$router.push({ name: "sendai.index" });
             this.puzzleName = "Sendai Goal";
             this.correctAnswer = "nlwsdv";
             this.puzzleNumber = 9;
-            this.helpImage = '/images/sendai_help.png';
+            this.helpImage = "/images/sendai_help.png";
           } else if (response.data == 9) {
             // this.$router.push({ name: "asakusa.index" });
             this.puzzleName = "Dark Tower";
             this.correctAnswer = "yamato";
             this.puzzleNumber = 10;
-            this.helpImage = '/images/asakusa_help.png';
+            this.helpImage = "/images/asakusa_help.png";
           } else if (response.data == 10) {
             // this.$router.push({ name: "asakusa.index" });
             this.puzzleName = "Scared Signs";
             this.correctAnswer = "sadoiyo";
             this.puzzleNumber = 11;
-            this.helpImage = '/images/asakusa_help.png';
+            this.helpImage = "/images/asakusa_help.png";
           } else if (response.data == 11) {
             // this.$router.push({ name: "asakusa.index" });
             this.puzzleName = "Asakusa Goal";
             this.correctAnswer = "moai";
             this.puzzleNumber = 12;
-            this.helpImage = '/images/asakusa_help.png';
+            this.helpImage = "/images/asakusa_help.png";
           } else if (response.data >= 12) {
-              clearInterval(getStatusInterval);
+            clearInterval(getStatusInterval);
             this.$router.push({ name: "asakusa_completed.index" });
           }
 
@@ -347,101 +349,101 @@ export default {
             this.tutorialStarted = true;
           }
 
-          if (this.puzzleNumber <=2) {
-      this.album_image = [
-        "/images/YokoGallery-1.jpg",
-        "/images/YokoGallery-2.jpg",
-        "/images/YokoGallery-3.jpg",
-        "/images/YokoGallery-4.jpg",
-        "/images/YokoGallery-5.jpg",
-        "/images/YokoGallery-6.jpg",
-        "/images/YokoGallery-7.jpg",
-        "/images/YokoGallery-8.jpg",
-        "/images/YokoGallery-9.jpg",
-        "/images/YokoGallery-10.jpg",
-        "/images/YokoGallery-11.jpg",
-        "/images/YokoGallery-12.jpg",
-        "/images/YokoGallery-13.jpg",
-        "/images/YokoGallery-14.jpg",
-        "/images/YokoGallery-15.jpg",
-        "/images/YokoGallery-16.jpg",
-        "/images/YokoGallery-17.jpg",
-        "/images/YokoGallery-18.jpg",
-        "/images/YokoGallery-19.jpg",
-        "/images/YokoGallery-20.jpg",
-      ];
-    } else if (this.puzzleNumber <=5) {
-      // alert('test');
-      this.album_image = [
-        "/images/Karuizawa-Gallery-1.jpg",
-        "/images/Karuizawa-Gallery-2.jpg",
-        "/images/Karuizawa-Gallery-3.jpg",
-        "/images/Karuizawa-Gallery-4.jpg",
-        "/images/Karuizawa-Gallery-5.jpg",
-        "/images/Karuizawa-Gallery-7.jpg",
-        "/images/Karuizawa-Gallery-8.jpg",
-        "/images/Karuizawa-Gallery-10.jpg",
-        "/images/Karuizawa-Gallery-11.jpg",
-        "/images/Karuizawa-Gallery-12.jpg",
-        "/images/Karuizawa-Gallery-13.jpg",
-        "/images/Karuizawa-Gallery-14.jpg",
-        "/images/Karuizawa-Gallery-15.jpg",
-        "/images/Karuizawa-Gallery-17.jpg",
-        "/images/Karuizawa-Gallery-19.jpg",
-        "/images/Karuizawa-Gallery-23.jpg",
-        "/images/Karuizawa-Gallery-24.jpg",
-        "/images/Karuizawa-Gallery-25.jpg",
-        "/images/Karuizawa-Gallery-26.jpg",
-      ];
-    } else if (this.puzzleNumber <=8) {
-      this.album_image = [
-        "/images/Sendai Gallery 1.jpeg",
-        "/images/Sendai Gallery 2.jpeg",
-        "/images/Sendai Gallery 3.jpeg",
-        "/images/Sendai Gallery 4.jpeg",
-        "/images/Sendai Gallery 5.jpeg",
-        "/images/Sendai Gallery 6.jpeg",
-        "/images/Sendai Gallery 7.jpeg",
-        "/images/Sendai Gallery 8.jpeg",
-        "/images/Sendai Gallery 9.jpeg",
-        "/images/Sendai Gallery 10.jpeg",
-        "/images/Sendai Gallery 11.jpeg",
-        "/images/Sendai Gallery 12.jpeg",
-        "/images/Sendai Gallery 13.jpeg",
-        "/images/Sendai Gallery 14.jpeg",
-        "/images/Sendai Gallery 15.jpeg",
-        "/images/Sendai Gallery 16.jpeg",
-        "/images/Sendai Gallery 17.jpeg",
-        "/images/Sendai Gallery 18.jpeg",
-        "/images/Sendai Gallery 19.jpeg",
-        "/images/Sendai Gallery 20.jpeg",
-        "/images/Sendai Gallery 21.jpeg",
-        "/images/Sendai Gallery 22.jpeg",
-        "/images/Sendai Gallery 23.jpeg",
-        "/images/Sendai Gallery 24.jpeg",
-        "/images/Sendai Gallery 25.jpeg",
-        "/images/Sendai Gallery 26.jpeg",
-        "/images/Sendai Gallery 27.jpeg",
-        "/images/Sendai Gallery 28.jpeg",
-        "/images/Sendai Gallery 29.jpeg",
-        "/images/Sendai Gallery 30.jpeg",
-      ];
-    } else if (this.puzzleNumber <=12) {
-      this.album_image = [
-        "/images/Asakusa-Gallery-1.jpg",
-        "/images/Asakusa-Gallery-2.jpg",
-        "/images/Asakusa-Gallery-3.jpg",
-        "/images/Asakusa-Gallery-4.jpg",
-        "/images/Asakusa-Gallery-5.jpg",
-        "/images/Asakusa-Gallery-6.jpg",
-        "/images/Asakusa-Gallery-7.jpg",
-        "/images/Asakusa-Gallery-8.jpg",
-        "/images/Asakusa-Gallery-11.jpg",
-        "/images/Asakusa-Gallery-12.jpg",
-        "/images/Asakusa-Gallery-13.jpg",
-        "/images/Asakusa-Gallery-14.jpg",
-      ];
-    }
+          if (this.puzzleNumber <= 2) {
+            this.album_image = [
+              "/images/YokoGallery-1.jpg",
+              "/images/YokoGallery-2.jpg",
+              "/images/YokoGallery-3.jpg",
+              "/images/YokoGallery-4.jpg",
+              "/images/YokoGallery-5.jpg",
+              "/images/YokoGallery-6.jpg",
+              "/images/YokoGallery-7.jpg",
+              "/images/YokoGallery-8.jpg",
+              "/images/YokoGallery-9.jpg",
+              "/images/YokoGallery-10.jpg",
+              "/images/YokoGallery-11.jpg",
+              "/images/YokoGallery-12.jpg",
+              "/images/YokoGallery-13.jpg",
+              "/images/YokoGallery-14.jpg",
+              "/images/YokoGallery-15.jpg",
+              "/images/YokoGallery-16.jpg",
+              "/images/YokoGallery-17.jpg",
+              "/images/YokoGallery-18.jpg",
+              "/images/YokoGallery-19.jpg",
+              "/images/YokoGallery-20.jpg",
+            ];
+          } else if (this.puzzleNumber <= 5) {
+            // alert('test');
+            this.album_image = [
+              "/images/Karuizawa-Gallery-1.jpg",
+              "/images/Karuizawa-Gallery-2.jpg",
+              "/images/Karuizawa-Gallery-3.jpg",
+              "/images/Karuizawa-Gallery-4.jpg",
+              "/images/Karuizawa-Gallery-5.jpg",
+              "/images/Karuizawa-Gallery-7.jpg",
+              "/images/Karuizawa-Gallery-8.jpg",
+              "/images/Karuizawa-Gallery-10.jpg",
+              "/images/Karuizawa-Gallery-11.jpg",
+              "/images/Karuizawa-Gallery-12.jpg",
+              "/images/Karuizawa-Gallery-13.jpg",
+              "/images/Karuizawa-Gallery-14.jpg",
+              "/images/Karuizawa-Gallery-15.jpg",
+              "/images/Karuizawa-Gallery-17.jpg",
+              "/images/Karuizawa-Gallery-19.jpg",
+              "/images/Karuizawa-Gallery-23.jpg",
+              "/images/Karuizawa-Gallery-24.jpg",
+              "/images/Karuizawa-Gallery-25.jpg",
+              "/images/Karuizawa-Gallery-26.jpg",
+            ];
+          } else if (this.puzzleNumber <= 8) {
+            this.album_image = [
+              "/images/Sendai Gallery 1.jpeg",
+              "/images/Sendai Gallery 2.jpeg",
+              "/images/Sendai Gallery 3.jpeg",
+              "/images/Sendai Gallery 4.jpeg",
+              "/images/Sendai Gallery 5.jpeg",
+              "/images/Sendai Gallery 6.jpeg",
+              "/images/Sendai Gallery 7.jpeg",
+              "/images/Sendai Gallery 8.jpeg",
+              "/images/Sendai Gallery 9.jpeg",
+              "/images/Sendai Gallery 10.jpeg",
+              "/images/Sendai Gallery 11.jpeg",
+              "/images/Sendai Gallery 12.jpeg",
+              "/images/Sendai Gallery 13.jpeg",
+              "/images/Sendai Gallery 14.jpeg",
+              "/images/Sendai Gallery 15.jpeg",
+              "/images/Sendai Gallery 16.jpeg",
+              "/images/Sendai Gallery 17.jpeg",
+              "/images/Sendai Gallery 18.jpeg",
+              "/images/Sendai Gallery 19.jpeg",
+              "/images/Sendai Gallery 20.jpeg",
+              "/images/Sendai Gallery 21.jpeg",
+              "/images/Sendai Gallery 22.jpeg",
+              "/images/Sendai Gallery 23.jpeg",
+              "/images/Sendai Gallery 24.jpeg",
+              "/images/Sendai Gallery 25.jpeg",
+              "/images/Sendai Gallery 26.jpeg",
+              "/images/Sendai Gallery 27.jpeg",
+              "/images/Sendai Gallery 28.jpeg",
+              "/images/Sendai Gallery 29.jpeg",
+              "/images/Sendai Gallery 30.jpeg",
+            ];
+          } else if (this.puzzleNumber <= 12) {
+            this.album_image = [
+              "/images/Asakusa-Gallery-1.jpg",
+              "/images/Asakusa-Gallery-2.jpg",
+              "/images/Asakusa-Gallery-3.jpg",
+              "/images/Asakusa-Gallery-4.jpg",
+              "/images/Asakusa-Gallery-5.jpg",
+              "/images/Asakusa-Gallery-6.jpg",
+              "/images/Asakusa-Gallery-7.jpg",
+              "/images/Asakusa-Gallery-8.jpg",
+              "/images/Asakusa-Gallery-11.jpg",
+              "/images/Asakusa-Gallery-12.jpg",
+              "/images/Asakusa-Gallery-13.jpg",
+              "/images/Asakusa-Gallery-14.jpg",
+            ];
+          }
 
           axios
             .post("api/game/get_miro_link", {
@@ -460,7 +462,7 @@ export default {
   },
   data() {
     return {
-      time_limit:null,
+      time_limit: null,
       game_started: null,
       correctMessage: "Correct! Click here to continue 正解! 次の問題に進む",
       tutorialStarted: false,
@@ -697,9 +699,6 @@ export default {
   },
   methods: {
     getStatus() {
-
-      
- 
       axios
         .post("api/game/get_status", {
           game_event_id: codeResponse.id,
@@ -709,75 +708,70 @@ export default {
         .then((response) => {
           let event_data = null;
           let game_status = null;
-            if(response['data'].event_data)
-              event_data = response['data'].event_data;
-            if(response['data'].game_status)
-              game_status = response['data'].game_status;
-              // console.log(game_status);
+          if (response["data"].event_data)
+            event_data = response["data"].event_data;
+          if (response["data"].game_status)
+            game_status = response["data"].game_status;
+          // console.log(game_status);
 
-            if(this.game_started){
-                // console.log('game_started'+ this.game_started);
-                this.time_limit = event_data['time_limit'];
-                let created_at = new Date(this.game_started);
-                                                    
-                const today = new Date();
+          if (this.game_started) {
+            // console.log('game_started'+ this.game_started);
+            this.time_limit = event_data["time_limit"];
+            let created_at = new Date(this.game_started);
 
-                let diff = Math.round(((today-created_at)/(1000)/60));
+            const today = new Date();
 
-                if(diff>this.time_limit){
-                    // alert('time is up');
-                    clearInterval(getStatusInterval);
-                    this.$swal({
-                                         imageUrl: '/images/game_over.png',
-                                                    width: 1048,
-                                                    height: 544,
-                                                    imageHeight: 524,
-                                                    background: '#ffffff20',
-                                        timer: 180000,
-                                        timerProgressBar: true,
-                                        allowOutsideClick: false,
-                                        didOpen: () => {
-                                            this.$swal.showLoading()
-                                            const b = this.$swal.getHtmlContainer().querySelector('b')
-                                            timerInterval = setInterval(() => {
-                                            b.textContent = this.$swal.getTimerLeft()
-                                            }, 60000)
-                                        },
-                                        willClose: () => {
-                                            // clearInterval(timerInterval)
-                                        }
-                                        }).then((result) => {
-                                        /* Read more about handling dismissals below */
-                                        
-                                        localStorage.removeItem('codeResponse');
-                                        localStorage.removeItem('gameProgress');
-                                        localStorage.removeItem('teamSetup');
+            let diff = Math.round((today - created_at) / 1000 / 60);
 
-                                                                                this.$router.push({ name: 'login.index' });
+            if (diff > this.time_limit) {
+              // alert('time is up');
+              clearInterval(getStatusInterval);
+              this.$swal({
+                imageUrl: "/images/game_over.png",
+                width: 1048,
+                height: 544,
+                imageHeight: 524,
+                background: "#ffffff20",
+                timer: 180000,
+                timerProgressBar: true,
+                allowOutsideClick: false,
+                didOpen: () => {
+                  this.$swal.showLoading();
+                  const b = this.$swal.getHtmlContainer().querySelector("b");
+                  timerInterval = setInterval(() => {
+                    b.textContent = this.$swal.getTimerLeft();
+                  }, 60000);
+                },
+                willClose: () => {
+                  // clearInterval(timerInterval)
+                },
+              }).then((result) => {
+                /* Read more about handling dismissals below */
 
-                                        if (result.dismiss === this.$swal.DismissReason.timer) {
-                                            
+                localStorage.removeItem("codeResponse");
+                localStorage.removeItem("gameProgress");
+                localStorage.removeItem("teamSetup");
 
-                                        }
-                                    })
+                this.$router.push({ name: "login.index" });
+
+                if (result.dismiss === this.$swal.DismissReason.timer) {
                 }
-                else if(game_status){
-                    if (game_status["answered_current"] == 1) {
-                        this.timeisPaused = true;
-                        clearInterval(getStatusInterval);
-                        if (game_status["player_number"] != teamSetup.playerName) {
-                          this.correctMessage =
-                            "Your teammate got the correct answer! Click here to continue. 正解! 次の問題に進む";
-                          this.show_inputs = false;
-                          this.show_result_holder = true;
-                          this.answer_correct = true;
-                          this.puzzleNumber += 1;
-                        }
-                      }
+              });
+            } else if (game_status) {
+              if (game_status["answered_current"] == 1) {
+                this.timeisPaused = true;
+                clearInterval(getStatusInterval);
+                if (game_status["player_number"] != teamSetup.playerName) {
+                  this.correctMessage =
+                    "Your teammate got the correct answer! Click here to continue. 正解! 次の問題に進む";
+                  this.show_inputs = false;
+                  this.show_result_holder = true;
+                  this.answer_correct = true;
+                  // this.puzzleNumber += 1;
                 }
-                
               }
-          
+            }
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -788,22 +782,16 @@ export default {
       if (this.puzzleNumber <= 3) {
         return "yokohama";
       } else if (this.puzzleNumber <= 6) {
-        if(this.missionCompleted==true)
-          return "yokohama";
-        else
-          return "karuizawa";
+        if (this.missionCompleted == true) return "yokohama";
+        else return "karuizawa";
       } else if (this.puzzleNumber <= 9) {
-        if(this.missionCompleted==true)
-          return "karuizawa";
-        else
+        if (this.missionCompleted == true) return "karuizawa";
+        else return "sendai";
+      } else if (this.puzzleNumber <= 13) {
+        console.log("asakusa photo album");
+        if (this.missionCompleted == true) {
           return "sendai";
-      }
-      else if (this.puzzleNumber <= 13) {
-        console.log('asakusa photo album')
-        if(this.missionCompleted==true){
-          return "sendai";
-        }
-        else{
+        } else {
           return "asakusa";
         }
       }
@@ -818,7 +806,6 @@ export default {
         currentStep === 5 ||
         currentStep === 4
       ) {
-      
         this.helpShowed = true;
       } else {
         this.helpShowed = false;
@@ -864,84 +851,127 @@ export default {
     },
     reactivate() {
       if (this.missionCompleted) {
-        if (this.puzzleNumber == 4) {
+        if (this.puzzleNumber+1 == 4) {
           this.$router.push({ name: "yokohama_completed.index" });
-        } else if (this.puzzleNumber == 7) {
+        } else if (this.puzzleNumber+1 == 7) {
           this.$router.push({ name: "karuizawa_completed.index" });
-        } else if (this.puzzleNumber == 10) {
+        } else if (this.puzzleNumber+1 == 10) {
           this.$router.push({ name: "sendai_completed.index" });
-        } else if (this.puzzleNumber == 13) {
+        } else if (this.puzzleNumber+1 == 13) {
           clearInterval(getStatusInterval);
           this.$router.push({ name: "asakusa_completed.index" });
         }
-      }
-      this.reactivated = false;
-      this.src = "";
-      this.answer_correct = false;
-      this.show_result_holder = false;
-      this.userAnswer = "";
-      if (this.puzzleNumber == 2) {
-        this.puzzleName = "Scout Salute";
-        this.correctAnswer = "jade";
-      } else if (this.puzzleNumber == 3) {
-        this.puzzleName = "Yokohama Goal";
-        this.correctAnswer = "ltejc";
-      } else if (this.puzzleNumber == 4) {
-        this.puzzleName = "Forest Pool";
-        this.correctAnswer = "amenouzume";
-      } else if (this.puzzleNumber == 5) {
-        this.puzzleName = "Wardrobe Wisdom";
-        this.correctAnswer = "susanoo";
-      } else if (this.puzzleNumber == 6) {
-        this.puzzleName = "Karuizawa Goal";
-        this.correctAnswer = "nzasm";
-      } else if (this.puzzleNumber == 7) {
-        this.puzzleName = "Glass Fragments";
-        this.correctAnswer = "benevolence";
-      } else if (this.puzzleNumber == 8) {
-        this.puzzleName = "Historic Horsemen";
-        this.correctAnswer = "wisdom";
-      } else if (this.puzzleNumber == 9) {
-        this.puzzleName = "Sendai Goal";
-        this.correctAnswer = "nlwsdv";
-      } else if (this.puzzleNumber == 10) {
-        this.puzzleName = "Dark Tower";
-        this.correctAnswer = "yamato";
-      } else if (this.puzzleNumber == 11) {
-        this.puzzleName = "Sacred Signs";
-        this.correctAnswer = "sadoiyo";
-      } else if (this.puzzleNumber == 12) {
-        this.puzzleName = "Asakusa Goal";
-        this.correctAnswer = "moai";
-      }
-
-      // setTimeout(this.reactivated=true, 50000);
-      let parenthandler = this;
-
-      setTimeout(function () {
-        // alert('test');
-        parenthandler.show_inputs = true;
-        parenthandler.reactivated = true;
-      }, 1500);
-
-      axios
-        .post("api/game/get_miro_link", {
-          game_event_id: codeResponse.id,
-          team_number: teamSetup.playerTeam,
-          puzzle_number: this.puzzleNumber,
-        })
-        .then((response) => {
-          if (response) {
-            this.miroURL = response.data;
-            //    console.log(response.data)
+      } else {
+          let img_explanation = "";
+          if (this.puzzleNumber == 1) {
+            img_explanation = "/images/1_explanation_talc.png";
+          } 
+          else if (this.puzzleNumber == 2) {
+            img_explanation = "/images/1_explanation_jade.png";
+          } 
+          else if (this.puzzleNumber == 4) {
+            img_explanation = "/images/2_explanation_amenouzume.png";
+          } 
+          else if (this.puzzleNumber == 5) {
+            img_explanation = "/images/2_explanation_susanoo.png";
           }
-        });
+          else if (this.puzzleNumber == 7) {
+            img_explanation = "/images/3_explanation_benevolence.png"
+          } 
+          else if (this.puzzleNumber == 8) {
+            img_explanation = "/images/3_explanation_wisdom.png";
+          } 
+          else if (this.puzzleNumber == 10) {
+            img_explanation = "/images/4_explanation_yamato.png";
+          } else if (this.puzzleNumber == 11) {
+            img_explanation = "/images/4_explanation_sodaiyo.png";
+          }
+
+          this.$swal({
+            imageUrl: img_explanation,
+            width: 960,
+            height: 540,
+            imageHeight: 480,
+            background: "#ffffff20",
+            confirmButtonText: "I understand now.",
+            allowOutsideClick: false,
+          }).then((response) => {
+            this.puzzleNumber += 1;
+            this.reactivated = false;
+            this.src = "";
+            this.answer_correct = false;
+            this.show_result_holder = false;
+            this.userAnswer = "";
+            if (this.puzzleNumber == 2) {
+              this.puzzleName = "Scout Salute";
+              this.correctAnswer = "jade";
+            } else if (this.puzzleNumber == 3) {
+              this.puzzleName = "Yokohama Goal";
+              this.correctAnswer = "ltejc";
+            } else if (this.puzzleNumber == 4) {
+              this.puzzleName = "Forest Pool";
+              this.correctAnswer = "amenouzume";
+            } else if (this.puzzleNumber == 5) {
+              this.puzzleName = "Wardrobe Wisdom";
+              this.correctAnswer = "susanoo";
+            } else if (this.puzzleNumber == 6) {
+              this.puzzleName = "Karuizawa Goal";
+              this.correctAnswer = "nzasm";
+            } else if (this.puzzleNumber == 7) {
+              this.puzzleName = "Glass Fragments";
+              this.correctAnswer = "benevolence";
+            } else if (this.puzzleNumber == 8) {
+              this.puzzleName = "Historic Horsemen";
+              this.correctAnswer = "wisdom";
+            } else if (this.puzzleNumber == 9) {
+              this.puzzleName = "Sendai Goal";
+              this.correctAnswer = "nlwsdv";
+            } else if (this.puzzleNumber == 10) {
+              this.puzzleName = "Dark Tower";
+              this.correctAnswer = "yamato";
+            } else if (this.puzzleNumber == 11) {
+              this.puzzleName = "Sacred Signs";
+              this.correctAnswer = "sadoiyo";
+            } else if (this.puzzleNumber == 12) {
+              this.puzzleName = "Asakusa Goal";
+              this.correctAnswer = "moai";
+            }
+
+            // setTimeout(this.reactivated=true, 50000);
+            let parenthandler = this;
+
+            setTimeout(function () {
+              // alert('test');
+              parenthandler.show_inputs = true;
+              parenthandler.reactivated = true;
+            }, 1500);
+
+            axios
+              .post("api/game/get_miro_link", {
+                game_event_id: codeResponse.id,
+                team_number: teamSetup.playerTeam,
+                puzzle_number: this.puzzleNumber,
+              })
+              .then((response) => {
+                if (response) {
+                  this.miroURL = response.data;
+                  //    console.log(response.data)
+                }
+              });
+          });
+      }
     },
     validateAnswer() {
       this.helpShowed = false;
       //Create checking if which puzzle user is
       // alert(this.userAnswer.toLowerCase().split(" ").join(""))
-      if (this.userAnswer.toLowerCase().split(" ").join("").indexOf(this.correctAnswer) >= 0) {
+      if (
+        this.userAnswer
+          .toLowerCase()
+          .split(" ")
+          .join("")
+          .indexOf(this.correctAnswer) >= 0
+      ) {
         // alert('answer is correct');
         // this.reactivate();
 
@@ -958,14 +988,18 @@ export default {
         this.show_inputs = false;
         this.show_result_holder = true;
         this.answer_correct = true;
-        if(this.puzzleNumber == 3 || this.puzzleNumber == 6 || this.puzzleNumber == 9 || this.puzzleNumber == 12){
-            this.missionCompleted = true;
-        }
-        else{
-            this.missionCompleted = false;
+        if (
+          this.puzzleNumber == 3 ||
+          this.puzzleNumber == 6 ||
+          this.puzzleNumber == 9 ||
+          this.puzzleNumber == 12
+        ) {
+          this.missionCompleted = true;
+        } else {
+          this.missionCompleted = false;
         }
 
-        this.puzzleNumber += 1;
+        // this.puzzleNumber += 1;
       } else {
         this.show_result_holder = true;
       }
@@ -1080,8 +1114,8 @@ export default {
     },
   },
   components: {
-    HelpModal
-  } 
+    HelpModal,
+  },
 };
 </script>
 

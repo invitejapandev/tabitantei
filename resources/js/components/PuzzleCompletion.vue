@@ -207,15 +207,17 @@ export default {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
+        align-items: center;
+        align-content: center;
         width: 100%;
-        height: 100%;
+        height: 100vh;
     }
     
     .textHolder.default{
-
         background-image: url('../assets/main_bg.jpg') !important;
         background-size: cover;
         background-repeat: no-repeat;
+        
     }
 
     .textHolder.confetti{
@@ -225,18 +227,23 @@ export default {
     }
 
     .bubbleBox{
+        height: 100%;
+        width: 100%;
         position: relative;
         display: flex;
-        width: 100vw;
-        height: 100vh;
-        justify-content: center;
+        flex-wrap: wrap;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-content: center;
+        align-items: center;
     }
 
     .cover_image_holder{
+        height: 100vh;
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-top: 20px;
+        justify-content: space-evenly;
         gap: 15px;
         z-index: 10;
     }
@@ -268,8 +275,7 @@ export default {
 
     .treasure_video{
         order: -1;
-        height: 540px;
-        width: 960px;
+        height: 80vh;
         border-radius: 12px;
         display: none;
     }

@@ -1,24 +1,17 @@
 <template>
-  <div class="textHolder">
-        
-         <!-- <span class="text_handler"> {{outputText}} </span> -->
+    <div class="textHolder">
          <div class="bubbleBox">
-                
-        
-                <!-- <transition name="fade"> -->
-                    <div class="cover_image_holder">
-                        <video  :class="[show == false? 'appear':'','treasure_video']" @global-auto-play="autoPlay" @ended="onEnd()"  ref="videoRef" src="" ></video>
-                        <img  v-if="show" class="cover_image" :src='welcome_image' @click="hideImage" />   
-                        <button v-if="beginShow" class="begin_btn" @click="playVid()">Begin 次へ</button>
-                    </div>
-                <!-- </transition> -->
+            <div class="cover_image_holder">
+                <video  :class="[show == false? 'appear':'','treasure_video']" @global-auto-play="autoPlay" @ended="onEnd()"  ref="videoRef" src="" ></video>
+                <img  v-if="show" class="cover_image" :src='welcome_image' @click="hideImage" />   
+                <button v-if="beginShow" class="begin_btn" @click="playVid()">Begin 次へ</button>
+            </div>
          </div>
          <div v-if="btnHolderShow" class="btnHolder">
               <a v-if="prevShowned" class="btnReady" @click="prevImage()" >Prev</a>
               <a v-if="nextShowned" @click="nextImage()" class="btnReady">Next</a>
               <a v-if="enterShowned" class="btnReady" @click="playVid()">Proceed</a>
          </div>
-         
     </div>
 </template>
 
@@ -201,7 +194,10 @@ export default {
     .textHolder{
         display: flex;
         flex-wrap: wrap;
-        justify-content: center;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+        align-content: center;
         width: 100%;
         height: 100%;
         background-image: url('../assets/main_bg.jpg') !important;
@@ -212,9 +208,16 @@ export default {
     .bubbleBox{
         position: relative;
         display: flex;
-        width: 100vw;
-        height: 100vh;
         justify-content: center;
+        align-content: center;
+    }
+
+     .btnHolder{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 20px;
+        z-index: 100;
     }
 
     .cover_image_holder{
@@ -275,15 +278,7 @@ export default {
         letter-spacing: 7px;
     }
     
-    .btnHolder{
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        gap: 20px;
-        position: fixed;
-        bottom: 10%;
-        z-index: 100;
-    }
+   
 
     .btnReady{
        height: 55px;

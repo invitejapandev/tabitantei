@@ -4,7 +4,7 @@
                     <div :class="helpModalMantle()">
                         <div :class="helpModalCore()">
                             <div class="help_modal_title">
-                                <div class="help_english">WHAT DO YOU NEED HELP FOR?</div>
+                                <div class="help_english">WHAT'S UP?</div>
                                 <div class="help_jap">どのようなことでお困りですか？</div>
                             </div>
                             <div class="help_modal_option">
@@ -14,7 +14,7 @@
                                 </button>
                                 <button :class="helpButton()+' v-step-4'" @click="boardClicked(80+puzzleNumber, 1)">
                                     <div class="help_english">PREVIOUS ANSWER</div>
-                                    <div class="help_jap">ヒントが必要</div>
+                                    <div class="help_jap">前のパズルの解答を見る</div>
                                 </button>
                                 <button :class="helpButton()+' v-step-5'" @click="boardClicked(99, activeLanguage)">
                                     <div class="help_english">MIRO BOARD QUICK TIPS</div>
@@ -903,12 +903,14 @@ export default {
     font-family: kon-tiki-aloha-jf, sans-serif;
     font-weight: 400;
     font-style: normal;
+    font-size: 0.95em;
 }
 
 .help_jap{
 font-family: ab-kotatsu,sans-serif;
 font-weight: 400;
 font-style: normal;
+font-size: 0.75em;
 }
 
 .close_btn{

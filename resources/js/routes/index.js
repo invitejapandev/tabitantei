@@ -10,6 +10,7 @@ import Admin from '../components/Admin'
 import Dashboard from '../components/Dashboard'
 import Event from '../components/Event'
 import Logistics from '../components/Logistics'
+import ForestPool from '../components/ForestPool'
 
 const routes = [
    
@@ -121,7 +122,13 @@ const routes = [
         path: '/start_mission',
         name:'mission.index',
         component: Mission
+    },
+    {
+        path: '/forestpool',
+        name:'forestpool.index',
+        component: ForestPool
     }
+
        
 ];
 
