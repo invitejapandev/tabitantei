@@ -741,7 +741,7 @@ export default {
       .then((response) => (this.events = response.data))
       .catch((error) => console.log(error));
 
-    getStatusInterval = setInterval(() => this.getStatus(), 1000);
+    getStatusInterval = setInterval(() => this.getStatus(), 5000);
     // console.log('info data: '+this.info)
   },
 };

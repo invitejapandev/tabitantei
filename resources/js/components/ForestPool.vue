@@ -389,113 +389,20 @@ export default {
         })
         .then((response) => {
           this.teamNumber = teamSetup.playerTeam;
-          if (response.data == 0) {
-            // this.$router.push({ name: "yokohama.index" });
-            this.puzzleName = "Style Secrets";
-            this.correctAnswer = "talc";
-            this.puzzleNumber = 1;
-            this.helpImage = "/images/yokohama_help.png";
-          } else if (response.data == 1) {
-            // this.$router.push({ name: "yokohama.index" });
-            this.puzzleName = "Scout Salute";
-            this.correctAnswer = "jade";
-            this.puzzleNumber = 2;
-            this.helpImage = "/images/yokohama_help.png";
-          } else if (response.data == 2) {
-            // this.$router.push({ name: "yokohama.index" });
-            this.puzzleName = "Yokohama Goal";
-            this.correctAnswer = "ltejc";
-            this.puzzleNumber = 3;
-            this.helpImage = "/images/yokohama_help.png";
-          } else if (response.data == 3) {
+          if (response.data == 3) {
             // this.$router.push({ name: "karuizawa.index" });
             this.puzzleName = "Forest Pool";
             this.correctAnswer = "amenouzume";
             this.puzzleNumber = 4;
             this.helpImage = "/images/karuizawa_help.png";
-          } else if (response.data == 4) {
-            // this.$router.push({ name: "karuizawa.index" });
-            this.puzzleName = "Wardrobe Wisdom";
-            this.correctAnswer = "susanoo";
-            this.puzzleNumber = 5;
-            this.helpImage = "/images/karuizawa_help.png";
-          } else if (response.data == 5) {
-            // this.$router.push({ name: "karuizawa.index" });
-            this.puzzleName = "Karuizawa Goal";
-            this.correctAnswer = "nzasm";
-            this.puzzleNumber = 6;
-            this.helpImage = "/images/karuizawa_help.png";
-          } else if (response.data == 6) {
-            // this.$router.push({ name: "sendai.index" });
-            this.puzzleName = "Glass Fragments";
-            this.correctAnswer = "benevolence";
-            this.puzzleNumber = 7;
-            this.helpImage = "/images/sendai_help.png";
-          } else if (response.data == 7) {
-            // this.$router.push({ name: "sendai.index" });
-            this.puzzleName = "Historic Horsemen";
-            this.correctAnswer = "wisdom";
-            this.puzzleNumber = 8;
-            this.helpImage = "/images/sendai_help.png";
-          } else if (response.data == 8) {
-            // this.$router.push({ name: "sendai.index" });
-            this.puzzleName = "Sendai Goal";
-            this.correctAnswer = "nlwsdv";
-            this.puzzleNumber = 9;
-            this.helpImage = "/images/sendai_help.png";
-          } else if (response.data == 9) {
-            // this.$router.push({ name: "asakusa.index" });
-            this.puzzleName = "Dark Tower";
-            this.correctAnswer = "yamato";
-            this.puzzleNumber = 10;
-            this.helpImage = "/images/asakusa_help.png";
-          } else if (response.data == 10) {
-            // this.$router.push({ name: "asakusa.index" });
-            this.puzzleName = "Scared Signs";
-            this.correctAnswer = "sadoiyo";
-            this.puzzleNumber = 11;
-            this.helpImage = "/images/asakusa_help.png";
-          } else if (response.data == 11) {
-            // this.$router.push({ name: "asakusa.index" });
-            this.puzzleName = "Asakusa Goal";
-            this.correctAnswer = "moai";
-            this.puzzleNumber = 12;
-            this.helpImage = "/images/asakusa_help.png";
-          } else if (response.data >= 12) {
-            clearInterval(getStatusInterval);
-            this.$router.push({ name: "asakusa_completed.index" });
+          } 
+          else {
+              this.$router.push({ name: 'mission.index' });
           }
 
           getStatusInterval = setInterval(() => this.getStatus(), 2500);
 
-          if (this.puzzleNumber === 1) {
-            this.tutorialStarted = true;
-          }
-
-          if (this.puzzleNumber <= 2) {
-            this.album_image = [
-              "/images/YokoGallery-1.jpg",
-              "/images/YokoGallery-2.jpg",
-              "/images/YokoGallery-3.jpg",
-              "/images/YokoGallery-4.jpg",
-              "/images/YokoGallery-5.jpg",
-              "/images/YokoGallery-6.jpg",
-              "/images/YokoGallery-7.jpg",
-              "/images/YokoGallery-8.jpg",
-              "/images/YokoGallery-9.jpg",
-              "/images/YokoGallery-10.jpg",
-              "/images/YokoGallery-11.jpg",
-              "/images/YokoGallery-12.jpg",
-              "/images/YokoGallery-13.jpg",
-              "/images/YokoGallery-14.jpg",
-              "/images/YokoGallery-15.jpg",
-              "/images/YokoGallery-16.jpg",
-              "/images/YokoGallery-17.jpg",
-              "/images/YokoGallery-18.jpg",
-              "/images/YokoGallery-19.jpg",
-              "/images/YokoGallery-20.jpg",
-            ];
-          } else if (this.puzzleNumber <= 5) {
+      
             // alert('test');
             this.album_image = [
               "/images/Karuizawa-Gallery-1.jpg",
@@ -518,55 +425,7 @@ export default {
               "/images/Karuizawa-Gallery-25.jpg",
               "/images/Karuizawa-Gallery-26.jpg",
             ];
-          } else if (this.puzzleNumber <= 8) {
-            this.album_image = [
-              "/images/Sendai Gallery 1.jpeg",
-              "/images/Sendai Gallery 2.jpeg",
-              "/images/Sendai Gallery 3.jpeg",
-              "/images/Sendai Gallery 4.jpeg",
-              "/images/Sendai Gallery 5.jpeg",
-              "/images/Sendai Gallery 6.jpeg",
-              "/images/Sendai Gallery 7.jpeg",
-              "/images/Sendai Gallery 8.jpeg",
-              "/images/Sendai Gallery 9.jpeg",
-              "/images/Sendai Gallery 10.jpeg",
-              "/images/Sendai Gallery 11.jpeg",
-              "/images/Sendai Gallery 12.jpeg",
-              "/images/Sendai Gallery 13.jpeg",
-              "/images/Sendai Gallery 14.jpeg",
-              "/images/Sendai Gallery 15.jpeg",
-              "/images/Sendai Gallery 16.jpeg",
-              "/images/Sendai Gallery 17.jpeg",
-              "/images/Sendai Gallery 18.jpeg",
-              "/images/Sendai Gallery 19.jpeg",
-              "/images/Sendai Gallery 20.jpeg",
-              "/images/Sendai Gallery 21.jpeg",
-              "/images/Sendai Gallery 22.jpeg",
-              "/images/Sendai Gallery 23.jpeg",
-              "/images/Sendai Gallery 24.jpeg",
-              "/images/Sendai Gallery 25.jpeg",
-              "/images/Sendai Gallery 26.jpeg",
-              "/images/Sendai Gallery 27.jpeg",
-              "/images/Sendai Gallery 28.jpeg",
-              "/images/Sendai Gallery 29.jpeg",
-              "/images/Sendai Gallery 30.jpeg",
-            ];
-          } else if (this.puzzleNumber <= 12) {
-            this.album_image = [
-              "/images/Asakusa-Gallery-1.jpg",
-              "/images/Asakusa-Gallery-2.jpg",
-              "/images/Asakusa-Gallery-3.jpg",
-              "/images/Asakusa-Gallery-4.jpg",
-              "/images/Asakusa-Gallery-5.jpg",
-              "/images/Asakusa-Gallery-6.jpg",
-              "/images/Asakusa-Gallery-7.jpg",
-              "/images/Asakusa-Gallery-8.jpg",
-              "/images/Asakusa-Gallery-11.jpg",
-              "/images/Asakusa-Gallery-12.jpg",
-              "/images/Asakusa-Gallery-13.jpg",
-              "/images/Asakusa-Gallery-14.jpg",
-            ];
-          }
+         
 
           axios
             .post("api/game/get_miro_link", {
@@ -1110,7 +969,7 @@ export default {
             height: 540,
             imageHeight: 480,
             background: "#ffffff20",
-            confirmButtonText: "I understand now.",
+            confirmButtonText: "I understand now. わかりました。",
             allowOutsideClick: false,
           }).then((response) => {
              
@@ -1533,7 +1392,7 @@ export default {
   border-radius: 5px;
   cursor: pointer;
   font-weight: 400;
-  font-size: 1.75vw;
+  font-size: 1.5vw;
   font-family: "Covered By Your Grace", cursive;
 }
 

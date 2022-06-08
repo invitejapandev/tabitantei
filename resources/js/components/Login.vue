@@ -1,8 +1,8 @@
 <template>
         <div class="login_container">
             <form class="login_form" autocomplete="off" v-on:submit.prevent="onEnter">
-                <input autocomplete="off" id="1" type="text" placeholder="ゲームコードを入力
-                Enter Game Code"  maxlength="5" v-model="item.name" @input="onInput"/>
+                <input autocomplete="off" id="1" type="text" placeholder="Enter Game Code
+                ゲームコードを入力"  maxlength="5" v-model="item.name" @input="onInput"/>
             </form>
             <span class="welcome_header">TABITANTEI</span>
         </div>
@@ -293,27 +293,46 @@ input{
     height: 160px;
     width: 40%;
     max-width: 100%;
+    border-radius: 10px;
+    
 }
+
+    ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+        white-space:pre-line;  
+        position:relative;
+        top:-35px;
+        /* line-height:normal; */
+        
+        }
+
+
+@media not all and (min-resolution:.001dpcm) { 
+ 
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
   white-space:pre-line;  
   position:relative;
-  top:-35px;
-  
+  top:0px !important;
+  line-height:normal !important;
+}
+
 }
 ::-moz-placeholder { /* Firefox 19+ */
      white-space:pre-line;  
   position:relative;
   top:-35px;
+  line-height:normal;
 }
 :-ms-input-placeholder { /* IE 10+ */
     white-space:pre-line;  
   position:relative;
   top:-35px;
+  line-height:normal;
 }
 :-moz-placeholder { /* Firefox 18- */
      white-space:pre-line;  
   position:relative;
   top:-35px;
+  line-height:normal;
 }
 
 .go_button{

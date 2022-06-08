@@ -777,7 +777,7 @@ export default {
                     this.missionCompleted = false;
                   }
                   this.correctMessage =
-                    "Your teammate got the correct answer! Click here to continue. 正解! 次の問題に進む";
+                    "Team got the correct answer! Click here to continue. 正解! 次の問題に進む";
                 
                   this.show_inputs = false;
                   this.show_result_holder = true;
@@ -912,7 +912,7 @@ export default {
             height: 540,
             imageHeight: 480,
             background: "#ffffff20",
-            confirmButtonText: "I understand now.",
+            confirmButtonText: "I understand now. わかりました。",
             allowOutsideClick: false,
           }).then((response) => {
             this.puzzleNumber += 1;
@@ -1285,7 +1285,7 @@ export default {
   border-radius: 5px;
   cursor: pointer;
   font-weight: 400;
-  font-size: 1.75vw;
+  font-size: 1.5em;
   font-family: "Covered By Your Grace", cursive;
 }
 
