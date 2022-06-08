@@ -247,9 +247,6 @@ export default {
       });
     }
   },
-  beforeMount() {
-    let routename = this.$route.name;
-  },
   beforeCreate() {
     codeResponse = JSON.parse(localStorage.getItem("codeResponse"));
     teamSetup = JSON.parse(localStorage.getItem("teamSetup"));
@@ -286,10 +283,13 @@ export default {
             this.helpImage = "/images/yokohama_help.png";
           } else if (response.data == 3) {
             // this.$router.push({ name: "karuizawa.index" });
-            this.puzzleName = "Forest Pool";
-            this.correctAnswer = "amenouzume";
-            this.puzzleNumber = 4;
-            this.helpImage = "/images/karuizawa_help.png";
+            // this.puzzleName = "Forest Pool";
+            // this.correctAnswer = "amenouzume";
+            // this.puzzleNumber = 4;
+            // this.helpImage = "/images/karuizawa_help.png";
+            
+              clearInterval(getStatusInterval);
+              this.$router.push({ name: "forestpool.index" });
           } else if (response.data == 4) {
             // this.$router.push({ name: "karuizawa.index" });
             this.puzzleName = "Wardrobe Wisdom";
@@ -343,7 +343,10 @@ export default {
             this.$router.push({ name: "asakusa_completed.index" });
           }
 
-          getStatusInterval = setInterval(() => this.getStatus(), 2500);
+
+          if(this.puzzleNumber){
+              getStatusInterval = setInterval(() => this.getStatus(), 2500);
+          }
 
           if (this.puzzleNumber === 1) {
             this.tutorialStarted = true;
@@ -757,13 +760,25 @@ export default {
                 if (result.dismiss === this.$swal.DismissReason.timer) {
                 }
               });
-            } else if (game_status) {
+            } 
+            else{
               if (game_status["answered_current"] == 1) {
-                this.timeisPaused = true;
-                clearInterval(getStatusInterval);
+                // this.timeisPaused = true;
+                // clearInterval(getStatusInterval);
                 if (game_status["player_number"] != teamSetup.playerName) {
+                  if (
+                    this.puzzleNumber == 3 ||
+                    this.puzzleNumber == 6 ||
+                    this.puzzleNumber == 9 ||
+                    this.puzzleNumber == 12
+                  ) {
+                    this.missionCompleted = true;
+                  } else {
+                    this.missionCompleted = false;
+                  }
                   this.correctMessage =
                     "Your teammate got the correct answer! Click here to continue. 正解! 次の問題に進む";
+                
                   this.show_inputs = false;
                   this.show_result_holder = true;
                   this.answer_correct = true;
@@ -851,11 +866,15 @@ export default {
     },
     reactivate() {
       if (this.missionCompleted) {
+        
         if (this.puzzleNumber+1 == 4) {
+          clearInterval(getStatusInterval);
           this.$router.push({ name: "yokohama_completed.index" });
         } else if (this.puzzleNumber+1 == 7) {
+          clearInterval(getStatusInterval);
           this.$router.push({ name: "karuizawa_completed.index" });
         } else if (this.puzzleNumber+1 == 10) {
+          clearInterval(getStatusInterval);
           this.$router.push({ name: "sendai_completed.index" });
         } else if (this.puzzleNumber+1 == 13) {
           clearInterval(getStatusInterval);
@@ -909,8 +928,10 @@ export default {
               this.puzzleName = "Yokohama Goal";
               this.correctAnswer = "ltejc";
             } else if (this.puzzleNumber == 4) {
-              this.puzzleName = "Forest Pool";
-              this.correctAnswer = "amenouzume";
+              // this.puzzleName = "Forest Pool";
+              // this.correctAnswer = "amenouzume";
+              clearInterval(getStatusInterval);
+              this.$router.push({ name: "forestpool.index" });
             } else if (this.puzzleNumber == 5) {
               this.puzzleName = "Wardrobe Wisdom";
               this.correctAnswer = "susanoo";
@@ -1309,6 +1330,7 @@ export default {
   background-position: center;
   transition: all 1s;
   cursor: pointer;
+  z-index: 12;
 }
 
 .photo_album.yokohama {
@@ -1333,7 +1355,7 @@ export default {
   margin-left: auto;
   margin-right: auto;
   cursor: unset;
-  z-index: 11;
+  z-index: 12;
 }
 
 .album_panel {

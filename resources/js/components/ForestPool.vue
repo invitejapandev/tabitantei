@@ -18,7 +18,7 @@
                     <image xlink:href="../assets/forestpool_asset_kumobaike_pond.png" >
                     </image>
                      <a class="clickable_image smiley" @click="boardClicked('brown')">
-                        <polygon fill="#fff" opacity="0" points="265,291,272,274,279,289,300,294,289,311,288,328,270,323,254,325,254,311,245,294"   />
+                        <polygon fill="#000" sty opacity="0"  points="265,291,272,274,279,289,300,294,289,311,288,328,270,323,254,325,254,311,245,294"   />
                     </a>
                      <a class="clickable_image smiley" @click="boardClicked('orange')">
                         <polygon fill="#fff" opacity="0" points="522,115,530,96,539,112,561,118,545,133,548,152,530,144,511,153,515,132,501,117,512,116"   />
@@ -32,6 +32,12 @@
                      <a class="clickable_image smiley" @click="boardClicked('yellow')">
                         <polygon fill="#fff" opacity="0" points="671,376,680,394,708,398,688,415,692,440,672,427,651,436,653,416,639,398,664,395"   />
                     </a>
+                     <a class="clickable_image smiley" @click="boardClicked('green')">
+                        <polygon fill="#fff" opacity="0" points="377,336,388,317,397,334,418,339,404,354,406,376,387,366,369,377,370,354,356,339"   />
+                    </a>
+                     <a class="clickable_image smiley" @click="boardClicked('lavander')">
+                        <polygon fill="#fff" opacity="0" points="210,483,221,464,230,483,254,487,240,500,240,526,223,514,201,523,206,502,187,487"   />
+                    </a>
                     
                 </svg>
             </transition>
@@ -42,57 +48,88 @@
                         <circle cx="685" cy="445" r="17" fill="#fff" opacity="0" />
                     </a>
                     <a class="clickable_image red" @click="boardClicked('magnify')">
-                        <circle cx="206" cy="522" r="20" fill="#fff" opacity="0" />
+                        <circle cx="666" cy="122" r="22" fill="#fff" opacity="0" />
                     </a>
                     <a v-if="selectedColor=='brown'" class="clickable_image smiley" @click="answerClicked('a', 'brown')">
-                        <polygon fill="#fff" opacity="0" points="534,148,539,130,560,139,681,136,684,174,563,178,545,184,536,167"   />
+                        <polygon fill="#fff" class="answer" opacity="0" points="534,148,539,130,560,139,681,136,684,174,563,178,545,184,536,167"   />
                     </a>
                     <a v-if="selectedColor=='brown'"  class="clickable_image smiley" @click="answerClicked('b', 'brown')">
-                        <polygon fill="#fff" opacity="0" points="535,213,540,190,557,181,563,189,685,183,686,221,564,230,545,230"   />
+                        <polygon fill="#fff" class="answer"  opacity="0" points="535,213,540,190,557,181,563,189,685,183,686,221,564,230,545,230"   />
                     </a>
                     <a v-if="selectedColor=='brown'"  class="clickable_image smiley" @click="answerClicked('c', 'brown')">
-                        <polygon fill="#fff" opacity="0" points="538,262,544,239,560,234,688,234,691,270,561,281,547,280"   />
+                        <polygon fill="#fff" class="answer" opacity="0" points="538,262,544,239,560,234,688,234,691,270,561,281,547,280"   />
                     </a>
                     <a  v-if="selectedColor=='brown'" class="clickable_image smiley" @click="answerClicked('d', 'brown')">
-                        <polygon fill="#fff" opacity="0" points="540,312,551,286,571,288,691,281,693,319,571,329,557,333"   />
+                        <polygon fill="#fff" class="answer" opacity="0" points="540,312,551,286,571,288,691,281,693,319,571,329,557,333"   />
                     </a>
                     <a  v-if="selectedColor=='brown'"  class="clickable_image smiley" @click="answerClicked('e', 'brown')">
-                        <polygon fill="#fff" opacity="0" points="545,366,553,341,573,340,694,333,695,370,576,382,557,387"   />
+                        <polygon fill="#fff" class="answer" opacity="0" points="545,366,553,341,573,340,694,333,695,370,576,382,557,387"   />
                     </a>
                     <a  v-if="selectedColor=='blue'"  class="clickable_image smiley" @click="answerClicked('n', 'blue')">
-                        <polygon fill="#fff" opacity="0" points="229,289,235,259,254,242,273,237,276,219,445,215,451,347,285,361,283,345,264,341,245,329,234,311"   />
+                        <polygon fill="#fff" class="answer" opacity="0" points="229,289,235,259,254,242,273,237,276,219,445,215,451,347,285,361,283,345,264,341,245,329,234,311"   />
                     </a>
                     <a  v-if="selectedColor=='blue'"  class="clickable_image smiley" @click="answerClicked('p', 'blue')">
-                        <polygon fill="#fff" opacity="0" points="451,215,601,210,604,222,624,232,635,243,643,268,641,291,626,314,609,317,610,332,459,345"   />
+                        <polygon fill="#fff" class="answer" opacity="0" points="451,215,601,210,604,222,624,232,635,243,643,268,641,291,626,314,609,317,610,332,459,345"   />
                     </a>
                     <a  v-if="selectedColor=='blue'"  class="clickable_image smiley" @click="answerClicked('u', 'blue')">
-                        <polygon fill="#fff" opacity="0" points="287,369,453,356,462,485,296,509,294,491,277,491,259,481,248,466,239,440,245,414,267,390,287,387"   />
+                        <polygon fill="#fff" class="answer" opacity="0" points="287,369,453,356,462,485,296,509,294,491,277,491,259,481,248,466,239,440,245,414,267,390,287,387"   />
                     </a>
                     <a  v-if="selectedColor=='blue'"  class="clickable_image smiley" @click="answerClicked('m', 'blue')">
-                        <polygon fill="#fff" opacity="0" points="460,355,611,343,612,354,629,361,638,367,649,386,651,407,646,425,637,439,628,446,618,448,617,466,468,486"   />
+                        <polygon fill="#fff" class="answer" opacity="0" points="460,355,611,343,612,354,629,361,638,367,649,386,651,407,646,425,637,439,628,446,618,448,617,466,468,486"   />
                     </a>
-                    <a v-if="selectedColor=='pink'" class="clickable_image" @click="answerClicked('a', 'pink')">
-                        <circle cx="266" cy="430" r="55" fill="#fff" opacity="0" />
+                    <a v-if="selectedColor=='lavander'" class="clickable_image" @click="answerClicked('a', 'lavander')">
+                        <circle cx="266" class="answer" cy="430" r="55" fill="#fff" opacity="0" />
                     </a>
-                    <a v-if="selectedColor=='pink'" class="clickable_image" @click="answerClicked('e', 'pink')">
-                        <circle cx="427" cy="413" r="51" fill="#fff" opacity="0" />
+                    <a v-if="selectedColor=='lavander'" class="clickable_image" @click="answerClicked('e', 'lavander')">
+                        <circle cx="427" class="answer" cy="413" r="51" fill="#fff" opacity="0" />
                     </a>
-                    <a v-if="selectedColor=='pink'" class="clickable_image" @click="answerClicked('u', 'pink')">
-                        <circle cx="570" cy="398" r="47" fill="#fff" opacity="0" />
+                    <a v-if="selectedColor=='lavander'" class="clickable_image" @click="answerClicked('u', 'lavander')">
+                        <circle cx="570" class="answer" cy="398" r="47" fill="#fff" opacity="0" />
                     </a>
                     <a v-if="selectedColor=='orange'" class="clickable_image" @click="answerClicked('E', 'orange')">
-                        <circle cx="295" cy="351" r="65" fill="#fff" opacity="0" />
+                        <circle cx="259" class="answer" cy="352" r="62" fill="#fff" opacity="0" />
                     </a>
                     <a v-if="selectedColor=='orange'" class="clickable_image" @click="answerClicked('N', 'orange')">
-                        <circle cx="388" cy="442" r="60" fill="#fff" opacity="0" />
+                        <circle cx="388" class="answer" cy="442" r="60" fill="#fff" opacity="0" />
                     </a>
                     <a v-if="selectedColor=='orange'" class="clickable_image" @click="answerClicked('W', 'orange')">
-                        <circle cx="519" cy="332" r="58" fill="#fff" opacity="0" />
+                        <circle cx="519" class="answer" cy="332" r="58" fill="#fff" opacity="0" />
                     </a>
                     <a v-if="selectedColor=='orange'" class="clickable_image" @click="answerClicked('S', 'orange')">
-                        <circle cx="622" cy="415" r="52" fill="#fff" opacity="0" />
+                        <circle cx="622" class="answer" cy="415" r="52" fill="#fff" opacity="0" />
                     </a>
 
+                    <a v-if="selectedColor=='green'" class="clickable_image" @click="answerClicked('G', 'green')">
+                        <circle cx="315" class="answer" cy="443" r="27" fill="#fff" opacity="0" />
+                    </a>
+
+                    <a v-if="selectedColor=='green'" class="clickable_image" @click="answerClicked('R', 'green')">
+                        <circle cx="481" class="answer" cy="340" r="22" fill="#fff" opacity="0" />
+                    </a>
+
+                    <a v-if="selectedColor=='green'" class="clickable_image" @click="answerClicked('Z', 'green')">
+                        <circle cx="401" class="answer" cy="333" r="23" fill="#fff" opacity="0" />
+                    </a>
+
+                    <a v-if="selectedColor=='green'" class="clickable_image" @click="answerClicked('F', 'green')">
+                        <circle cx="500" class="answer" cy="241" r="22" fill="#fff" opacity="0" />
+                    </a>
+
+                    <a v-if="selectedColor=='green'" class="clickable_image" @click="answerClicked('U', 'green')">
+                        <circle cx="565" class="answer" cy="164" r="21" fill="#fff" opacity="0" />
+                    </a>
+
+                     <a  v-if="selectedColor=='pink'"  class="clickable_image smiley" @click="answerClicked('p', 'pink')">
+                        <polygon fill="#fff" class="answer" opacity="0" points="350,243,549,230,553,275,355,292"   />
+                    </a>
+
+                     <a  v-if="selectedColor=='pink'"  class="clickable_image smiley" @click="answerClicked('x', 'pink')">
+                        <polygon fill="#fff" class="answer" opacity="0" points="330,333,579,312,583,350,334,373"   />
+                    </a>
+
+                     <a  v-if="selectedColor=='pink'"  class="clickable_image smiley" @click="answerClicked('a', 'pink')">
+                        <polygon fill="#fff" class="answer" opacity="0" points="348,409,573,384,577,422,353,448"   />
+                    </a>
 
                     
                 </svg>
@@ -103,9 +140,9 @@
             <input class="brown star" v-model="brownValue"  type="text" maxlength="1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <input class="orange star" v-model="orangeValue" type="text"  maxlength="1">
             <input class="yellow star" v-model="yellowValue"   type="text" maxlength="1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <input class="pink star" v-model="lightPinkValue"  type="text" maxlength="1">
+            <input class="lavander star" v-model="lavanderValue"  type="text" maxlength="1">
             <input class="green star" v-model="greenValue"  type="text" maxlength="1">
-            <input class="pink star" v-model="lightPinkValue"  type="text" maxlength="1">
+            <input class="lavander star" v-model="lavanderValue"  type="text" maxlength="1">
             <input class="blue star" v-model="blueValue"   type="text" maxlength="1">
             <input class="brown star" v-model="brownValue"  type="text" maxlength="1">
             <!-- <input
@@ -550,12 +587,12 @@ export default {
     return {
       yellowValue: "O",
       greenValue: "", 
-      lightPinkValue: "",
+      lavanderValue: "",
       pinkValue: "",
       orangeValue: "",
       blueValue: "",
       brownValue: "",
-      svgSRC: '/images/forestpool_brown.png',
+      svgSRC: '/images/forestpool_brown_final.png',
       selectedColor: '',
       forestPoolShow: true,
       time_limit: null,
@@ -807,6 +844,12 @@ export default {
       else if(val == 'orange'){
         this.orangeValue = answer;
       }
+      else if(val == 'green'){
+        this.greenValue = answer;
+      }
+      else if(val == 'lavander'){
+        this.lavanderValue = answer;
+      }
     },
     boardClicked(val){
       if(val == 'main'){
@@ -814,27 +857,37 @@ export default {
       }
       else if(val == 'brown'){
         this.selectedColor = val;
-        this.svgSRC = 'images/forestpool_brown.png';
+        this.svgSRC = 'images/forestpool_brown_final.png';
         this.forestPoolShow = false;
       }
       else if(val == 'orange'){
         this.selectedColor = val;
-        this.svgSRC = 'images/forestpool_orange.png';
+        this.svgSRC = 'images/forestpool_orange_final.png';
         this.forestPoolShow = false;
       }
       else if(val == 'pink'){
         this.selectedColor = val;
-        this.svgSRC = 'images/forestpool_pink.png';
+        this.svgSRC = 'images/forestpool_pink_final.png';
         this.forestPoolShow = false;
       }
       else if(val == 'blue'){
         this.selectedColor = val;
-        this.svgSRC = 'images/forestpool_blue.png';
+        this.svgSRC = 'images/forestpool_blue_final.png';
         this.forestPoolShow = false;
       }
       else if(val == 'yellow'){
         this.selectedColor = val;
-        this.svgSRC = 'images/forestpool_yellow.png';
+        this.svgSRC = 'images/forestpool_yellow_final.png';
+        this.forestPoolShow = false;
+      }
+      else if(val == 'lavander'){
+        this.selectedColor = val;
+        this.svgSRC = 'images/forestpool_lavander_final.png';
+        this.forestPoolShow = false;
+      }
+      else if(val == 'green'){
+        this.selectedColor = val;
+        this.svgSRC = 'images/forestpool_green_final.png';
         this.forestPoolShow = false;
       }
       else if(val == 'magnify'){
@@ -852,6 +905,9 @@ export default {
         }
         else if(this.selectedColor == 'yellow'){
           this.imgs = "/images/yellow.png";
+        }
+        else if(this.selectedColor == 'lavander'){
+          this.imgs = "/images/lavander.png";
         }
       this.index = this.activeIndex;
       this.visible = true;
@@ -1098,7 +1154,7 @@ export default {
       this.helpShowed = false;
       //Create checking if which puzzle user is
       // alert(this.userAnswer.toLowerCase().split(" ").join(""))
-      let tempAnswer = this.pinkValue+''+this.blueValue+''+this.brownValue+''+this.orangeValue+''+this.yellowValue+''+this.lightPinkValue+''+this.greenValue+''+this.lightPinkValue+''+this.blueValue+''+this.brownValue;
+      let tempAnswer = this.pinkValue+''+this.blueValue+''+this.brownValue+''+this.orangeValue+''+this.yellowValue+''+this.lavanderValue+''+this.greenValue+''+this.lavanderValue+''+this.blueValue+''+this.brownValue;
       // if(tempAnswer.length>0){
         // this.userAnswer = tempAnswer
       // }
@@ -1259,6 +1315,11 @@ export default {
 </script>
 
 <style scoped>
+
+    .answer:hover{
+      fill:yellow;
+      opacity: 25%;
+    }
     .star{
         height: 80px;
         width: 80px;
@@ -1277,27 +1338,31 @@ export default {
     }
 
     .brown{
-        background-image: url('../assets/brown_star.png');
+        background-image: url('../assets/brown_star_outline.png');
     }
 
     .orange{
-        background-image: url('../assets/orange_star.png');
+        background-image: url('../assets/orange_star_outline.png');
     }
 
     .yellow{
-        background-image: url('../assets/yellow_star.png');
+        background-image: url('../assets/yellow_star_outline.png');
     }
 
     .blue{
-        background-image: url('../assets/blue_star.png');
+        background-image: url('../assets/blue_star_outline.png');
     }
 
     .pink{
-        background-image: url('../assets/pink_star.png');
+        background-image: url('../assets/pink_star_outline.png');
+    }
+
+    .lavander{
+        background-image: url('../assets/lavander_star_outline.png');
     }
 
     .green{
-        background-image: url('../assets/green_star.png');
+        background-image: url('../assets/green_star_outline.png');
     }
 
     .desk{
@@ -1315,6 +1380,7 @@ export default {
   
 .clickable_image{
         cursor: pointer;
+        
     }
 
 
@@ -1512,6 +1578,7 @@ export default {
   background-position: center;
   transition: all 1s;
   cursor: pointer;
+  z-index: 12;
 }
 
 .photo_album.yokohama {
@@ -1536,7 +1603,7 @@ export default {
   margin-left: auto;
   margin-right: auto;
   cursor: unset;
-  z-index: 11;
+  z-index: 12;
 }
 
 .album_panel {
